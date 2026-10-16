@@ -1,0 +1,1698 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Module 3 Objective Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Rubik:wght@500;700&display=swap">
+<style>
+/* Layout: five topic columns read left to right (3A to 3E);
+   dependency arrows run between objective cards; a side sheet holds the notes. */
+:root{
+  --bg:#F1F3F6; --surface:#FFFFFF; --ink:#14213D; --muted:#48546A; --line:#CDD3DD; --code-bg:#E6EAF0;
+  --ok:#1B7A3D; --bad:#B3261E; --a:#2E6E8E; --b:#A85F26; --c:#3D5A98; --d:#2D7A5F; --e:#8E4A6B;
+  --display:"Rubik","Trebuchet MS",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1626; --surface:#162238; --ink:#E8ECF3; --muted:#A3AEC2; --line:#2C3A55; --code-bg:#0A1120;
+    --ok:#6FD08C; --bad:#FF8A80; --a:#6FB6D6; --b:#E9A066; --c:#9DB2F0; --d:#6ED0A8; --e:#E79BC2; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1626; --surface:#162238; --ink:#E8ECF3; --muted:#A3AEC2; --line:#2C3A55; --code-bg:#0A1120;
+  --ok:#6FD08C; --bad:#FF8A80; --a:#6FB6D6; --b:#E9A066; --c:#9DB2F0; --d:#6ED0A8; --e:#E79BC2; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.page{max-width:1480px;margin-inline:auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+p{margin:0}
+.eyebrow{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.top{display:flex;flex-direction:column;gap:10px}
+.top h1{font-size:clamp(1.8rem,4.5vw,2.9rem);font-weight:700;letter-spacing:-.01em}
+.top .lede{max-width:62ch;color:var(--muted);font-size:1.05rem}
+.los{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:.92rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.los div{flex:1 1 320px;min-width:0}
+.los b{color:var(--ink);font-family:var(--mono);font-size:.82rem;margin-right:6px}
+
+.ta{--k:var(--a)} .tb{--k:var(--b)} .tc{--k:var(--c)} .td{--k:var(--d)} .te{--k:var(--e)}
+
+.mapwrap{position:relative}
+.map{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:48px;row-gap:28px;align-items:start;position:relative}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0;position:relative;z-index:1}
+.colhead{display:flex;flex-direction:column;gap:2px;padding-bottom:10px;border-bottom:2px solid var(--k);min-height:7.2em}
+.colhead .code{font-family:var(--mono);font-weight:600;color:var(--k);font-size:.85rem}
+.colhead h2{font-size:1.08rem;font-weight:700}
+.colhead .ask{font-size:.86rem;color:var(--muted)}
+svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.wire{fill:none;stroke:var(--ink);transition:opacity .15s}
+.wire.main{stroke-width:2.5;opacity:.9}
+.wire.sec{stroke-width:1.5;opacity:0;stroke-dasharray:6 4}
+.mk{fill:var(--muted)} .mkhot{fill:var(--ink)}
+.focusing .wire{opacity:.12}
+.focusing .wire.hot{opacity:1}
+.focusing .wire.sec:not(.hot){opacity:0}
+.node{font:inherit;color:inherit;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;width:100%;transition:opacity .15s,border-color .15s,transform .15s}
+.node:hover,.node:focus-visible{border-color:var(--k);transform:translateY(-1px)}
+.node:focus-visible,.btn:focus-visible,.link:focus-visible,.x:focus-visible{outline:3px solid var(--k,var(--ink));outline-offset:2px}
+.focusing .node:not(.hot){opacity:.38}
+.nrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.num{font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--k);font-variant-numeric:tabular-nums;line-height:1}
+.verb{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--k);border:1px solid var(--k);border-radius:3px;padding:1px 6px;white-space:nowrap}
+.obj{font-weight:700;font-size:.98rem;line-height:1.3}
+.out{font-size:.88rem;color:var(--muted);line-height:1.4}
+.out b{color:var(--ink);font-weight:700}
+.exam{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.yrs{display:flex;gap:3px}
+.yrs i{font-style:normal;border:1px solid var(--line);border-radius:3px;padding:0 4px;line-height:1.5;opacity:.6}
+.yrs i.on{background:var(--k);border-color:var(--k);color:var(--surface);font-weight:600;opacity:1}
+.pp{min-width:460px}
+.pp .askrow td{border-top:2px solid var(--k)}
+.pp td[rowspan]{white-space:nowrap;font-weight:600}
+.pp td>p+p,.pp td>ul+p,.pp td>.scroll+p,.pp td>pre+p,.pp td>p+pre,.pp td>p+.scroll{margin-top:8px}
+.pp td>pre,.pp td>.scroll{margin-top:6px}
+.pp td ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.lab{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--k);margin-bottom:4px}
+dd ul{margin:4px 0 0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.parts{margin-top:6px;line-height:1.7}
+.blank td:first-child,.blank th:first-child{width:5em}
+.cmd{border-left:3px solid var(--k);padding:2px 0 2px 14px;display:flex;flex-direction:column;gap:6px}
+.cmd p{max-width:65ch}
+.pp td>p+.scroll{margin-top:6px}
+.pp td>pre+p,.pp td>p+p{margin-top:8px}
+.how{list-style:none;padding-left:0!important}
+.how b{font-family:var(--mono);display:inline-block;min-width:1.4em}
+.fn{font-size:.82rem;color:var(--muted);margin-top:8px}
+.leads{font-size:.8rem;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:3px;line-height:1.35}
+.ld b{font-family:var(--mono);font-size:.74rem;color:var(--ink);font-weight:600;margin-right:2px;white-space:nowrap}
+.ld.mainld b{color:var(--k)}
+.leads .open{font-family:var(--mono);font-size:.72rem;align-self:flex-end;margin-top:2px}
+.labels{position:absolute;inset:0;pointer-events:none;z-index:3}
+.pill{position:absolute;transform:translate(-50%,-50%);background:var(--ink);color:var(--bg);font-size:.72rem;line-height:1.25;padding:3px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.pill.side{transform:translate(8px,-50%)}
+.key{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.85rem;color:var(--muted);align-items:center}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.key i{display:inline-block;width:34px;border-top:2.5px solid var(--ink)}
+.key i.dash{border-top:1.5px dashed var(--ink)}
+.tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--k);border:1px solid var(--k);border-radius:3px;padding:0 5px;margin-right:4px;white-space:nowrap}
+.where{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.where .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.where .rl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted);min-width:6.5em}
+.chip{font:inherit;font-size:.82rem;color:var(--ink);background:var(--surface);border:1px solid var(--k);border-radius:999px;padding:2px 10px;cursor:pointer}
+.chip b{font-family:var(--mono);font-size:.76rem;color:var(--k);margin-right:4px}
+.chip:hover{background:var(--k);color:var(--surface)} .chip:hover b{color:var(--surface)}
+.chip:focus-visible{outline:3px solid var(--k);outline-offset:2px}
+.chip.here{background:var(--k);color:var(--surface);cursor:default} .chip.here b{color:var(--surface)}
+.where .none{font-size:.82rem;color:var(--muted)}
+.leads .open{color:var(--k);font-weight:600}
+@media (max-width: 1099px){.labels,.key .hov{display:none}}
+
+.links h2{font-size:1.35rem;margin-bottom:4px}
+.links .sub{color:var(--muted);margin-bottom:14px;max-width:62ch}
+.linkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 32px}
+.lrow{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:.92rem;align-items:baseline}
+.lrow .pair{font-family:var(--mono);font-size:.82rem;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lrow .pair .f{color:var(--k)}
+.lrow .why{min-width:0;color:var(--muted)}
+.foot{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+
+dialog.sheet{border:0;padding:0;margin:0 0 0 auto;height:100%;max-height:100%;width:min(820px,100%);max-width:100%;background:var(--surface);color:var(--ink);overflow-y:auto;box-shadow:-12px 0 40px rgba(0,0,0,.25)}
+dialog.sheet::backdrop{background:rgba(8,16,20,.55)}
+.shead{position:sticky;top:0;background:var(--surface);border-bottom:2px solid var(--k);padding:calc(16px + env(safe-area-inset-top,0px)) 22px 14px;display:flex;gap:12px;align-items:flex-start;z-index:2}
+.shead .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.shead h2{font-size:1.4rem;font-weight:700}
+.shead h2 .num{font-size:inherit;margin-right:8px}
+.x{font:inherit;font-family:var(--mono);background:none;border:1px solid var(--line);color:var(--ink);border-radius:4px;padding:4px 10px;cursor:pointer}
+.sbody{padding:18px 22px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:22px}
+.sbody h3{font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--k);font-family:var(--body);font-weight:700;margin-bottom:8px}
+.outcome{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--bg)}
+.outcome .lo{font-family:var(--mono);font-size:.78rem;color:var(--muted);display:block;margin-top:6px}
+dl{margin:0;display:flex;flex-direction:column;gap:10px}
+dt{font-weight:700}
+dd{margin:0;color:var(--ink)}
+.ex{display:flex;flex-direction:column;gap:10px}
+.ex p{max-width:65ch}
+.ex ul,.ex ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+pre{font-family:var(--mono);font-size:.84rem;line-height:1.55;background:var(--code-bg);color:var(--ink);border-radius:6px;padding:12px 14px;margin:0;overflow-x:auto;tab-size:3}
+code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);padding:1px 5px;border-radius:3px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700}
+td.n,th.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.bad{color:var(--c);font-weight:700}
+.seen{font-size:.9rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+.seen b{color:var(--ink)}
+.conn{display:flex;flex-direction:column;gap:6px}
+.link{font:inherit;color:inherit;text-align:left;background:none;border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.link:hover{border-color:var(--k)}
+.link .dir{font-family:var(--mono);font-size:.74rem;color:var(--muted);white-space:nowrap}
+.link .dir b{color:var(--k);font-size:.9rem}
+.link .why{font-size:.9rem;min-width:0}
+.nav{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+.btn{font:inherit;font-weight:700;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 14px;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:default}
+.fc{max-width:340px;width:100%;height:auto;display:block}
+.fc .s{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.fc .l{fill:none;stroke:var(--ink);stroke-width:1.5}
+.fc text{fill:var(--ink);font-family:var(--mono);font-size:12px;text-anchor:middle}
+.fc .ah{fill:var(--ink)}
+.sym td:first-child{width:86px}
+.sym td{vertical-align:middle}
+.fc .zone{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:5 4}
+.fc text.cap{text-anchor:start;font-size:11px;font-weight:600;fill:var(--k)}
+
+
+.check{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px}
+.check>div{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.check h2{font-size:1.2rem}
+.check p{color:var(--muted);max-width:65ch}
+.tcheck{background:var(--surface);border:1px dashed var(--k);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.tcheck .lab{margin:0}
+.tcheck p{font-size:.88rem;color:var(--muted)}
+.tcheck .btn.big{align-self:flex-start;background:var(--k);border-color:var(--k);color:var(--surface);font-size:.92rem;padding:8px 16px}
+.tcheck .adv{color:var(--ink)}
+.rv{font-size:.9rem;display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}
+.paper{font-size:.9rem;color:var(--muted);font-style:italic}
+.btn.big{background:var(--ink);color:var(--bg);border-color:var(--ink);padding:10px 20px;font-size:1rem}
+.btn.big:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+dialog.quiz{margin:0 auto;width:min(900px,100%)}
+.quiz .sbody h3{font-size:1.05rem;letter-spacing:0;text-transform:none;font-family:var(--display);color:var(--ink);margin-bottom:12px}
+.quiz .intro{color:var(--muted);max-width:65ch}
+.mcq{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:22px;counter-reset:mq}
+.mq{counter-increment:mq;display:flex;flex-direction:column;gap:10px;padding-left:14px;border-left:3px solid var(--line)}
+.mq.done{border-left-color:var(--k)}
+.mqq::before{content:counter(mq) ". ";font-family:var(--mono);font-weight:600;color:var(--k)}
+.mqq pre{margin-top:8px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.opt{font:inherit;color:inherit;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;gap:10px;align-items:baseline;min-width:0}
+.opt b{font-family:var(--mono);color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--k)}
+.opt:focus-visible{outline:3px solid var(--k);outline-offset:2px}
+.opt:disabled{cursor:default;color:var(--ink)}
+.opt.right{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)} .opt.right b{color:var(--ok)}
+.opt.wrong{border-color:var(--bad);box-shadow:inset 0 0 0 1px var(--bad)} .opt.wrong b{color:var(--bad)}
+.fb{font-size:.92rem;max-width:70ch}
+.fb .v{font-weight:700} .fb .v.ok{color:var(--ok)} .fb .v.no{color:var(--bad)}
+.sq{display:flex;flex-direction:column;gap:18px;border-top:2px solid var(--ink);padding-top:16px}
+.sq>h4{font-family:var(--display);font-size:1.02rem;margin:0}
+.sq .case{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.part{display:flex;flex-direction:column;gap:10px;padding-left:14px;border-left:3px solid var(--line)}
+.part.done{border-left-color:var(--k)}
+.pq b{font-family:var(--mono);color:var(--k);margin-right:4px}
+.pm{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.part textarea{font:inherit;font-family:var(--mono);font-size:.88rem;width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 10px;resize:vertical}
+.part .btn{align-self:flex-start}
+.fill{font:inherit;font-family:var(--mono);font-size:.9rem;background:var(--surface);color:var(--ink);border:1px solid var(--muted);border-radius:4px;padding:3px 6px;width:5.5em;max-width:100%}
+select.fill{width:auto} .fill.wide{width:15em}
+.fill.ok{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)}
+.fill.no{border-color:var(--bad);box-shadow:inset 0 0 0 1px var(--bad)}
+.corr{font-family:var(--mono);font-size:.8rem;color:var(--bad);margin-left:6px;white-space:nowrap}
+.auto{display:flex;flex-direction:column;gap:8px}
+.auto .line{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.model,.note{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
+.model ul{margin:0;padding-left:1.2em}
+.ticks{list-style:none;padding-left:0!important;display:flex;flex-direction:column;gap:6px}
+.ticks label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.ticks input{margin-top:.3em;flex:none;width:1.05em;height:1.05em;accent-color:var(--k)}
+.res{border-top:2px solid var(--ink);padding-top:18px;display:flex;flex-direction:column;gap:14px}
+.res .total{font-family:var(--display);font-size:1.5rem;font-weight:700}
+.res td.n{white-space:nowrap}
+.meter{display:block;height:8px;border-radius:4px;background:var(--line);min-width:90px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--k)}
+.res .acts{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width: 1099px){
+  .map{grid-template-columns:1fr;row-gap:30px}
+  svg.wires{display:none}
+  .colhead{min-height:0}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (min-width: 1100px){.mapwrap{padding-right:48px}}
+.none-pp{font-size:.9rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+.ppnote{font-size:.82rem;color:var(--muted);margin-bottom:8px}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div class="eyebrow">CAPE Information Technology · Unit 1 · Module 3</div>
+    <h1>Information and Problem-Solving</h1>
+    <p class="lede">The twelve specific objectives are not twelve separate topics. Each one feeds the next. The bold line is the main route through the module, and each card lists what it leads to and why. Select any objective to open its notes, key definitions, a worked example and the past paper questions that tested it.</p>
+    <div class="los">
+      <div><b>LO1</b>Apply the problem-solving process and the SDLC to identify, analyse and solve real-life information problems.</div>
+      <div><b>LO2</b>Construct data flow diagrams and design well-formed algorithms (using flowcharts and pseudocode) to model solutions.</div>
+      <div><b>LO8</b>Research and prepare for Paper 032, applying the problem-solving process to real-life problems under examination conditions.</div>
+    </div>
+  </header>
+
+  <div class="key"><span><i></i>Main route through the module</span><span class="hov"><i class="dash"></i>Other links, shown with their reasons when you point at or tab to a card</span></div>
+
+  <section class="mapwrap" aria-label="Objective map">
+    <div class="map" id="map">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+      <div class="labels" id="labels" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <p class="foot">Sources: CAPE® Information Technology Syllabus (Effective 2022), Unit 1 Module 3; CAPE Information Technology Unit 1 Paper 2, May/June 2025 and 2026. Practice only: nothing you enter is saved or sent.</p>
+</div>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"></dialog>
+<dialog class="sheet quiz" id="quiz" aria-labelledby="quizTitle"></dialog>
+
+<script>
+const P = "3.";
+const TOPICS = {
+  a:{code:"3A", name:"The Problem-Solving Process", ask:"What is a problem, and what steps lead to a solution?", lo:"LO1 · LO8"},
+  b:{code:"3B", name:"Information for Problem-Solving", ask:"Which information do we need, and can we trust it?", lo:"LO1 · LO8"},
+  c:{code:"3C", name:"Development Models & the SDLC", ask:"How is an information system planned and built?", lo:"LO1"},
+  d:{code:"3D", name:"Data Flow Diagrams", ask:"How does data move through the system?", lo:"LO2"},
+  e:{code:"3E", name:"Algorithms & Programming", ask:"How do we set out the solution so a computer can carry it out?", lo:"LO2"}
+};
+
+/* Flowchart drawing helper. Node: [type, x, y, label, width]; type t terminator, p process, io input/output, d decision.
+   Edge: [path, label, labelX, labelY]. */
+let fcN = 0;
+function flow(w,h,nodes,edges,label){
+  const id = "fm" + (++fcN);
+  let g = '<div class="scroll"><svg class="fc" style="max-width:' + w + 'px;min-width:' + w + 'px" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + (label || "Flowchart") + '"><defs><marker id="' + id +
+    '" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L8 4L0 8z"/></marker></defs>';
+  edges.forEach(e => { g += '<path class="l" d="' + e[0] + '" marker-end="url(#' + id + ')"/>'; if (e[1]) g += '<text x="' + e[2] + '" y="' + e[3] + '">' + e[1] + '</text>'; });
+  nodes.forEach(n => { const t = n[0], x = n[1], y = n[2], hw = (n[4] || 120) / 2;
+    if (t === "t") g += '<rect class="s" x="' + (x-hw) + '" y="' + (y-15) + '" width="' + (2*hw) + '" height="30" rx="15"/>';
+    if (t === "p") g += '<rect class="s" x="' + (x-hw) + '" y="' + (y-15) + '" width="' + (2*hw) + '" height="30"/>';
+    if (t === "io") g += '<polygon class="s" points="' + (x-hw+10) + ',' + (y-15) + ' ' + (x+hw+10) + ',' + (y-15) + ' ' + (x+hw-10) + ',' + (y+15) + ' ' + (x-hw-10) + ',' + (y+15) + '"/>';
+    if (t === "d") g += '<polygon class="s" points="' + x + ',' + (y-28) + ' ' + (x+hw) + ',' + y + ' ' + x + ',' + (y+28) + ' ' + (x-hw) + ',' + y + '"/>';
+    g += '<text x="' + x + '" y="' + (y+4) + '">' + n[3] + '</text>'; });
+  return g + '</svg></div>';
+}
+
+const FC_PASS = flow(480,350,[
+ ["t",190,20,"Start",90],["io",190,66,"Read m1, m2, m3",170],["p",190,112,"avg ← (m1 + m2 + m3) / 3",230],["d",190,176,"avg ≥ 50?",140],
+ ["io",190,250,'Print "Pass"',130],["io",380,250,'Print "Fail"',130],["t",190,330,"Stop",90]
+],[
+ ["M190 35V50"],["M190 81V96"],["M190 127V147"],["M190 204V234","Yes",208,224],["M260 176H380V234","No",282,168],["M190 265V314"],["M380 265V330H237"]
+],"Flowchart: Start. Read m1, m2, m3. avg gets the average. Decision: avg at least 50? Yes: print Pass. No: print Fail. Stop.");
+
+const FC_DISC = flow(500,410,[
+ ["t",180,20,"Start",90],["io",180,66,"Read bill",120],["d",180,132,"bill ≥ 100?",150],
+ ["p",180,206,"discount ← bill × 0.10",200],["p",400,206,"discount ← 0",130],
+ ["p",180,280,"total ← bill − discount",200],["io",180,334,"Print total",130],["t",180,388,"Stop",90]
+],[
+ ["M180 35V50"],["M180 81V103"],["M180 160V190","Yes",198,180],["M255 132H400V190","No",276,124],
+ ["M180 221V264"],["M400 221V244H182"],["M180 295V318"],["M180 349V372"]
+],"Flowchart: Start. Read bill. Decision: bill at least 100? Yes: discount is 10 percent of bill. No: discount is 0. total is bill minus discount. Print total. Stop.");
+
+const DFD_CTX = `<div class="scroll"><svg class="fc" style="max-width:640px;min-width:600px" viewBox="0 0 640 190" role="img" aria-label="Context diagram. External entity Member sends Loan request to process 0 Library System and receives Loan confirmation. Process 0 sends Book order to external entity Supplier and receives Delivery note.">
+ <defs><marker id="dfa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L8 4L0 8z"/></marker></defs>
+ <rect class="s" x="10" y="70" width="100" height="50"/><text x="60" y="99">Member</text>
+ <rect class="s" x="250" y="50" width="140" height="90" rx="12"/><path class="l" d="M250 74H390"/><text x="320" y="67">0</text><text x="320" y="104">Library</text><text x="320" y="120">System</text>
+ <rect class="s" x="520" y="70" width="110" height="50"/><text x="575" y="99">Supplier</text>
+ <path class="l" d="M110 84H247" marker-end="url(#dfa)"/><text x="180" y="77">Loan request</text>
+ <path class="l" d="M250 108H113" marker-end="url(#dfa)"/><text x="180" y="127">Loan confirmation</text>
+ <path class="l" d="M390 84H517" marker-end="url(#dfa)"/><text x="455" y="77">Book order</text>
+ <path class="l" d="M520 108H393" marker-end="url(#dfa)"/><text x="455" y="127">Delivery note</text>
+</svg></div>`;
+
+const DFD_L1 = `<div class="scroll"><svg class="fc" style="max-width:640px;min-width:600px" viewBox="0 0 640 320" role="img" aria-label="Level 1 DFD. Member sends Loan request to process 1 Record loan, which returns Loan confirmation. Process 1 reads Book details from data store D1 Books and writes Updated status to it. Process 2 Order books reads Stock levels from D1 and writes New stock to it. Process 2 sends Book order to Supplier and receives Delivery note.">
+ <defs><marker id="dfb" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L8 4L0 8z"/></marker></defs>
+ <rect class="s" x="10" y="36" width="100" height="50"/><text x="60" y="65">Member</text>
+ <rect class="s" x="250" y="24" width="140" height="66" rx="12"/><path class="l" d="M250 46H390"/><text x="320" y="40">1</text><text x="320" y="72">Record loan</text>
+ <path class="l" d="M250 140H390M250 170H390M250 140V170M280 140V170"/><text x="265" y="159">D1</text><text x="335" y="159">Books</text>
+ <rect class="s" x="250" y="222" width="140" height="66" rx="12"/><path class="l" d="M250 244H390"/><text x="320" y="238">2</text><text x="320" y="270">Order books</text>
+ <rect class="s" x="520" y="230" width="110" height="50"/><text x="575" y="259">Supplier</text>
+ <path class="l" d="M110 50H247" marker-end="url(#dfb)"/><text x="180" y="43">Loan request</text>
+ <path class="l" d="M250 74H113" marker-end="url(#dfb)"/><text x="180" y="93">Loan confirmation</text>
+ <path class="l" d="M300 90V137" marker-end="url(#dfb)"/><text x="294" y="117" style="text-anchor:end">Updated status</text>
+ <path class="l" d="M345 140V93" marker-end="url(#dfb)"/><text x="351" y="117" style="text-anchor:start">Book details</text>
+ <path class="l" d="M345 170V219" marker-end="url(#dfb)"/><text x="351" y="199" style="text-anchor:start">Stock levels</text>
+ <path class="l" d="M300 222V173" marker-end="url(#dfb)"/><text x="294" y="199" style="text-anchor:end">New stock</text>
+ <path class="l" d="M390 244H517" marker-end="url(#dfb)"/><text x="455" y="237">Book order</text>
+ <path class="l" d="M520 268H393" marker-end="url(#dfb)"/><text x="455" y="287">Delivery note</text>
+</svg></div>`;
+
+const OBJ = [
+{id:1, t:"a", verb:"Explain", obj:"Explain the concept of problem-solving",
+ out:"say what a problem is and explain problem-solving as a process of finding a solution, not a single event.",
+ defs:[
+  ["Problem","The gap between the situation as it is now and the situation that is wanted. It is not only a computer fault: a long queue, lost records or a falling crop yield are all problems."],
+  ["Problem-solving","A <b>process</b>: a planned series of stages that moves from a clearly stated problem to a solution that has been put in place and checked."],
+  ["Solution","The method or system that closes the gap between the current situation and the desired one."],
+  ["Information component","Almost every problem needs information before it can be solved. Finding and judging that information is part of the process (Topic 3B)."]
+ ],
+ ex:`<p>The syllabus example: a farmer finds that a pest is destroying his crop.</p>
+ <div class="scroll"><table>
+ <tr><th>Idea</th><th>In this situation</th></tr>
+ <tr><td>Current situation</td><td>Part of the crop is being destroyed each week.</td></tr>
+ <tr><td>Desired situation</td><td>A healthy crop with little loss to the pest.</td></tr>
+ <tr><td>The problem</td><td>The gap between the two: the crop loss.</td></tr>
+ <tr><td>Information needed</td><td>The type of pest, its natural enemies, the effect of each pesticide on the crop.</td></tr>
+ <tr><td>Solution</td><td>The treatment chosen after comparing the options, then checked to see whether the loss has stopped.</td></tr>
+ </table></div>
+ <p>Spraying the first pesticide on the shelf is trial and error. Finding out about the pest, comparing treatments and checking the result afterwards is problem-solving as a process.</p>`},
+
+{id:2, t:"a", verb:"Describe", obj:"Describe the stages of the problem-solving process",
+ out:"name the six stages in order and say what happens, and what is produced, in each one.",
+ defs:[
+  ["1. Define the problem","State clearly what the problem is, who it affects and what its effects are. Leave out the causes: they are found in the analysis."],
+  ["2. Analyse the problem","Study the problem in detail to find its causes, the inputs, processing and outputs involved, and the requirements of a solution. Fact-finding happens here."],
+  ["3. Identify and evaluate possible solutions","Suggest more than one solution and weigh the advantages and disadvantages of each, for example cost, time and ease of use."],
+  ["4. Select and justify the optimal solution","Choose the best solution and give reasons for choosing it over the others."],
+  ["5. Implement","Put the chosen solution in place: buy or build it, install it, train the users and change over from the old method."],
+  ["6. Evaluate and review","Check whether the solution solved the original problem, and decide whether changes are needed."]
+ ],
+ ex:`<p>Patients at a health clinic wait up to three hours to be seen.</p>
+ <div class="scroll"><table>
+ <tr><th>Stage</th><th>What is done or produced</th></tr>
+ <tr><td>Define</td><td>Patients wait up to three hours; staff are overworked and patients leave without being seen.</td></tr>
+ <tr><td>Analyse</td><td>Interview staff, observe the waiting room, count arrivals by hour. Cause found: everyone arrives at 8 a.m. because there are no appointments.</td></tr>
+ <tr><td>Identify and evaluate</td><td>(1) Hire another nurse: costly. (2) Paper appointment book: cheap but hard to change. (3) Online booking system: some cost, easy to change, patients book from home.</td></tr>
+ <tr><td>Select and justify</td><td>Online booking: it spreads arrivals over the day at a cost the clinic can afford.</td></tr>
+ <tr><td>Implement</td><td>Set up the system, train the receptionist, tell patients how to book.</td></tr>
+ <tr><td>Evaluate and review</td><td>After one month, compare waiting times with the old figures. Adjust slot lengths if needed.</td></tr>
+ </table></div>
+ <p>These are the same stages you follow in Paper 032, so practise naming each one and saying what it produces.</p>`},
+
+{id:3, t:"b", verb:"Identify", obj:"Identify the information necessary to solve real-life problems",
+ out:"pick out the information a problem needs and classify each item as essential, desirable, extraneous or cosmetic.",
+ defs:[
+  ["Essential","Information without which the problem cannot be solved."],
+  ["Desirable","Information that helps produce a better solution but is not required."],
+  ["Extraneous","Information that is irrelevant to the problem. It can be ignored."],
+  ["Cosmetic","Information that affects only how the solution looks or is presented, not whether it works."],
+  ["Types of problem","The syllabus asks you to work with personal, commercial, scientific and social problems. The categories apply to all four."]
+ ],
+ ex:`<p>A fisherman must decide whether to go out to sea tomorrow.</p>
+ <div class="scroll"><table>
+ <tr><th>Information</th><th>Category</th><th>Why</th></tr>
+ <tr><td>Marine weather forecast</td><td>Essential</td><td>He cannot decide safely without it.</td></tr>
+ <tr><td>Expected swell height</td><td>Essential</td><td>Decides whether the boat can go out.</td></tr>
+ <tr><td>Today’s market price of fish</td><td>Desirable</td><td>Helps him judge whether the trip is worth it, but the decision can be made without it.</td></tr>
+ <tr><td>Who built his boat</td><td>Extraneous</td><td>Has nothing to do with tomorrow’s decision.</td></tr>
+ <tr><td>Colour of the weather app’s screen</td><td>Cosmetic</td><td>Changes only how the forecast looks.</td></tr>
+ </table></div>
+ <p>In an exam, give the category <b>and</b> a reason. “Essential” on its own does not earn the justification mark.</p>`},
+
+{id:4, t:"b", verb:"Explain", obj:"Explain the criteria for selecting information to solve real-life problems",
+ out:"judge whether to accept or reject a piece of information, giving the criterion and the reason.",
+ defs:[
+  ["Bias","Information slanted to one side, often because the source gains from it. A company praising its own product is likely biased."],
+  ["Accuracy","Whether the information is correct and free from errors. Inaccurate information leads to a wrong solution."],
+  ["Cultural context","Whether the information fits the place and people the problem concerns. Data from another country may not apply here."],
+  ["Completeness","Whether all the information needed is present. Missing parts lead to decisions made on half the picture."],
+  ["Currency","How up to date the information is. It matters most in fast-changing fields such as technology and health."],
+  ["Refereed and un-refereed sources","A refereed (peer-reviewed) source was checked by experts before publication. An un-refereed source, such as a blog, was not."],
+  ["Information on the Internet","Anyone can publish, so check the author, the date, the purpose of the site and whether other reliable sources agree."]
+ ],
+ ex:`<p>A student is writing about the effect of sugary drinks on health. She finds three sources.</p>
+ <div class="scroll"><table>
+ <tr><th>Source</th><th>Decision</th><th>Criterion</th></tr>
+ <tr><td>A soft-drink company’s web page</td><td>Reject</td><td>Bias: the company profits from the drinks.</td></tr>
+ <tr><td>A blog post from 2008 with no author</td><td>Reject</td><td>Currency and an un-refereed source: old, and nobody checked it.</td></tr>
+ <tr><td>A 2024 peer-reviewed journal article from a Caribbean university</td><td>Accept</td><td>Refereed, current and in the right cultural context.</td></tr>
+ </table></div>
+ <p>When a question says <b>discuss the importance</b> of a criterion, say what it means <b>and</b> what goes wrong if it is ignored.</p>`},
+
+{id:5, t:"c", verb:"Distinguish", obj:"Distinguish among the different types of software development models",
+ out:"say how waterfall, prototyping, agile and iterative/incremental differ, when each is used, and the advantages and disadvantages of each.",
+ defs:[
+  ["Waterfall","Each phase is completed and signed off before the next begins. Suits projects with clear, fixed requirements. Easy to manage and well documented, but changes late in the project are slow and costly."],
+  ["Evolutionary development (prototyping)","A working model is built early, shown to users, and improved from their feedback until it becomes the final system. Suits projects where users are unsure of the requirements. Users see the system early, but the project can grow without limit."],
+  ["Agile","Development in short cycles (sprints) of a few weeks, each delivering working software that the customer reviews. Suits requirements that change often. Responds quickly to change, but needs close customer involvement and produces less documentation."],
+  ["Iterative/Incremental","The system is built in parts (increments). Each increment adds features and is delivered and tested before the next. Users get some working features early, but the overall design must be planned well so the parts fit."]
+ ],
+ ex:`<div class="scroll"><table>
+ <tr><th>Model</th><th>Requirements</th><th>User sees working software</th><th>Best for</th></tr>
+ <tr><td>Waterfall</td><td>Fixed at the start</td><td>Near the end</td><td>A payroll system with clear legal rules</td></tr>
+ <tr><td>Prototyping</td><td>Unclear at first</td><td>Early, as a model</td><td>A chat tool whose users do not yet know what they want</td></tr>
+ <tr><td>Agile</td><td>Change often</td><td>Every few weeks</td><td>A start-up’s mobile ordering app</td></tr>
+ <tr><td>Iterative/Incremental</td><td>Known overall, built in parts</td><td>After each increment</td><td>A school system: attendance first, then grades, then fees</td></tr>
+ </table></div>
+ <p>In 2026 the model in the figure was <b>agile</b> (short cycles with feedback), and the alternative “not designed to work in short development cycles” was <b>waterfall</b>.</p>`},
+
+{id:6, t:"c", verb:"Explain", obj:"Explain the stages of the SDLC and software engineering",
+ out:"explain what happens in each SDLC stage and name the deliverable each one produces.",
+ defs:[
+  ["Feasibility study","Decides whether the project is worth doing: technically, economically, operationally and within the time available. Deliverable: the <b>system proposal</b> (feasibility report)."],
+  ["Analysis","Studies the current system in detail using fact-finding tools and states the requirements of the new one. Deliverables: the requirements specification and diagrams such as DFDs; the <b>project plan</b> (often with a Gantt chart)."],
+  ["Design","Plans how the new system will work: inputs, outputs, files, interfaces and the algorithms. Deliverables: design diagrams and charts, flowcharts and pseudocode."],
+  ["Development","The system is coded and tested. Deliverables: the working software and the <b>test plans</b>."],
+  ["Implementation","The system is installed, data is converted, users are trained and the changeover takes place (direct, parallel, phased or pilot). Deliverables: the <b>conversion plan</b>, <b>user manual</b> and <b>technical manual</b>."],
+  ["Review","Checks whether the system meets its objectives and decides what maintenance is needed. Deliverable: the review (post-implementation) report."],
+  ["Software engineering","Applying planned, engineering methods (models, standards, testing, documentation) to building software so that it is reliable and maintainable."]
+ ],
+ ex:`<p>A school replaces its paper attendance registers.</p>
+ <div class="scroll"><table>
+ <tr><th>Stage</th><th>What happens</th><th>Deliverable</th></tr>
+ <tr><td>Feasibility</td><td>Can the school afford tablets? Will teachers use them?</td><td>System proposal</td></tr>
+ <tr><td>Analysis</td><td>Interview the dean, observe registration, study the paper registers.</td><td>Requirements, DFDs, project plan</td></tr>
+ <tr><td>Design</td><td>Screen layouts, the student file, the algorithm that flags three absences.</td><td>Design diagrams, flowcharts, pseudocode</td></tr>
+ <tr><td>Development</td><td>Code the app and test it with real class lists.</td><td>Software, test plans</td></tr>
+ <tr><td>Implementation</td><td>Run paper and app side by side for two weeks (parallel), train teachers.</td><td>Conversion plan, user and technical manuals</td></tr>
+ <tr><td>Review</td><td>After a term: is attendance recorded faster and more accurately?</td><td>Review report</td></tr>
+ </table></div>
+ <p>The algorithm is developed in the <b>design</b> stage. That was a one-mark question in 2026.</p>`},
+
+{id:7, t:"c", verb:"Discuss", obj:"Discuss the tools used in the different stages of the SDLC",
+ out:"choose a suitable tool for a stage of the SDLC and argue its strengths and weaknesses.",
+ defs:[
+  ["Fact-finding tools (analysis)","<b>Questionnaires</b> reach many people cheaply but answers may be brief. <b>Interviews</b> give detailed answers but take time. <b>Observation</b> shows what people really do but they may act differently when watched. <b>Review of printed material</b> (forms, reports, manuals) shows the official process but documents may be out of date."],
+  ["Modelling tools (analysis and design)","Entity Relationship (ER) diagrams, data flow diagrams, process models and object models."],
+  ["Decision tables and trees","Show which actions follow from each combination of conditions. A tree shows the branches as a diagram; a table lists every rule as a column of Y/N values with the action marked."],
+  ["Planning tools","<b>Gantt charts</b> show tasks against a timeline. <b>CASE tools</b> are software that help draw diagrams, generate code and keep documentation."],
+  ["Design and development tools","Prototypes, flowcharts, pseudocode and programming languages."]
+ ],
+ ex:`<p>From 2025: a decision tree for a customer-service chat tool, and the decision table built from it.</p>
+ <div class="scroll"><svg class="fc" style="max-width:600px;min-width:560px" viewBox="0 0 600 236" role="img" aria-label="Decision tree. From the root: Use ChatBot branches to Delay in response, giving Issues Ticket Number, or Contact sales rep, giving Speak About Product. Call sales department branches to Delay in response, giving End Call, or Contact sales rep, giving Exchange Product.">
+  <path class="l" d="M30 118L170 62M30 118L170 174M170 62L330 28M170 62L330 90M170 174L330 146M170 174L330 208"/>
+  <circle class="s" cx="30" cy="118" r="7"/><circle class="s" cx="170" cy="62" r="7"/><circle class="s" cx="170" cy="174" r="7"/>
+  <text x="96" y="78">Use ChatBot</text><text x="96" y="168">Call sales dept</text>
+  <text x="252" y="38">Delay</text><text x="252" y="90">Contact rep</text><text x="252" y="156">Delay</text><text x="252" y="208">Contact rep</text>
+  <rect class="s" x="334" y="14" width="200" height="28"/><text x="434" y="32">Issues Ticket Number</text>
+  <rect class="s" x="334" y="76" width="200" height="28"/><text x="434" y="94">Speak About Product</text>
+  <rect class="s" x="334" y="132" width="200" height="28"/><text x="434" y="150">End Call</text>
+  <rect class="s" x="334" y="194" width="200" height="28"/><text x="434" y="212">Exchange Product</text>
+ </svg></div>
+ <div class="scroll"><table>
+ <tr><th>Conditions</th><th class="n">R1</th><th class="n">R2</th><th class="n">R3</th><th class="n">R4</th></tr>
+ <tr><td>Use ChatBot</td><td class="n">Y</td><td class="n">Y</td><td class="n">N</td><td class="n">N</td></tr>
+ <tr><td>Delay in response</td><td class="n">Y</td><td class="n">N</td><td class="n">Y</td><td class="n">N</td></tr>
+ <tr><th>Actions</th><th></th><th></th><th></th><th></th></tr>
+ <tr><td>End Call</td><td></td><td></td><td class="n">X</td><td></td></tr>
+ <tr><td>Issues Ticket Number</td><td class="n">X</td><td></td><td></td><td></td></tr>
+ <tr><td>Exchange Product</td><td></td><td></td><td></td><td class="n">X</td></tr>
+ <tr><td>Speak About Product</td><td></td><td class="n">X</td><td></td><td></td></tr>
+ </table></div>
+ <p>Read each column as one path through the tree. “N” for Use ChatBot means the customer called the sales department instead, and “N” for Delay means a sales rep was contacted.</p>`},
+
+{id:8, t:"d", verb:"Describe", obj:"Describe data flow diagrams (DFDs)",
+ out:"define a DFD, name and draw its four elements, and explain the difference between a context diagram and a Level 1 DFD.",
+ defs:[
+  ["Data flow diagram","A diagram that shows how data moves through an information system: where it comes from, how it is processed, where it is stored and where it goes. It does not show the order of steps or any decisions."],
+  ["External entity","A person, organisation or system outside the system that sends or receives data. Drawn as a square, labelled with a noun (Customer)."],
+  ["Process","An action that changes data. Drawn (Gane and Sarson) as a rounded rectangle with a number, labelled with a verb phrase (Calculate total)."],
+  ["Data store","Where data is held for later use, such as a file or table. Drawn as an open-ended rectangle with an ID (D1 Orders)."],
+  ["Data flow","Data moving between elements. Drawn as an arrow labelled with a noun (Order details), never a verb."],
+  ["Context diagram (Level 0)","The whole system as one process, with its external entities and the data flows between them. No data stores."],
+  ["Level 1 DFD","The single process opened up into its main sub-processes, now showing the data stores. It must balance with the context diagram: the same inputs and outputs."],
+  ["Common errors","A <b>black hole</b> (process with inputs but no outputs), a <b>miracle</b> (process with outputs but no inputs), data flowing directly between two stores or between an entity and a store, and verbs on data flows."]
+ ],
+ ex:`<p><b>Context diagram</b> for a school library:</p>${DFD_CTX}
+ <p><b>Level 1 DFD</b> of the same system. The process is split into two, and the data store appears.</p>${DFD_L1}
+ <p>The Level 1 diagram balances: Member still sends a loan request and gets a confirmation, and Supplier still receives an order and sends a delivery note. Every flow into or out of D1 passes through a process.</p>`},
+
+{id:9, t:"e", verb:"Explain", obj:"Explain the concept of a well-designed algorithm",
+ out:"define an algorithm, explain its role in problem-solving, and state and apply the three characteristics of a well-designed one.",
+ defs:[
+  ["Algorithm","A finite sequence of clear steps that solves a problem. It is the plan for a solution, worked out before any program is written."],
+  ["Role in problem-solving","It turns the selected solution into exact steps that can be checked, then coded. Mistakes found in the algorithm are cheap to fix; mistakes found in the program are not."],
+  ["1. General solution in a finite number of steps","It works for any valid input, not just one set of values, and it always ends."],
+  ["2. Clearly defined and unambiguous","Each step has only one meaning. “Add a few marks if needed” fails; “add 5 to total” passes."],
+  ["3. Flow of control from one process to another","It is clear which step comes next, including where a decision or loop sends control."],
+  ["Syllabus note","CXC lists these three. Longer lists found online (inputs, outputs, effectiveness, language independence) are useful background but are not the exam answer."]
+ ],
+ ex:`<p>Is this algorithm well designed?</p>
+ <pre>BEGIN
+   total ← 45 + 60 + 72
+   average ← total / 3
+   IF average is good THEN PRINT "Well done"
+END</pre>
+ <div class="scroll"><table>
+ <tr><th>Characteristic</th><th>Met?</th><th>Reason</th></tr>
+ <tr><td>General solution, finite steps</td><td class="bad">No</td><td>It only works for 45, 60 and 72. It does end.</td></tr>
+ <tr><td>Clear and unambiguous</td><td class="bad">No</td><td>“good” has no exact meaning.</td></tr>
+ <tr><td>Flow of control</td><td>Yes</td><td>Each step leads to the next.</td></tr>
+ </table></div>
+ <p>A corrected version reads the three marks, so it works for any student, and tests <code>average ≥ 70</code>.</p>`},
+
+{id:10, t:"e", verb:"Identify", obj:"Identify ways of representing algorithms",
+ out:"recognise natural language, flowcharts and pseudocode, name the flowchart symbols, and give a strength and weakness of each form.",
+ defs:[
+  ["Natural language","The steps written in ordinary English sentences. Easy for anyone to read, but wordy and can be ambiguous."],
+  ["Flowchart","A diagram using standard symbols joined by arrows. Shows the flow of control clearly, but large ones are hard to draw and change."],
+  ["Pseudocode","Structured English with keywords such as READ, PRINT, IF…THEN…ELSE…ENDIF and WHILE…DO…ENDWHILE. Close to code and precise, but readers must know the conventions."],
+  ["Flowchart symbols","<b>Oval</b>: Start or Stop. <b>Parallelogram</b>: input or output. <b>Rectangle</b>: process. <b>Diamond</b>: decision, with Yes and No exits. <b>Arrow</b>: flow of control."]
+ ],
+ ex:`<p>One algorithm in all three forms: decide pass or fail from the average of three marks.</p>
+ <p><b>Natural language.</b> Read the three marks. Add them and divide by three to get the average. If the average is 50 or more, print “Pass”; otherwise print “Fail”.</p>
+ <p><b>Pseudocode.</b></p>
+ <pre>BEGIN
+   READ m1, m2, m3
+   avg ← (m1 + m2 + m3) / 3
+   IF avg >= 50 THEN
+      PRINT "Pass"
+   ELSE
+      PRINT "Fail"
+   ENDIF
+END</pre>
+ <p><b>Flowchart.</b></p>${FC_PASS}`},
+
+{id:11, t:"e", verb:"Develop", obj:"Develop algorithms to represent problem solutions",
+ out:"write a complete algorithm from a case, using input, processing and output steps and the three control structures.",
+ defs:[
+  ["Input, processing, output","Read the data (READ), work on it (assignment with ←, calculations), give the result (PRINT). Identify these from the case before writing any steps."],
+  ["Sequence","Steps carried out one after another, in order."],
+  ["Selection","A choice between paths based on a condition: IF…THEN…ELSE…ENDIF, or nested IFs for three or more outcomes."],
+  ["Repetition","Steps repeated: FOR…TO…DO…ENDFOR when the count is known; WHILE…DO…ENDWHILE or REPEAT…UNTIL when it depends on a condition."],
+  ["Variable and assignment","A named store for a value. <code>total ← total + mark</code> means: work out the right side, then store it in total."]
+ ],
+ ex:`<p>A shop gives a 10% discount on bills of $100 or more. Read the bill and print the amount to pay.</p>
+ <p><b>IPO:</b> input bill; process discount and total; output total.</p>
+ <pre>BEGIN
+   READ bill
+   IF bill >= 100 THEN
+      discount ← bill * 0.10
+   ELSE
+      discount ← 0
+   ENDIF
+   total ← bill - discount
+   PRINT total
+END</pre>
+ ${FC_DISC}
+ <p><b>Adding repetition.</b> Five students’ marks: print the average and how many passed.</p>
+ <pre>BEGIN
+   total ← 0
+   passes ← 0
+   FOR i ← 1 TO 5 DO
+      READ mark
+      total ← total + mark
+      IF mark >= 50 THEN
+         passes ← passes + 1
+      ENDIF
+   ENDFOR
+   PRINT total / 5, passes
+END</pre>
+ <p>All three structures appear: sequence (the steps in order), selection (the IF) and repetition (the FOR loop).</p>`},
+
+{id:12, t:"e", verb:"Outline", obj:"Outline the interrelationship between algorithms and programming",
+ out:"explain that the algorithm comes before the program, outline the stages of program development, and name paradigms with example languages.",
+ defs:[
+  ["Algorithm as precursor","The algorithm is designed first; the program is that algorithm translated into a programming language so a computer can execute it. One algorithm can be coded in many languages."],
+  ["Stages in program development","Define the problem, analyse it, design the algorithm, code it, test and debug it, document it, maintain it."],
+  ["Procedural (imperative)","Programs are sequences of instructions grouped into procedures. Examples: C, Pascal, BASIC."],
+  ["Object-oriented","Programs are built from objects that combine data and the methods that act on it. Examples: Java, C++, Python. CXC accepts this as a separate answer from procedural."],
+  ["Declarative: functional and logic","Programs state what result is wanted rather than each step. Functional: Haskell. Logic: Prolog. Query: SQL."]
+ ],
+ ex:`<p>One algorithm, two programs.</p>
+ <div class="scroll"><table>
+ <tr><th>Pseudocode</th><th>Python</th></tr>
+ <tr><td><pre>READ bill
+IF bill >= 100 THEN
+   discount ← bill * 0.10
+ELSE
+   discount ← 0
+ENDIF
+PRINT bill - discount</pre></td><td><pre>bill = float(input())
+if bill >= 100:
+    discount = bill * 0.10
+else:
+    discount = 0
+print(bill - discount)</pre></td></tr>
+ </table></div>
+ <p>The logic is identical. Only the language changes. That is why the logic is designed first: if the algorithm is wrong, every program written from it will be wrong too.</p>`}
+];
+
+const EDGES = [
+ [1,2,"Problem-solving is a process, and these are its stages.","the process has stages",1],
+ [2,3,"The analysis stage depends on finding the information the problem needs.","analysis needs information",1],
+ [3,4,"Once you know which information you need, you must decide whether each source can be trusted.","then judge it",1],
+ [4,6,"Feasibility and analysis gather information that must pass these criteria.","feeds feasibility and analysis",1],
+ [5,6,"A development model decides how the SDLC stages are arranged and repeated.","arranges the stages",1],
+ [6,7,"Each SDLC stage uses its own tools.","each stage has tools",1],
+ [7,8,"The DFD is one of the analysis tools, studied in detail.","one tool in depth",1],
+ [8,9,"Each process in the DFD is later set out as an algorithm.","processes become algorithms",1],
+ [9,10,"A well-designed algorithm must be written down in one of these forms.","write it down",1],
+ [10,11,"You develop your own algorithms as flowcharts or pseudocode.","use these forms",1],
+ [11,12,"The algorithm you develop is what the programmer codes.","then it is coded",1],
+ [1,9,"An algorithm is the plan for a solution.","the plan for a solution",0],
+ [2,6,"The SDLC applies the same stages to building an information system.","same stages, bigger scale",0],
+ [2,11,"The inputs, processing and outputs found in analysis are what the algorithm is built from.","IPO from analysis",0],
+ [3,7,"Fact-finding tools collect the essential information.","fact-finding collects it",0],
+ [5,12,"Program development follows whichever model the team chose.","shapes program development",0],
+ [6,11,"Algorithms are developed in the design stage.","developed at design",0],
+ [6,12,"The development stage is where the program is written and tested.","coding happens here",0],
+ [7,10,"Flowcharts and pseudocode are themselves SDLC tools.","these are SDLC tools",0],
+ [7,11,"A decision table translates directly into IF…ELSE logic.","tables become IFs",0]
+];
+const SHORT = {1:"Concept",2:"Stages",3:"Information needed",4:"Selection criteria",5:"Development models",6:"SDLC stages",7:"SDLC tools",8:"DFDs",9:"Well-designed algorithm",10:"Representations",11:"Developing",12:"Algorithms & programs"};
+const LAST_LEAD = "the algorithm becomes a program";
+const LAST_NONE = "Program code, and your Paper 032 solution.";
+
+/* Command words: definitions follow the glossary in the CXC syllabus */
+const VERBS = {
+ Explain:"Give reasons based on recall; account for. A definition alone is not enough: say why or how.",
+ Describe:"Provide detailed factual information on the appearance or arrangement of a structure, or the sequence of a process.",
+ Identify:"Name or point out specific components or features. A short, exact answer is expected.",
+ Distinguish:"Briefly note the differences between items that place them in separate categories.",
+ Discuss:"Present a reasoned argument, considering points both for and against.",
+ Develop:"Expand or elaborate an idea with supporting reasons. For an algorithm, build the complete solution from the case.",
+ Outline:"Write an account or description that gives the basic steps only."
+};
+const CMDEX = {
+ 1:"“Explain why problem-solving is described as a process.” You would say it moves through planned stages from the problem to a checked solution, rather than trial and error.",
+ 2:"“Using specific examples, identify TWO stages in the problem-solving process” (2026). You would name each stage and tie it to something in the scenario.",
+ 3:"“Identify ONE example of essential information. Justify your answer” (2025). You would name the item and say why the problem cannot be solved without it.",
+ 4:"“Discuss the importance of the currency and accuracy of the information” (2026). For each, say what it means and what goes wrong without it.",
+ 5:"“Distinguish between the waterfall and agile models.” You would state the difference that separates them: fixed phases in sequence against short repeated cycles.",
+ 6:"“Explain the purpose of the feasibility study.” You would say what is decided and why it matters before money is spent.",
+ 7:"“Discuss the use of questionnaires for gathering data.” You would give strengths and weaknesses, then reach a conclusion.",
+ 8:"“Describe a context-level DFD.” You would say it shows the whole system as one process with its external entities and data flows.",
+ 9:"“List the THREE characteristics of a well-designed algorithm” (2026). You would give the three syllabus characteristics exactly.",
+ 10:"“Identify the flowchart symbol used for a decision.” Answer: the diamond.",
+ 11:"“Draw a flowchart to illustrate the procedures…” (2025, 2026). You would build the complete flowchart from the case.",
+ 12:"“Outline the stages in program development.” You would list the stages in order, with a few words on each."
+};
+
+const FC_PONDS = flow(620,384,[
+ ["t",160,20,"Start",90],["io",160,66,"Read water level",170],["d",160,132,"level &lt; ¼?",150],
+ ["p",160,206,"Top up with rainwater",190],["d",390,132,"level ≥ ¾?",150],["p",390,206,"Top up with tap water",190],
+ ["p",275,300,"Feed the fish",160],["t",275,360,"Stop",90]
+],[
+ ["M160 35V50"],["M160 81V103"],["M160 160V190","Yes",178,180],["M235 132H313","No",256,124],
+ ["M390 160V190","No",408,180],["M465 132H560V300H357","Yes",490,124],
+ ["M160 221V300H193"],["M390 221V262H275V283"],["M275 315V344"]
+],"Flowchart model answer: Start. Read water level. Is level less than one quarter? Yes: top up with rainwater, then feed the fish. No: is level three quarters or more? Yes: feed the fish. No: top up with tap water, then feed the fish. Stop.");
+
+const FC_SORT = flow(600,510,[
+ ["t",200,20,"Start",90],["io",200,66,"Read A, B, C",150],
+ ["d",200,132,"A > B?",120],["p",450,132,"temp ← A, A ← B, B ← temp",230],
+ ["d",200,236,"B > C?",120],["p",450,236,"temp ← B, B ← C, C ← temp",230],
+ ["d",200,340,"A > B?",120],["p",450,340,"temp ← A, A ← B, B ← temp",230],
+ ["io",200,430,"Print A, B, C",150],["t",200,486,"Stop",90]
+],[
+ ["M200 35V50"],["M200 81V102"],
+ ["M260 132H333","Yes",284,124],["M450 147V184H202"],["M200 160V206","No",216,180],
+ ["M260 236H333","Yes",284,228],["M450 251V288H202"],["M200 264V310","No",216,288],
+ ["M260 340H333","Yes",284,332],["M450 355V392H202"],["M200 368V413","No",216,392],
+ ["M200 445V469"]
+],"Flowchart model answer: Start. Read A, B, C. If A is greater than B, swap A and B using temp. If B is greater than C, swap B and C. If A is greater than B, swap A and B again. Print A, B, C. Stop.");
+
+/* Paper 2 Section III (Module 3), May/June 2025 and 2026.
+   y year, q question, ask what was asked, m marks, ans model answer, how [marks, for what].
+   CXC mark schemes were not available: the "how" lists are suggested allocations that add up to the printed marks. */
+const PAPERS = {
+ 1:[],
+ 2:[{y:2025,q:"5(a)",m:6,ask:"Green Exotics is a backyard fish farm. The farmer feeds the fish by hand on a schedule and plans to implement an automated feeder which uses customized software. Outline THREE problems the farmer may have in implementing the automated feeder.",
+   ans:`<ul><li><b>Cost.</b> Buying the feeder, the sensors and the customized software, and paying someone to install it, may be more than a small farm can afford.</li>
+   <li><b>Lack of skills.</b> The farmer may not know how to set up, operate or troubleshoot the feeder and software, so training is needed.</li>
+   <li><b>Reliability.</b> A power cut, a software error or a blocked feeder could leave the fish unfed or overfed, so a backup plan is needed.</li></ul>
+   <p>Other acceptable problems: maintenance in a wet outdoor environment; changing over from the manual schedule; the software not suiting the farm’s fish sizes.</p>`,
+   how:[[2,"first problem: named (1) and briefly explained (1)"],[2,"second problem: named (1) and briefly explained (1)"],[2,"third problem: named (1) and briefly explained (1)"]]},
+  {y:2026,q:"5(a)",m:4,ask:"A customer is searching for the best deal for a product from an online store. The website provides a wide variety of prices from different sellers. The customer needs to identify the most cost-effective choice considering shipping costs, product reviews and return policies. Using specific examples, identify TWO stages in the problem-solving process which relate to the scenario.",
+   ans:`<ul><li><b>Analyse the problem.</b> The customer gathers each seller’s price, shipping cost, reviews and return policy so they can be compared.</li>
+   <li><b>Select and justify the optimal solution.</b> The customer chooses the seller with the lowest total cost (price plus shipping) that also has good reviews and an acceptable return policy, and can say why.</li></ul>
+   <p>Also acceptable: <b>define the problem</b> (finding the most cost-effective seller among many); <b>identify and evaluate possible solutions</b> (listing the sellers and weighing each one).</p>`,
+   how:[[1,"first stage correctly named"],[1,"specific example from the scenario for that stage"],[1,"second stage correctly named"],[1,"specific example from the scenario for that stage"]]}],
+
+ 3:[{y:2025,q:"6(b)",m:4,ask:"A chat tool lets users talk to a customer service representative (Figure 3 shows a conversation with a bot that asks who the user wants to speak to, asks for their email in case they are disconnected, and gives a ticket number). From the user’s point of view, identify ONE example for EACH of the following types of information. Justify your answer. (i) Essential (ii) Cosmetic",
+   ans:`<p><b>(i) Essential:</b> the ticket number (or the email address). Without it the user cannot follow up the issue if the chat is disconnected.</p>
+   <p><b>(ii) Cosmetic:</b> the bot’s avatar or the colour of the chat bubbles. It changes only how the chat looks, not whether the issue is dealt with.</p>`,
+   how:[[1,"(i) a suitable essential item"],[1,"(i) justification: the user cannot follow up or be served without it"],[1,"(ii) a suitable cosmetic item"],[1,"(ii) justification: it affects only appearance or presentation"]]},
+  {y:2026,q:"5(b)(i)",m:2,ask:"A student is looking for online information to support her essay on climate change and human health. Give TWO examples of information which could be categorized as essential for supporting her essay.",
+   ans:`<ul><li>Data showing how rising temperatures increase heat-related illness and deaths.</li><li>Evidence linking climate change to the spread of mosquito-borne diseases such as dengue.</li></ul>
+   <p>Also acceptable: effects of poorer air quality on respiratory illness; effects of flooding or drought on food and water safety.</p>`,
+   how:[[1,"first example that links climate change to human health"],[1,"second, different example"]]}],
+
+ 4:[{y:2026,q:"5(b)(ii)",m:4,ask:"The student is researching climate change and human health. Discuss the importance of the currency and accuracy of the information.",
+   ans:`<p><b>Currency.</b> Currency is how up to date the information is. Climate and health data change every year, so old figures may no longer describe the situation, and the essay could reach conclusions that are no longer true. She should prefer recent sources and check publication dates.</p>
+   <p><b>Accuracy.</b> Accuracy is whether the information is correct. Inaccurate figures would lead to false conclusions and weaken the essay’s credibility. She should check facts against refereed sources such as scientific journals or health organisations.</p>`,
+   how:[[1,"currency: meaning (up to date)"],[1,"currency: why it matters (out-of-date data leads to wrong conclusions)"],[1,"accuracy: meaning (correct, free from error)"],[1,"accuracy: why it matters (false conclusions, loss of credibility)"]]}],
+
+ 5:[{y:2025,q:"6(a)",m:4,ask:"A company is developing a chat tool which will allow users to visit a website and communicate with a customer service representative. Discuss why prototyping could be the MOST appropriate software development model for the chat tool.",
+   ans:`<p>The users and the company may not know exactly how the chat should look and behave at the start. With prototyping, a working model of the chat is built early, so users and representatives can try real conversations and say what they like and dislike. Each round of feedback improves the model, so the final tool matches what users actually need. This lowers the risk of building the wrong product, which matters for an interactive tool that customers judge by how easy it is to use.</p>`,
+   how:[[1,"requirements are unclear or likely to change"],[1,"an early working model can be tried by users"],[1,"user feedback is used to refine the tool"],[1,"reduces the risk of building the wrong product, or suits an interactive interface"]]},
+  {y:2026,q:"5(c)",m:5,ask:`A mobile application for local restaurants is developed with Model A (Figure 4: plan, design, then a repeating cycle of develop, test, deploy and review, then launch), based on user feedback after each iteration.<p class="parts">(i) Identify the model used. [1]<br>(ii) Name an alternative approach that is not designed to work in short development cycles. [1]<br>(iii) State TWO advantages and ONE disadvantage of the named alternative approach. [3]</p>`,
+   ans:`<p><b>(i)</b> Agile.</p><p><b>(ii)</b> Waterfall.</p>
+   <p><b>(iii) Advantages:</b> it is simple to understand and manage because each phase has a clear end; requirements are fixed early, so time and cost are easier to estimate; each phase is well documented. <b>Disadvantage:</b> changes are difficult and costly once a phase is finished, and the users see working software only near the end.</p>`,
+   how:[[1,"(i) Agile"],[1,"(ii) Waterfall"],[2,"(iii) two valid advantages, 1 mark each"],[1,"(iii) one valid disadvantage"]]}],
+
+ 6:[{y:2026,q:"6(c)",m:1,ask:"At which stage in the software development life cycle (SDLC) is the algorithm developed?",
+   ans:`<p>The design stage.</p>`,
+   how:[[1,"design"]]}],
+
+ 7:[{y:2025,q:"6(c)",m:7,ask:`Figure 4 shows the options for interacting with a customer service representative: Use ChatBot leads to Issues Ticket Number (delay in response) or Speak About Product (contact sales rep); Call sales department leads to End Call (delay in response) or Exchange Product (contact sales rep).<p class="parts">(i) State the name of the diagram. [1]<br>(ii) Describe the path the customer would have followed in order to speak about a product. [2]<br>(iii) Complete the decision table using the information in Figure 4 (conditions Use Chatbot Y Y N N and Delay in response Y N Y N; actions End Call, Issues Ticket Number, Exchange Product, Speak About Product). [4]</p>`,
+   ans:`<p><b>(i)</b> A decision tree.</p>
+   <p><b>(ii)</b> The customer chose to use the ChatBot, and then, with no delay in response, was put in contact with a sales rep, which led to speaking about the product.</p>
+   <p><b>(iii)</b></p><div class="scroll"><table><tr><th></th><th class="n">R1</th><th class="n">R2</th><th class="n">R3</th><th class="n">R4</th></tr>
+   <tr><td>Use Chatbot</td><td class="n">Y</td><td class="n">Y</td><td class="n">N</td><td class="n">N</td></tr><tr><td>Delay in response</td><td class="n">Y</td><td class="n">N</td><td class="n">Y</td><td class="n">N</td></tr>
+   <tr><td>End Call</td><td></td><td></td><td class="n">X</td><td></td></tr><tr><td>Issues Ticket Number</td><td class="n">X</td><td></td><td></td><td></td></tr>
+   <tr><td>Exchange Product</td><td></td><td></td><td></td><td class="n">X</td></tr><tr><td>Speak About Product</td><td></td><td class="n">X</td><td></td><td></td></tr></table></div>`,
+   how:[[1,"(i) decision tree"],[1,"(ii) chose Use ChatBot"],[1,"(ii) then contact sales rep (no delay in response)"],[4,"(iii) one mark for each rule column with the correct single action"]]},
+  {y:2026,q:"6(d)",m:2,ask:"Manee wants to collect 30 random numbers from EACH of his classmates to test the algorithm. State TWO tools that he could use to collect this data.",
+   ans:`<p>A questionnaire (for example an online form) and an interview.</p>`,
+   how:[[1,"first valid data-collection tool"],[1,"second, different tool"]]}],
+
+ 8:[],
+
+ 9:[{y:2026,q:"6(a)",m:3,ask:"List the THREE characteristics of a well-designed algorithm.",
+   ans:`<ul><li>It gives a general solution to the problem in a finite number of steps.</li><li>Its steps are clearly defined and unambiguous.</li><li>It has a flow of control from one process to another.</li></ul>`,
+   how:[[1,"general solution in a finite number of steps"],[1,"clearly defined and unambiguous"],[1,"flow of control from one process to another"]]}],
+
+ 10:[],
+
+ 11:[{y:2025,q:"5(b)",m:9,ask:"Green Exotics tops up its ponds with tap water or stored rainwater. If the water level is less than one-quarter, top up the ponds with stored rainwater and then feed the fish. However, if the water level is three-quarters or more, feed the fish only; otherwise, top up the ponds with tap water and then feed the fish. Draw a flowchart to illustrate the procedures for topping up the ponds and feeding the fish.",
+   ans:FC_PONDS,
+   how:[[1,"Start and Stop terminators"],[1,"input of the water level in a parallelogram"],[2,"first decision (less than one-quarter) with Yes and No labelled"],[1,"top up with rainwater on the Yes branch"],[2,"second decision (three-quarters or more) with Yes and No labelled"],[1,"top up with tap water on the correct branch"],[1,"feed the fish reached by all three paths"]]},
+  {y:2026,q:"6(b)",m:9,ask:"Manee wants a flowchart that takes an unordered list of three numbers, stored in A, B and C, and sorts them in ascending order. Compare A and B; if A is greater than B, swap their values. Compare B and C; if B is greater than C, swap their values. Compare A and B again. Draw the complete flowchart.",
+   ans:FC_SORT,
+   how:[[1,"Start and Stop terminators"],[1,"input of A, B and C"],[3,"the three comparisons in decision symbols, in the right order, with Yes and No labelled"],[3,"each swap done correctly with a temporary variable"],[1,"output of A, B and C"]]}],
+
+ 12:[]
+};
+const YEARS = [2025,2026];
+
+const MCQ = [
+ /* SO1 */
+ {o:1,q:"Which of the following BEST describes problem-solving?",
+  opts:["Writing a computer program to automate a manual task","A process of identifying a problem, then finding and implementing a solution to it","Collecting as much data as possible about a situation","Replacing old equipment with newer technology"],a:1,
+  why:"Problem-solving is a process of finding solutions to a problem. Programs, data and new equipment may be part of a solution, but they do not describe the concept."},
+ {o:1,q:"In problem-solving, a problem is BEST defined as",
+  opts:["a fault in computer hardware or software","a task that can only be solved using a computer","the difference between an existing situation and a desired situation","an error made by a user of an information system"],a:2,
+  why:"A problem is the gap between the current state and the desired state. It is not limited to technical faults."},
+ {o:1,q:"A farmer researches the type of pest, its natural enemies and the effect of different pesticides before choosing a treatment. This BEST shows that problem-solving is",
+  opts:["a structured process that relies on information","a trial-and-error activity","a purely technical activity","an activity that begins with implementing a solution"],a:0,
+  why:"He gathers information and follows a deliberate process before acting."},
+ {o:1,q:"Which situation is an example of a problem?",
+  opts:["A shop sells 200 items a day, as planned","A clinic’s patients wait three hours when the target is thirty minutes","A school buys a new projector","A student saves her essay to a USB drive"],a:1,
+  why:"There is a gap between what happens (three hours) and what is wanted (thirty minutes)."},
+ {o:1,q:"Why is problem-solving described as a PROCESS rather than a single event?",
+  opts:["It always involves a computer","It can only be done by IT professionals","It moves through planned stages, from defining the problem to reviewing the solution","It finishes as soon as a solution is suggested"],a:2,
+  why:"A process has stages carried out in order, and it ends only after the solution has been checked."},
+ {o:1,q:"Which statement about problems is TRUE?",
+  opts:["Most problems have an information component","Only business problems need information to solve","A problem must be solved with software","A problem has exactly one correct solution"],a:0,
+  why:"The syllabus stresses that most, if not all, problems need information before they can be solved."},
+ {o:1,q:"A family keeps running out of money before the end of the month. What is the desired situation?",
+  opts:["Spending more money","Having enough money to last the whole month","Buying a computer","Writing down every purchase"],a:1,
+  why:"The desired situation is the state the family wants to reach. Writing down purchases might be part of a solution."},
+ {o:1,q:"Which of the following is a SOLUTION rather than a problem?",
+  opts:["Students cannot find books in the library","The tuck shop runs out of change every day","An online booking system for the clinic","Sales records are often lost"],a:2,
+  why:"The booking system is a method of closing a gap. The other three describe gaps."},
+
+ /* SO2 */
+ {o:2,q:"Which shows the FIRST THREE stages of the problem-solving process in the correct order?",
+  opts:["Analyse the problem, define the problem, implement the solution","Define the problem, select the optimal solution, analyse the problem","Identify possible solutions, define the problem, evaluate and review","Define the problem, analyse the problem, identify and evaluate possible solutions"],a:3,
+  why:"Define, analyse, identify and evaluate, select and justify, implement, evaluate and review."},
+ {o:2,q:"A school committee compares three attendance systems by cost, time to install and ease of use. At which stage is it working?",
+  opts:["Define the problem","Identify and evaluate possible solutions","Implement the solution","Evaluate and review"],a:1,
+  why:"Comparing alternatives against criteria is evaluating possible solutions. Review happens only after implementation."},
+ {o:2,q:"What is the STRONGEST reason for spending enough time on the analysis stage?",
+  opts:["It reduces the number of solutions to consider","It lets implementation start immediately","It ensures the root cause, not just the symptoms, is addressed","It removes the need for evaluation and review"],a:2,
+  why:"Analysis uncovers the real cause, so the chosen solution fixes the right thing."},
+ {o:2,q:"A problem definition should NOT include",
+  opts:["the causes of the problem","who is affected","the effects of the problem","what the problem is"],a:0,
+  why:"Causes are found in the analysis. The definition states the problem, who it affects and its effects."},
+ {o:2,q:"Staff are trained and the old paper system is switched off. Which stage is this?",
+  opts:["Analyse the problem","Select and justify the optimal solution","Implement","Evaluate and review"],a:2,
+  why:"Putting the solution in place, training and changeover all happen during implementation."},
+ {o:2,q:"Three months after a new system starts, the manager checks whether queues are shorter. Which stage is this?",
+  opts:["Define the problem","Identify and evaluate possible solutions","Implement","Evaluate and review"],a:3,
+  why:"Checking whether the solution solved the original problem is evaluate and review."},
+ {o:2,q:"In the select and justify stage, a good justification",
+  opts:["names the solution only","compares the chosen solution with the others using the evaluation criteria","lists every possible solution","describes how users will be trained"],a:1,
+  why:"Justifying means giving reasons why this solution is better than the alternatives."},
+ {o:2,q:"Interviews and observation are MOST likely to be used during",
+  opts:["problem analysis","solution selection","implementation","problem definition only"],a:0,
+  why:"Fact-finding is part of analysing the problem."},
+ {o:2,q:"Which is a likely problem when a small farm IMPLEMENTS an automated fish feeder?",
+  opts:["The farmer cannot define the problem","There are no possible solutions","The farmer may lack the skills to operate it","The feeder has already been reviewed"],a:2,
+  why:"Implementation brings practical problems such as cost, training and reliability (2025 Paper 2)."},
+
+ /* SO3 */
+ {o:3,q:"Information without which a problem CANNOT be solved is classified as",
+  opts:["desirable","essential","extraneous","cosmetic"],a:1,
+  why:"Essential information is required. Desirable helps, extraneous is irrelevant, cosmetic affects presentation only."},
+ {o:3,q:"For a clinic appointment system, which item is BEST classified as cosmetic?",
+  opts:["The date and time of each appointment","The days each doctor is available","Each patient’s favourite sports team","The colour scheme of the booking screen"],a:3,
+  why:"Cosmetic information affects only appearance. The sports team is extraneous."},
+ {o:3,q:"A fisherman decides whether to go to sea tomorrow. Which item is BEST classified as desirable?",
+  opts:["The marine weather forecast","The current market price of fish","The expected swell height","The name of the boat’s manufacturer"],a:1,
+  why:"The price helps him judge if the trip is worthwhile but is not required for a safe decision."},
+ {o:3,q:"Information that has no bearing on the problem is",
+  opts:["extraneous","cosmetic","desirable","essential"],a:0,
+  why:"Extraneous means irrelevant to the problem."},
+ {o:3,q:"A student is choosing which university to apply to. Which item is ESSENTIAL?",
+  opts:["The colour of the university’s logo","Whether the university offers her chosen degree","The number of trees on the campus","The name of the university’s founder"],a:1,
+  why:"She cannot choose sensibly without knowing whether her course is offered."},
+ {o:3,q:"In a chat tool, the ticket number given to a customer is BEST classified as",
+  opts:["cosmetic, because it is displayed on screen","extraneous, because the bot creates it","essential, because the customer needs it to follow up the issue","desirable, because only some customers read it"],a:2,
+  why:"Without the ticket number the customer cannot follow up if disconnected (2025 Paper 2)."},
+ {o:3,q:"A business deciding whether to open a new branch needs information on local demand. This is an example of a",
+  opts:["personal problem","scientific problem","social problem","commercial problem"],a:3,
+  why:"It concerns a business decision, so it is commercial."},
+ {o:3,q:"Why should extraneous information be identified and set aside?",
+  opts:["It wastes time and can distract from the information that matters","It is always inaccurate","It makes the solution look better","It is required by law"],a:0,
+  why:"Irrelevant information adds work without improving the solution."},
+
+ /* SO4 */
+ {o:4,q:"A refereed source of information is one that",
+  opts:["is free on the Internet","is written by one well-known author","has been reviewed by experts before publication","is linked to by many websites"],a:2,
+  why:"Refereed (peer-reviewed) sources are checked by subject experts before they are published."},
+ {o:4,q:"A student uses a 2009 article as her main source on current cyber threats. Which criterion is MOST compromised?",
+  opts:["Bias","Cultural context","Completeness","Currency"],a:3,
+  why:"Cyber threats change quickly, so a 2009 article is out of date."},
+ {o:4,q:"Which source is MOST appropriate for research on the health effects of sugary drinks?",
+  opts:["A soft-drink company’s website","A peer-reviewed journal article","An anonymous blog post","A widely shared social media post"],a:1,
+  why:"It is refereed and independent. The company is biased; the others are unverified."},
+ {o:4,q:"A tourism report praising a resort was paid for by the resort’s owners. The main concern is",
+  opts:["bias","currency","completeness","cultural context"],a:0,
+  why:"The source benefits from a positive report, so it is likely to be one-sided."},
+ {o:4,q:"A Jamaican student uses US crime statistics to plan a neighbourhood watch in Kingston. Which criterion is weakest?",
+  opts:["Accuracy","Currency","Cultural context","Refereed status"],a:2,
+  why:"Information from another country may not apply to local conditions."},
+ {o:4,q:"A survey report gives results for only three of the island’s six parishes. Which criterion is affected?",
+  opts:["Bias","Completeness","Currency","Accuracy"],a:1,
+  why:"Half the data is missing, so the information is incomplete."},
+ {o:4,q:"Which is a characteristic of information on the Internet that makes it LESS reliable?",
+  opts:["It can be searched quickly","It is available at any time","Anyone can publish it without it being checked","It can include images and video"],a:2,
+  why:"With no checking before publication, errors and bias are common."},
+ {o:4,q:"Why does accuracy matter when information is used to solve a problem?",
+  opts:["Inaccurate information leads to a wrong or ineffective solution","Accurate information is always more recent","Accuracy makes information cheaper","Only scientific problems need accurate information"],a:0,
+  why:"A solution built on wrong facts will not solve the real problem."},
+ {o:4,q:"Which is an example of an un-refereed source?",
+  opts:["A peer-reviewed journal article","A personal blog","A university textbook checked by reviewers","A report reviewed by a panel of experts"],a:1,
+  why:"Nobody checks a personal blog before it is published."},
+
+ /* SO5 */
+ {o:5,q:"Which is a key characteristic of the waterfall model?",
+  opts:["Requirements are expected to change throughout","Each phase is completed before the next begins","Working software is delivered every two weeks","A model is built first and refined from feedback"],a:1,
+  why:"Phases follow one another in sequence. Frequent delivery is agile; refining a model is prototyping."},
+ {o:5,q:"A client is unsure of her requirements and wants to see a working model early to suggest changes. Which model is MOST suitable?",
+  opts:["Waterfall","Fixed-requirement development","Iterative/Incremental","Evolutionary development (prototyping)"],a:3,
+  why:"Prototyping produces an early model for users to try, which clarifies unclear requirements."},
+ {o:5,q:"A start-up’s requirements change often and the customer reviews progress every two weeks. Which model fits, and why?",
+  opts:["Waterfall, because it documents each stage","Agile, because short iterations allow frequent feedback and change","Waterfall, because late changes are easy","Iterative, because all requirements must be fixed first"],a:1,
+  why:"Agile works in short sprints with regular customer involvement."},
+ {o:5,q:"A system is delivered in parts: attendance first, then grades, then fees. This is the",
+  opts:["waterfall approach","prototyping approach","iterative/incremental approach","context approach"],a:2,
+  why:"Each increment adds working features to what was delivered before."},
+ {o:5,q:"Which is a DISADVANTAGE of the waterfall model?",
+  opts:["It has too little documentation","Changes are costly once a phase is complete","The customer must attend every sprint","It cannot be planned in advance"],a:1,
+  why:"Going back to an earlier phase is slow and expensive."},
+ {o:5,q:"Which is a DISADVANTAGE of prototyping?",
+  opts:["Users never see the system until the end","The project can keep growing as users ask for more","It cannot handle unclear requirements","It produces no working model"],a:1,
+  why:"Repeated feedback rounds can expand the scope and delay completion."},
+ {o:5,q:"Which model is MOST suitable for a payroll system whose rules are set by law and unlikely to change?",
+  opts:["Waterfall","Agile","Prototyping","Any model that avoids documentation"],a:0,
+  why:"Fixed, clear requirements suit a sequential model with full documentation."},
+ {o:5,q:"A diagram shows plan and design, then a repeating cycle of develop, test, deploy and review, then launch. The model is",
+  opts:["waterfall","agile","the SDLC feasibility model","a context diagram"],a:1,
+  why:"Short repeated cycles with review after each is agile (2026 Paper 2)."},
+ {o:5,q:"Which is an ADVANTAGE of agile development?",
+  opts:["It needs very little customer involvement","It produces the most documentation","It responds quickly to changing requirements","All requirements are fixed at the start"],a:2,
+  why:"Each short cycle can take in new or changed requirements."},
+
+ /* SO6 */
+ {o:6,q:"Which SDLC stage decides whether a proposed system is technically, economically and operationally viable?",
+  opts:["Analysis","Feasibility study","Design","Review"],a:1,
+  why:"The feasibility study decides whether the project is worth pursuing."},
+ {o:6,q:"Old and new payroll systems run together for a month before the old one is switched off. Which stage, and which deliverable guides it?",
+  opts:["Design, the system proposal","Development, the project plan","Implementation, the conversion plan","Review, the user manual"],a:2,
+  why:"Parallel changeover happens in implementation and is set out in the conversion plan."},
+ {o:6,q:"A school skips the review stage. The MOST likely consequence is that",
+  opts:["the system has no documentation","users receive no training","the school will not know whether the system met its objectives","the system was not tested"],a:2,
+  why:"Review checks the objectives and identifies maintenance. The others belong to earlier stages."},
+ {o:6,q:"At which SDLC stage is the algorithm developed?",
+  opts:["Feasibility study","Design","Implementation","Review"],a:1,
+  why:"The design stage plans how the system will work, including its algorithms (2026 Paper 2)."},
+ {o:6,q:"The deliverable of the feasibility study is the",
+  opts:["test plan","technical manual","system proposal","conversion plan"],a:2,
+  why:"The system proposal (feasibility report) recommends whether to go ahead."},
+ {o:6,q:"In which stage are the programs coded and tested?",
+  opts:["Analysis","Design","Development","Review"],a:2,
+  why:"Development produces the working software and the test plans."},
+ {o:6,q:"A user manual explains",
+  opts:["how to operate the system","how the program code is structured","whether the project is affordable","how data flows between processes"],a:0,
+  why:"The technical manual describes the code and structure; the user manual explains how to use it."},
+ {o:6,q:"Studying the current system in detail and stating the requirements of the new one happens in",
+  opts:["analysis","implementation","feasibility","review"],a:0,
+  why:"Analysis investigates the current system and produces the requirements."},
+ {o:6,q:"Software engineering is BEST described as",
+  opts:["writing code as quickly as possible","applying planned, disciplined methods to build reliable software","repairing computer hardware","installing software on users’ computers"],a:1,
+  why:"It uses models, standards, testing and documentation so software is reliable and maintainable."},
+
+ /* SO7 */
+ {o:7,q:"A Gantt chart is used PRIMARILY to",
+  opts:["show how data moves through a system","represent an algorithm’s logic","show project tasks and their durations over time","model relationships among data entities"],a:2,
+  why:"A Gantt chart is a scheduling tool. DFDs, flowcharts and ER diagrams do the other jobs."},
+ {o:7,q:"An analyst must gather opinions quickly from 400 employees in five branches. The MOST suitable tool is",
+  opts:["interviews","observation","questionnaires","review of printed material"],a:2,
+  why:"Questionnaires reach many people in different places quickly and cheaply."},
+ {o:7,q:"Staff describe a returns process differently from how managers believe it is done. Which tool should the analyst use?",
+  opts:["Questionnaires, for standard responses","Observation, to see what staff actually do","Interviews, to hear the official procedure","Printed material, because procedures are always followed"],a:1,
+  why:"Observation records real practice rather than what people report."},
+ {o:7,q:"A diagram shows branches from a starting point, each ending in an action, based on conditions. It is a",
+  opts:["decision tree","Gantt chart","context diagram","hierarchy chart"],a:0,
+  why:"Conditions branch to actions in a decision tree (2025 Paper 2)."},
+ {o:7,q:"A decision table with two conditions, each Y or N, needs how many rule columns to cover every case?",
+  opts:["2","3","4","8"],a:2,
+  why:"Each condition has 2 values, so 2 × 2 = 4 rules."},
+ {o:7,q:"Which is a DISADVANTAGE of interviews as a fact-finding tool?",
+  opts:["They cannot ask follow-up questions","They take a lot of time for each person","They only collect numbers","They can only be used with managers"],a:1,
+  why:"Interviews give detail but are slow, so they suit small groups."},
+ {o:7,q:"An analyst studies the forms, invoices and reports a business already uses. This tool is",
+  opts:["observation","questionnaires","review of printed material","prototyping"],a:2,
+  why:"Examining existing documents is review or investigation of printed material."},
+ {o:7,q:"CASE tools are",
+  opts:["printed forms used in interviews","software that helps analysts draw diagrams, generate code and keep documentation","cables used to connect a network","decision tables drawn by hand"],a:1,
+  why:"Computer-aided software engineering tools automate parts of development."},
+ {o:7,q:"Which tool models the data entities in a system and the relationships between them?",
+  opts:["Entity Relationship (ER) diagram","Gantt chart","Flowchart","Questionnaire"],a:0,
+  why:"ER diagrams show entities and how they are related."},
+ {o:7,q:"Why might observation give misleading results?",
+  opts:["It reaches too many people","People may change their behaviour when they know they are watched","It produces no data","It can only be done online"],a:1,
+  why:"Workers may follow the rules more carefully while observed."},
+
+ /* SO8 */
+ {o:8,q:"A data flow diagram is BEST described as",
+  opts:["a graphical representation of the flow of data through an information system","a diagram of the flow of control through hardware","a written description of database tables","a step-by-step list of instructions"],a:0,
+  why:"A DFD shows where data comes from, how it is processed, where it is stored and where it goes."},
+ {o:8,q:"Which FOUR elements make up every DFD?",
+  opts:["Entity, attribute, relationship, key","External entity, process, data store, data flow","Input, output, storage, control","External entity, process, algorithm, pseudocode"],a:1,
+  why:"These are the four symbols in the syllabus."},
+ {o:8,q:"Which DFD element is a person or organisation OUTSIDE the system that sends or receives data?",
+  opts:["Process","Data store","Data flow","External entity"],a:3,
+  why:"External entities are sources or destinations outside the system boundary."},
+ {o:8,q:"A context-level DFD for a library would MOST likely contain",
+  opts:["several processes, each with its own data store","only data stores and their flows","one process for the whole system, with external entities such as Member and Supplier","every task the librarian performs"],a:2,
+  why:"A context diagram shows the whole system as one process. Detail appears in Level 1."},
+ {o:8,q:"Which connection is NOT valid in a DFD?",
+  opts:["External entity to process","Process to data store","Data store to process","External entity directly to data store"],a:3,
+  why:"Data cannot move between an entity and a store without passing through a process."},
+ {o:8,q:"The label of a process should be",
+  opts:["a noun, such as “Invoice”","a verb phrase, such as “Calculate total”","a number only","the name of an external entity"],a:1,
+  why:"Processes act on data, so they are labelled with a verb phrase."},
+ {o:8,q:"Which data flow label is CORRECTLY formed?",
+  opts:["Submit","Validate","Order details","Print"],a:2,
+  why:"Data flows carry data, so they are labelled with nouns. A verb on a flow is a common error."},
+ {o:8,q:"A process has two inputs and no output. This error is called a",
+  opts:["miracle","black hole","grey hole","balanced process"],a:1,
+  why:"Data goes in and nothing comes out."},
+ {o:8,q:"A process produces output but has no input anywhere on the diagram. This is a",
+  opts:["miracle","black hole","context diagram","data store"],a:0,
+  why:"Output appears from nowhere."},
+ {o:8,q:"A Level 0 process has inputs Timesheet and outputs Payslip and Updated Records. Its Level 1 diagram shows only Timesheet in and Payslip out. What is wrong?",
+  opts:["Nothing: Level 1 may drop outputs","It does not balance, because Updated Records has been lost","Level 1 may only have one process","The input should have been removed instead"],a:1,
+  why:"A Level 1 diagram must keep the same inputs and outputs as its parent."},
+ {o:8,q:"Which is NOT shown on a DFD?",
+  opts:["Where data is stored","The order in which steps happen and the decisions taken","Who sends data into the system","How data is changed by processes"],a:1,
+  why:"DFDs show data movement, not sequence or logic. That is the job of flowcharts."},
+
+ /* SO9 */
+ {o:9,q:"Which is NOT a characteristic of a well-designed algorithm?",
+  opts:["It provides a general solution","Its steps are clear and unambiguous","It continues until the user stops it","It has a clear flow of control"],a:2,
+  why:"A well-designed algorithm must end after a finite number of steps."},
+ {o:9,q:"The step “Add a few extra marks to the total if needed” breaks which characteristic?",
+  opts:["Finite number of steps","Clearly defined and unambiguous","General solution","Flow of control"],a:1,
+  why:"“A few” and “if needed” can be read in more than one way."},
+ {o:9,q:"An algorithm finds the average of the scores 45, 60 and 72 only. The BEST evaluation is that it is",
+  opts:["well designed, because it gives the correct answer","poorly designed, because it has too few steps","poorly designed, because it is not a general solution","well designed, because it ends"],a:2,
+  why:"It works only for those three values instead of any set of scores."},
+ {o:9,q:"An algorithm is BEST defined as",
+  opts:["a program written in Python","a finite sequence of clear steps for solving a problem","a diagram of data movement","a list of hardware components"],a:1,
+  why:"It is the plan for a solution, before any code."},
+ {o:9,q:"A loop repeats while count < 10, but count is never changed inside the loop. Which characteristic is broken?",
+  opts:["Finite number of steps","Cultural context","Cosmetic presentation","Unambiguous steps"],a:0,
+  why:"The loop never ends, so the algorithm does not finish."},
+ {o:9,q:"What is the main ROLE of an algorithm in problem-solving?",
+  opts:["To decorate the final report","To set out the chosen solution as exact steps that can be checked before coding","To collect information from users","To replace the analysis stage"],a:1,
+  why:"It turns the selected solution into a precise plan that is then coded."},
+ {o:9,q:"“Flow of control from one process to another” means that",
+  opts:["data flows into a data store","it is always clear which step is carried out next","every step is a loop","the algorithm uses a flowchart"],a:1,
+  why:"Control moves in a defined order, including through decisions and loops."},
+ {o:9,q:"Why is it cheaper to correct errors in an algorithm than in a finished program?",
+  opts:["Algorithms are shorter, so errors cannot occur","No code has been written yet, so nothing has to be rewritten and retested","Programs cannot be changed","Algorithms are checked by the computer"],a:1,
+  why:"Fixing the plan avoids rewriting and retesting code later."},
+ {o:9,q:"How many characteristics of a well-designed algorithm does the CXC syllabus list?",
+  opts:["Two","Three","Five","Seven"],a:1,
+  why:"General solution in finite steps; clear and unambiguous; flow of control (2026 Paper 2)."},
+
+ /* SO10 */
+ {o:10,q:"IF score >= 50 THEN PRINT \"Pass\" ELSE PRINT \"Fail\" ENDIF is written in",
+  opts:["natural language","a flowchart","pseudocode","machine code"],a:2,
+  why:"English-like statements with keywords such as IF, THEN, ELSE and ENDIF are pseudocode."},
+ {o:10,q:"Which flowchart symbol represents “Is the balance less than zero?”",
+  opts:["Parallelogram","Rectangle","Diamond","Oval"],a:2,
+  why:"A question with Yes and No exits is a decision."},
+ {o:10,q:"The MAIN disadvantage of natural language for algorithms is that it",
+  opts:["cannot be read by non-technical users","can be ambiguous and lengthy","needs special symbols","can only be used for simple problems"],a:1,
+  why:"Everyday words can be read more than one way and become wordy."},
+ {o:10,q:"Which flowchart symbol is used for input and output?",
+  opts:["Oval","Parallelogram","Rectangle","Diamond"],a:1,
+  why:"READ and PRINT steps go in a parallelogram."},
+ {o:10,q:"The Start and Stop of a flowchart are drawn as",
+  opts:["ovals (terminators)","diamonds","rectangles","parallelograms"],a:0,
+  why:"Terminators mark where the algorithm begins and ends."},
+ {o:10,q:"A rectangle in a flowchart represents",
+  opts:["a decision","a process such as a calculation","input","the end of the algorithm"],a:1,
+  why:"Processes such as total ← total + mark go in rectangles."},
+ {o:10,q:"Which is an ADVANTAGE of a flowchart?",
+  opts:["It is quick to change when the algorithm is large","It shows the flow of control visually","It can be run directly by the computer","It never needs arrows"],a:1,
+  why:"Arrows between symbols make the order and branches easy to see."},
+ {o:10,q:"Which is NOT one of the three ways of representing algorithms named in the syllabus?",
+  opts:["Natural language","Flowchart","Pseudocode","Data flow diagram"],a:3,
+  why:"A DFD shows data movement, not the steps of an algorithm."},
+ {o:10,q:"Why is pseudocode easy to convert into a program?",
+  opts:["It is already a programming language","Its structure and keywords are close to real code","It uses pictures","It has no rules"],a:1,
+  why:"Pseudocode follows the structure of code without the strict syntax of any one language."},
+
+ /* SO11 */
+ {o:11,q:"Which three control structures are used to build algorithms?",
+  opts:["Input, output, storage","Sequence, selection, repetition","Define, analyse, implement","Entity, process, store"],a:1,
+  why:"Every algorithm is built from sequence, selection and repetition."},
+ {o:11,q:"IF…THEN…ELSE…ENDIF is an example of",
+  opts:["sequence","selection","repetition","assignment"],a:1,
+  why:"It chooses between paths based on a condition."},
+ {o:11,q:"Which construct is BEST when the number of repetitions is known in advance, such as 30 students?",
+  opts:["FOR…TO…DO","WHILE…DO","IF…THEN","REPEAT with no condition"],a:0,
+  why:"A FOR loop runs a fixed number of times."},
+ {o:11,q:`What is the value of total after these steps?<pre>total ← 0
+FOR i ← 1 TO 4 DO
+   total ← total + i
+ENDFOR</pre>`,
+  opts:["4","6","10","0"],a:2,
+  why:"1 + 2 + 3 + 4 = 10."},
+ {o:11,q:`What is printed when bill = 80?<pre>IF bill >= 100 THEN
+   discount ← bill * 0.10
+ELSE
+   discount ← 0
+ENDIF
+PRINT bill - discount</pre>`,
+  opts:["72","80","8","88"],a:1,
+  why:"80 is below 100, so discount is 0 and 80 is printed."},
+ {o:11,q:"Which statement increases count by one?",
+  opts:["count ← 1","count ← count + 1","count + 1 ← count","PRINT count + 1"],a:1,
+  why:"Work out count + 1, then store it back in count."},
+ {o:11,q:"A WHILE loop is used when",
+  opts:["the number of repetitions depends on a condition, such as reading until −1","there is no repetition","only one decision is needed","the algorithm has no input"],a:0,
+  why:"WHILE keeps going as long as its condition is true."},
+ {o:11,q:"To sort A and B so that A ≤ B, which steps swap their values correctly?",
+  opts:["A ← B, B ← A","temp ← A, A ← B, B ← temp","A ← A + B","B ← A, A ← B"],a:1,
+  why:"Without temp, the first assignment overwrites a value and it is lost (2026 Paper 2)."},
+ {o:11,q:"Ponds are topped up with rainwater below ¼, fed only at ¾ or more, otherwise topped up with tap water. How many decision symbols does the flowchart need?",
+  opts:["1","2","3","4"],a:1,
+  why:"Two decisions give three outcomes (2025 Paper 2)."},
+ {o:11,q:"Identifying the inputs, processing and outputs of a problem is done",
+  opts:["after coding","before writing the algorithm","only for flowcharts","during review"],a:1,
+  why:"IPO analysis tells you what the algorithm must read, calculate and print."},
+
+ /* SO12 */
+ {o:12,q:"Which BEST describes how algorithms and programs are related?",
+  opts:["A program is an algorithm expressed in a programming language","An algorithm is a compiled program","The algorithm is written after the program is tested","They are two names for a flowchart"],a:0,
+  why:"The algorithm is the plan; the program is that plan in a language the computer can run."},
+ {o:12,q:"An algorithm is described as a PRECURSOR to a program. This means it",
+  opts:["replaces the program","comes before the program is written","is written in machine code","is only used for testing"],a:1,
+  why:"The algorithm is designed first and then coded."},
+ {o:12,q:"Which is the correct order of these program development stages?",
+  opts:["Code, design, test, analyse","Analyse, design, code, test","Test, code, design, analyse","Design, analyse, test, code"],a:1,
+  why:"Understand the problem, design the algorithm, code it, then test and debug."},
+ {o:12,q:"Java and C++ are examples of which paradigm?",
+  opts:["Logic","Object-oriented","Functional","Machine"],a:1,
+  why:"They organise programs around objects that combine data and methods."},
+ {o:12,q:"C and Pascal are BEST described as",
+  opts:["procedural languages","logic languages","markup languages","query languages"],a:0,
+  why:"Their programs are sequences of instructions grouped into procedures."},
+ {o:12,q:"Prolog is an example of a",
+  opts:["procedural language","logic (declarative) language","object-oriented language","markup language"],a:1,
+  why:"Prolog programs state facts and rules, and the system works out answers."},
+ {o:12,q:"One algorithm can be coded in Python, Java or C. This shows that algorithms are",
+  opts:["language-independent","only for Python","slower than programs","the same as source code"],a:0,
+  why:"The logic stays the same whatever language is used."},
+ {o:12,q:"Why is the logic of a program developed before coding?",
+  opts:["To choose the screen colours","So errors are found and fixed while they are cheap to correct","Because compilers need flowcharts","So the program needs no testing"],a:1,
+  why:"Errors in the plan are cheaper to fix than errors in written code."},
+ {o:12,q:"Which stage of program development finds and removes errors?",
+  opts:["Design","Testing and debugging","Documentation","Problem definition"],a:1,
+  why:"Testing finds errors and debugging removes them."}
+];
+MCQ.sort((p,q) => p.o - q.o);
+
+let fid = 0;
+const fNum = (ans, o) => '<input class="fill" id="f' + (++fid) + '" inputmode="decimal" autocomplete="off" aria-label="Your answer" data-ans="' + ans + '"' + (o ? ' data-o="' + o + '"' : '') + '>';
+const fSel = (ans, options, o) => '<select class="fill" id="f' + (++fid) + '" aria-label="Your answer" data-ans="' + ans + '"' + (o ? ' data-o="' + o + '"' : '') + '><option value="">Choose…</option>' + options.map(v => '<option>' + v + '</option>').join("") + '</select>';
+
+const STAGES = ["Define the problem","Analyse the problem","Identify and evaluate possible solutions","Select and justify the optimal solution","Implement","Evaluate and review"];
+const CATS = ["Essential","Desirable","Extraneous","Cosmetic"];
+const CRIT = ["Bias","Accuracy","Cultural context","Completeness","Currency","Refereed source"];
+const MODELS = ["Waterfall","Prototyping","Agile","Iterative/Incremental"];
+const SDLC = ["Feasibility study","Analysis","Design","Development","Implementation","Review"];
+const FACT = ["Questionnaire","Interview","Observation","Review of printed material"];
+const ELEM = ["External entity","Process","Data store","Data flow"];
+const PROPS = ["General solution in a finite number of steps","Clearly defined and unambiguous","Flow of control"];
+const SYMS = ["Oval","Parallelogram","Rectangle","Diamond"];
+const REPS = ["Natural language","Flowchart","Pseudocode"];
+const CONS = ["Sequence","Selection","Repetition"];
+const PARA = ["Procedural","Object-oriented","Logic","Functional"];
+const YN = ["Y","N"];
+
+const DT_STEM = `<div class="scroll"><table><tr><th></th><th class="n">R1</th><th class="n">R2</th><th class="n">R3</th><th class="n">R4</th></tr>
+<tr><td>Member?</td><td class="n">Y</td><td class="n">Y</td><td class="n">N</td><td class="n">N</td></tr>
+<tr><td>Order over $200?</td><td class="n">Y</td><td class="n">N</td><td class="n">Y</td><td class="n">N</td></tr></table></div>`;
+
+const SQ = [
+ /* ================= Topic 3A ================= */
+ {o:1, title:"The minibus route",
+  intro:`<p>Students from one village arrive late to school most mornings. The only minibus on their route leaves at 7:45 a.m. and reaches the school at 8:20 a.m. School starts at 8:00 a.m. The principal wants to fix this before the next term.</p>`,
+  parts:[
+   {l:"(a)",o:1,m:2,q:"Match each statement to the correct idea.",
+    auto:`<div class="line">Students reach school at 8:20 a.m.: ${fSel("Current situation",["Current situation","Desired situation","Solution"])}</div><div class="line">Students reach school before 8:00 a.m.: ${fSel("Desired situation",["Current situation","Desired situation","Solution"])}</div>`,
+    note:`<p>The problem is the gap between the current situation and the desired one.</p>`},
+   {l:"(b)",o:1,m:3,q:"Explain why the principal’s task is an example of problem-solving as a process rather than trial and error.",
+    ans:`<p>The principal would first state the problem clearly (students arrive 20 minutes late), then gather information such as bus times and the number of students affected, compare possible solutions such as an earlier bus or a later start, choose one with reasons, put it in place and check next term whether lateness has fallen. Trial and error would simply try one change without information and without checking the result.</p>`,
+    how:["Problem-solving moves through planned stages.","It uses information gathered before acting.","The result is checked afterwards (trial and error has no plan or check)."]}
+  ]},
+ {o:2, title:"The water tanks",
+  intro:`<p>A community centre often runs out of water during dry months. The committee wants a solution before the next dry season. Members suggest: buying a second tank, fitting gutters to collect rainwater, or rationing water use.</p>`,
+  parts:[
+   {l:"(a)",o:2,m:4,q:"Match each activity to its stage of the problem-solving process.",
+    auto:`<div class="line">The committee records how much water is used each week: ${fSel("Analyse the problem",STAGES)}</div><div class="line">The three suggestions are compared by cost and how much water each saves: ${fSel("Identify and evaluate possible solutions",STAGES)}</div><div class="line">The gutters are installed and members are shown how to clean them: ${fSel("Implement",STAGES)}</div><div class="line">After the next dry season, they check whether the centre still ran out: ${fSel("Evaluate and review",STAGES)}</div>`,
+    note:`<p>Measuring use is analysis; comparing options is evaluation; installing is implementation; checking afterwards is review.</p>`},
+   {l:"(b)",o:2,m:2,q:"Write a problem definition for this case. Remember what to leave out.",
+    ans:`<p>The community centre runs out of water during the dry months, so activities are cancelled and members cannot use the toilets or kitchen. (The causes, such as tank size or usage, are left for the analysis.)</p>`,
+    how:["States the problem and who or what is affected.","States its effects, without giving causes."]},
+   {l:"(c)",o:2,m:2,q:"The committee chooses the gutters. Justify this choice.",
+    ans:`<p>Gutters collect free rainwater whenever it rains, so they add water at low cost and keep working every year, while a second tank costs more and rationing does not increase the supply.</p>`,
+    how:["Gives a reason based on an evaluation criterion such as cost or water saved.","Compares it with at least one alternative."]}
+  ]},
+ {o:2, title:"The online deal",
+  intro:`<p>A customer wants the cheapest way to buy a phone online. Several sellers offer it, with different prices, shipping costs, reviews and return policies.</p>`,
+  parts:[
+   {l:"(a)",o:2,m:2,q:"Match each step to its stage.",
+    auto:`<div class="line">Listing each seller’s price, shipping and return policy: ${fSel("Analyse the problem",STAGES)}</div><div class="line">Choosing seller C because its total is lowest and reviews are good: ${fSel("Select and justify the optimal solution",STAGES)}</div>`,
+    note:`<p>This mirrors 2026 Paper 2 Question 5(a), which asked for two stages with specific examples.</p>`},
+   {l:"(b)",o:2,m:2,q:"Name one other stage of the process and give a specific example of it from this case.",
+    ans:`<p><b>Evaluate and review.</b> After the phone arrives, the customer checks that it came on time and as described, and that the total paid was what was expected.</p>`,
+    how:["A correct stage not already used.","A specific example from the case."]}
+  ]},
+
+ /* ================= Topic 3B ================= */
+ {o:3, title:"The school fair",
+  intro:`<p>A student council is planning a fundraising fair on a Saturday in March. It has a list of information it has collected.</p>`,
+  parts:[
+   {l:"(a)",o:3,m:5,q:"Classify each item of information.",
+    auto:`<div class="line">Whether the school field is free on that Saturday: ${fSel("Essential",CATS)}</div><div class="line">Last year’s fair profit: ${fSel("Desirable",CATS)}</div><div class="line">The font for the posters: ${fSel("Cosmetic",CATS)}</div><div class="line">The principal’s favourite food: ${fSel("Extraneous",CATS)}</div><div class="line">The cost of renting tables and tents: ${fSel("Essential",CATS)}</div>`,
+    note:`<p>The fair cannot go ahead without a venue or a budget. Last year’s profit helps planning but is not required. The font only affects appearance. The principal’s food preference is irrelevant.</p>`},
+   {l:"(b)",o:3,m:2,q:"Give ONE more item of desirable information for the fair, and justify your choice.",
+    ans:`<p>The weather forecast for the day. It helps the council decide whether to rent tents, but the fair can still be planned without it.</p>`,
+    how:["A reasonable desirable item.","Justification: helpful but not required."]}
+  ]},
+ {o:3, title:"The chat tool",
+  intro:`<p>A company’s website chat asks users which department they want, asks for their email in case they are disconnected, and gives them a ticket number. The chat window shows a bot avatar and an “Online Now” label in green.</p>`,
+  parts:[
+   {l:"(a)",o:3,m:3,q:"From the user’s point of view, classify each item.",
+    auto:`<div class="line">The ticket number: ${fSel("Essential",CATS)}</div><div class="line">The bot’s avatar picture: ${fSel("Cosmetic",CATS)}</div><div class="line">The time each message was sent: ${fSel("Desirable",CATS)}</div>`,
+    note:`<p>The ticket number is needed to follow up. The avatar only affects appearance. Time stamps are useful but the issue can be handled without them.</p>`},
+   {l:"(b)",o:3,m:2,q:"Justify why the email address is essential.",
+    ans:`<p>If the chat is disconnected, the company has no other way to contact the user, so the issue cannot be followed up without it.</p>`,
+    how:["Identifies its purpose: contacting the user after disconnection.","Explains that the problem cannot be resolved without it."]}
+  ]},
+ {o:4, title:"The climate essay",
+  intro:`<p>A student is writing an essay on climate change and health in the Caribbean. She has found these sources.</p>
+  <ul><li>S1: A 2025 article in a peer-reviewed medical journal on dengue in Barbados.</li><li>S2: A 2006 web page on global temperatures.</li><li>S3: A fuel company’s website saying climate change is exaggerated.</li><li>S4: A Canadian study on cold-weather illness.</li><li>S5: A survey report with results for only two of the eight islands it planned to cover.</li></ul>`,
+  parts:[
+   {l:"(a)",o:4,m:5,q:"Give the criterion that BEST explains your judgement of each source.",
+    auto:`<div class="line">S1 is accepted because it is: ${fSel("Refereed source",CRIT)}</div><div class="line">S2 is rejected mainly on: ${fSel("Currency",CRIT)}</div><div class="line">S3 is rejected mainly on: ${fSel("Bias",CRIT)}</div><div class="line">S4 is rejected mainly on: ${fSel("Cultural context",CRIT)}</div><div class="line">S5 is weak mainly on: ${fSel("Completeness",CRIT)}</div>`,
+    note:`<p>Peer review, age, self-interest, a different climate, and missing data are the deciding issues.</p>`},
+   {l:"(b)",o:4,m:4,q:"Discuss the importance of the currency and accuracy of the information she uses.",
+    ans:`<p><b>Currency</b> is how up to date the information is. Climate and disease data change every year, so old figures could make her conclusions wrong. <b>Accuracy</b> is whether it is correct. Inaccurate figures would lead to false conclusions and weaken her essay; she should check facts against refereed sources.</p>`,
+    how:["Currency: meaning.","Currency: why it matters.","Accuracy: meaning.","Accuracy: why it matters."]}
+  ]},
+ {o:4, title:"The phone review",
+  intro:`<p>Jamal wants to buy a laptop. He finds a glowing review on the manufacturer’s website, a forum post with no name from 2015, and a 2026 comparison by a consumer magazine that tests products independently.</p>`,
+  parts:[
+   {l:"(a)",o:4,m:2,q:"Identify the main problem with each of the first two sources.",
+    auto:`<div class="line">The manufacturer’s review: ${fSel("Bias",CRIT)}</div><div class="line">The 2015 forum post: ${fSel("Currency",CRIT)}</div>`,
+    note:`<p>The manufacturer profits from good reviews. A 2015 post cannot describe a 2026 laptop.</p>`},
+   {l:"(b)",o:4,m:3,q:"Explain why the magazine comparison is the most suitable source.",
+    ans:`<p>It is current (2026), so it describes the laptops on sale now. The magazine tests independently, so it is less likely to be biased. It compares several models, so the information is more complete than a single review.</p>`,
+    how:["Current.","Independent, so less biased.","Compares several products, so more complete."]}
+  ]},
+
+ /* ================= Topic 3C ================= */
+ {o:5, title:"Choosing a model",
+  intro:`<p>A software company has four new projects.</p><ul><li>P1: A tax calculator whose rules are fixed by law.</li><li>P2: A game whose players keep asking for new features every few weeks.</li><li>P3: A museum guide app; the museum is not sure what it wants and asks to see something early.</li><li>P4: A school system delivered in parts: attendance, then grades, then fees.</li></ul>`,
+  parts:[
+   {l:"(a)",o:5,m:4,q:"Choose the MOST suitable model for each project.",
+    auto:`<div class="line">P1: ${fSel("Waterfall",MODELS)}</div><div class="line">P2: ${fSel("Agile",MODELS)}</div><div class="line">P3: ${fSel("Prototyping",MODELS)}</div><div class="line">P4: ${fSel("Iterative/Incremental",MODELS)}</div>`,
+    note:`<p>Fixed requirements suit waterfall; frequent change suits agile; unclear requirements suit prototyping; delivery in parts is incremental.</p>`},
+   {l:"(b)",o:5,m:3,q:"State TWO advantages and ONE disadvantage of the waterfall model.",
+    ans:`<p><b>Advantages:</b> simple to manage because each phase has a clear end; time and cost are easier to estimate because requirements are fixed; each phase is well documented. <b>Disadvantage:</b> changes after a phase is complete are difficult and costly.</p>`,
+    how:["First advantage.","Second, different advantage.","One disadvantage."]}
+  ]},
+ {o:5, title:"The chat tool project",
+  intro:`<p>A company wants a website chat tool so that customers can talk to service representatives. The managers are not sure how the conversation screens should work.</p>`,
+  parts:[
+   {l:"(a)",o:5,m:4,q:"Discuss why prototyping could be the MOST appropriate model for this tool.",
+    ans:`<p>The requirements are unclear, so building a working model early lets managers and customers try it. Their feedback is used to improve each version, so the final tool matches what users need. This reduces the risk of building the wrong product, which matters because customers judge a chat tool by how easy it is to use.</p>`,
+    how:["Requirements are unclear.","An early working model can be tried.","Feedback refines it.","Lower risk of building the wrong product, or suits an interactive interface."]},
+   {l:"(b)",o:5,m:1,q:"Identify a model that would be a POOR choice for this project.",
+    auto:`<div class="line">Poor choice: ${fSel("Waterfall",MODELS)}</div>`,
+    note:`<p>Waterfall needs the requirements fixed at the start, which is not possible here.</p>`}
+  ]},
+ {o:6, title:"The clinic system",
+  intro:`<p>A health clinic is replacing its paper appointment book with a computer system, following the SDLC.</p>`,
+  parts:[
+   {l:"(a)",o:6,m:6,q:"Match each activity to its SDLC stage.",
+    auto:`<div class="line">Deciding whether the clinic can afford the system: ${fSel("Feasibility study",SDLC)}</div><div class="line">Interviewing the receptionist about the current booking method: ${fSel("Analysis",SDLC)}</div><div class="line">Drawing the screen layouts and writing the algorithm for double bookings: ${fSel("Design",SDLC)}</div><div class="line">Coding the system and testing it with sample appointments: ${fSel("Development",SDLC)}</div><div class="line">Training staff and switching over from the paper book: ${fSel("Implementation",SDLC)}</div><div class="line">Checking after three months whether waiting times fell: ${fSel("Review",SDLC)}</div>`,
+    note:`<p>The stages run feasibility, analysis, design, development, implementation, review.</p>`},
+   {l:"(b)",o:6,m:3,q:"Name the deliverable produced by each of these stages.",
+    auto:`<div class="line">Feasibility study: ${fSel("System proposal",["System proposal","Conversion plan","Test plan","User manual"])}</div><div class="line">Development: ${fSel("Test plan",["System proposal","Conversion plan","Test plan","Review report"])}</div><div class="line">Implementation: ${fSel("Conversion plan",["System proposal","Conversion plan","Gantt chart","Requirements"])}</div>`,
+    note:`<p>Other implementation deliverables are the user and technical manuals.</p>`}
+  ]},
+ {o:6, title:"Changing over",
+  intro:`<p>A supermarket installs a new stock-control system. The manager must decide how to change over from the old one.</p>`,
+  parts:[
+   {l:"(a)",o:6,m:2,q:"Explain the purpose of the review stage for this system.",
+    ans:`<p>The review checks whether the new system meets its objectives, for example fewer items out of stock, and identifies any errors or improvements needed, so maintenance can be planned.</p>`,
+    how:["Checks the system against its objectives.","Identifies problems or maintenance needed."]},
+   {l:"(b)",o:6,m:3,q:"The manager runs the old and new systems side by side for a month. Name this method and give ONE advantage and ONE disadvantage.",
+    ans:`<p><b>Parallel changeover.</b> Advantage: if the new system fails, the old one is still working, so no data is lost. Disadvantage: staff must enter everything twice, which costs time and money.</p>`,
+    how:["Parallel.","A valid advantage.","A valid disadvantage."]}
+  ]},
+ {o:7, title:"The decision tree",
+  intro:`<p>An online shop decides delivery charges. If the customer is a member and the order is over $200, delivery is free. A member with a smaller order pays $10. A non-member with an order over $200 pays $15. A non-member with a smaller order pays $25.</p>${DT_STEM}`,
+  parts:[
+   {l:"(a)",o:7,m:4,q:"Complete the decision table: for each rule, give the delivery charge.",
+    auto:`<div class="line">R1 (member, over $200): ${fSel("Free",["Free","$10","$15","$25"])}</div><div class="line">R2 (member, not over $200): ${fSel("$10",["Free","$10","$15","$25"])}</div><div class="line">R3 (non-member, over $200): ${fSel("$15",["Free","$10","$15","$25"])}</div><div class="line">R4 (non-member, not over $200): ${fSel("$25",["Free","$10","$15","$25"])}</div>`,
+    note:`<p>Read each column as one path through the conditions, exactly as in 2025 Paper 2 Question 6(c)(iii).</p>`},
+   {l:"(b)",o:7,m:1,q:"Name the diagram that shows these conditions as branches from a single starting point.",
+    auto:`<div class="line">Diagram: ${fSel("Decision tree",["Decision tree","Data flow diagram","Gantt chart","ER diagram"])}</div>`,
+    note:`<p>A decision tree shows the same logic as branches.</p>`},
+   {l:"(c)",o:7,m:2,q:"Describe the path through the tree for a non-member whose order is $250.",
+    ans:`<p>From the start, take the “not a member” branch, then the “order over $200” branch, which ends at a delivery charge of $15.</p>`,
+    how:["First branch: not a member.","Second branch: order over $200, leading to $15."]}
+  ]},
+ {o:7, title:"Fact-finding at the bakery",
+  intro:`<p>An analyst is studying how a bakery with 3 managers, 40 bakers and 500 regular customers takes and fills orders.</p>`,
+  parts:[
+   {l:"(a)",o:7,m:4,q:"Choose the MOST suitable fact-finding tool for each task.",
+    auto:`<div class="line">Getting the views of all 500 customers: ${fSel("Questionnaire",FACT)}</div><div class="line">Finding out in detail what the 3 managers want: ${fSel("Interview",FACT)}</div><div class="line">Seeing how bakers really fill orders during the morning rush: ${fSel("Observation",FACT)}</div><div class="line">Studying the order forms and invoices already in use: ${fSel("Review of printed material",FACT)}</div>`,
+    note:`<p>Many people: questionnaire. Few people, detail: interview. Real behaviour: observation. Existing documents: printed material.</p>`},
+   {l:"(b)",o:7,m:4,q:"Discuss the use of questionnaires to gather information from the customers.",
+    ans:`<p>Questionnaires reach all 500 customers quickly and cheaply, and they can answer anonymously, which may give more honest views. The answers are easy to count and compare. However, many customers may not return them, the questions cannot be explained or followed up, and short answers give less detail than interviews. On balance they suit this large group, perhaps followed by a few interviews.</p>`,
+    how:["A strength.","A second strength.","A weakness.","A second weakness or a reasoned conclusion."]},
+   {l:"(c)",o:7,m:1,q:"Which tool would the analyst use to plan the project’s tasks against a timeline?",
+    auto:`<div class="line">Tool: ${fSel("Gantt chart",["Gantt chart","Decision table","Flowchart","DFD"])}</div>`,
+    note:`<p>A Gantt chart shows tasks and their durations over time.</p>`}
+  ]},
+
+ /* ================= Topic 3D ================= */
+ {o:8, title:"The tuck shop DFD",
+  intro:`<p>Students order snacks from a school tuck shop. The system records each order in an Orders file, checks the Stock file, and sends a receipt to the student. Each week, it sends a restock order to a supplier.</p>`,
+  parts:[
+   {l:"(a)",o:8,m:5,q:"Identify the DFD element for each item.",
+    auto:`<div class="line">Student: ${fSel("External entity",ELEM)}</div><div class="line">Record order: ${fSel("Process",ELEM)}</div><div class="line">Stock: ${fSel("Data store",ELEM)}</div><div class="line">Receipt: ${fSel("Data flow",ELEM)}</div><div class="line">Supplier: ${fSel("External entity",ELEM)}</div>`,
+    note:`<p>People and organisations outside are entities; actions are processes; files are stores; data on the move is a flow.</p>`},
+   {l:"(b)",o:8,m:4,q:"On paper, draw a context-level DFD for the tuck shop system.",paper:true,
+    ans:`<div class="scroll"><svg class="fc" style="max-width:640px;min-width:600px" viewBox="0 0 640 190" role="img" aria-label="Context diagram: Student sends Order to process 0 Tuck Shop System and receives Receipt. Process 0 sends Restock order to Supplier and receives Delivery note.">
+     <defs><marker id="dfq" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L8 4L0 8z"/></marker></defs>
+     <rect class="s" x="10" y="70" width="100" height="50"/><text x="60" y="99">Student</text>
+     <rect class="s" x="250" y="50" width="140" height="90" rx="12"/><path class="l" d="M250 74H390"/><text x="320" y="67">0</text><text x="320" y="104">Tuck Shop</text><text x="320" y="120">System</text>
+     <rect class="s" x="520" y="70" width="110" height="50"/><text x="575" y="99">Supplier</text>
+     <path class="l" d="M110 84H247" marker-end="url(#dfq)"/><text x="180" y="77">Order</text>
+     <path class="l" d="M250 108H113" marker-end="url(#dfq)"/><text x="180" y="127">Receipt</text>
+     <path class="l" d="M390 84H517" marker-end="url(#dfq)"/><text x="455" y="77">Restock order</text>
+     <path class="l" d="M520 108H393" marker-end="url(#dfq)"/><text x="455" y="127">Delivery note</text>
+    </svg></div>`,
+    how:["One process for the whole system, numbered 0.","Student and Supplier drawn as external entities.","Labelled data flows in the correct directions.","No data stores on the context diagram."]},
+   {l:"(c)",o:8,m:2,q:"State TWO differences between a context diagram and a Level 1 DFD.",
+    ans:`<ul><li>A context diagram shows the whole system as one process; a Level 1 DFD splits it into its main sub-processes.</li><li>A context diagram shows no data stores; a Level 1 DFD shows them.</li></ul>`,
+    how:["One process against several.","No data stores against data stores shown."]}
+  ]},
+ {o:8, title:"Spot the errors",
+  intro:`<p>A student’s Level 1 DFD for a library contains these features.</p><ul><li>E1: Process 3 “Fine member” has two incoming flows and no outgoing flow.</li><li>E2: A data flow labelled “Check”.</li><li>E3: An arrow goes straight from the Member entity to the D2 Loans store.</li><li>E4: Process 4 “Print report” has an output but no input.</li></ul>`,
+  parts:[
+   {l:"(a)",o:8,m:4,q:"Name each error.",
+    auto:`<div class="line">E1: ${fSel("Black hole",["Black hole","Miracle","Verb on a data flow","Entity linked directly to a store"])}</div><div class="line">E2: ${fSel("Verb on a data flow",["Black hole","Miracle","Verb on a data flow","Entity linked directly to a store"])}</div><div class="line">E3: ${fSel("Entity linked directly to a store",["Black hole","Miracle","Verb on a data flow","Entity linked directly to a store"])}</div><div class="line">E4: ${fSel("Miracle",["Black hole","Miracle","Verb on a data flow","Entity linked directly to a store"])}</div>`,
+    note:`<p>These are the errors listed in the syllabus teaching activities.</p>`},
+   {l:"(b)",o:8,m:2,q:"Explain how E3 should be corrected.",
+    ans:`<p>The data must pass through a process. Draw the flow from Member to a process such as “Record loan”, and then from that process to D2 Loans.</p>`,
+    how:["Data between an entity and a store must go through a process.","Names a suitable process and redraws the flows."]}
+  ]},
+
+ /* ================= Topic 3E ================= */
+ {o:9, title:"Checking an algorithm",
+  intro:`<p>A teacher writes this algorithm.</p><pre>BEGIN
+   total ← 70 + 85 + 64
+   average ← total / 3
+   IF average is high THEN PRINT "Merit"
+   count ← 1
+   WHILE count &lt; 5 DO
+      PRINT count
+   ENDWHILE
+END</pre>`,
+  parts:[
+   {l:"(a)",o:9,m:3,q:"Identify the characteristic each problem breaks.",
+    auto:`<div class="line">It works only for the marks 70, 85 and 64: ${fSel("General solution in a finite number of steps",PROPS)}</div><div class="line">“average is high”: ${fSel("Clearly defined and unambiguous",PROPS)}</div><div class="line">The WHILE loop never ends: ${fSel("General solution in a finite number of steps",PROPS)}</div>`,
+    note:`<p>Fixed values and endless loops both break the first characteristic; vague words break the second.</p>`},
+   {l:"(b)",o:9,m:3,q:"List the THREE characteristics of a well-designed algorithm.",
+    ans:`<ul><li>A general solution to the problem in a finite number of steps.</li><li>Clearly defined and unambiguous.</li><li>Flow of control from one process to another.</li></ul>`,
+    how:["General solution, finite steps.","Clear and unambiguous.","Flow of control."]},
+   {l:"(c)",o:9,m:2,q:"Explain the role of an algorithm in the problem-solving process.",
+    ans:`<p>The algorithm sets out the selected solution as exact steps. It can be checked and corrected before any code is written, and then the program is written from it.</p>`,
+    how:["It is the plan of the solution as exact steps.","It is checked before coding and then translated into a program."]}
+  ]},
+ {o:10, title:"Three representations",
+  intro:`<p>An algorithm reads the temperature and prints “Hot” if it is above 30, otherwise “Fine”.</p>`,
+  parts:[
+   {l:"(a)",o:10,m:4,q:"Name the flowchart symbol for each step.",
+    auto:`<div class="line">Start: ${fSel("Oval",SYMS)}</div><div class="line">Read temperature: ${fSel("Parallelogram",SYMS)}</div><div class="line">temperature > 30?: ${fSel("Diamond",SYMS)}</div><div class="line">Print "Hot": ${fSel("Parallelogram",SYMS)}</div>`,
+    note:`<p>Terminators are ovals, input and output are parallelograms, decisions are diamonds.</p>`},
+   {l:"(b)",o:10,m:3,q:"Identify how each version is represented.",
+    auto:`<div class="line">“Read the temperature. If it is above 30, print Hot; otherwise print Fine.”: ${fSel("Natural language",REPS)}</div><div class="line"><code>IF temp > 30 THEN PRINT "Hot" ELSE PRINT "Fine" ENDIF</code>: ${fSel("Pseudocode",REPS)}</div><div class="line">Shapes joined by arrows: ${fSel("Flowchart",REPS)}</div>`,
+    note:`<p>The three forms in the syllabus.</p>`},
+   {l:"(c)",o:10,m:2,q:"Give ONE advantage of pseudocode over natural language.",
+    ans:`<p>Pseudocode uses fixed keywords and structure, so each step has only one meaning and it is close to real code, while natural language can be wordy and ambiguous.</p>`,
+    how:["States the advantage (precise, structured, close to code).","Contrasts with natural language being ambiguous or wordy."]}
+  ]},
+ {o:11, title:"The bus fare",
+  intro:`<p>A bus company charges $3 for children under 12, $2 for seniors aged 65 and over, and $5 for everyone else. Read a passenger’s age and print the fare.</p>`,
+  parts:[
+   {l:"(a)",o:11,m:3,q:"Give the fare printed for each age.",
+    auto:`<div class="line">Age 8: $${fNum("3")}</div><div class="line">Age 40: $${fNum("5")}</div><div class="line">Age 70: $${fNum("2")}</div>`,
+    note:`<p>Under 12 pays $3, 65 and over pays $2, everyone else $5.</p>`},
+   {l:"(b)",o:11,m:6,q:"Write pseudocode for this algorithm.",rows:10,
+    ans:`<pre>BEGIN
+   READ age
+   IF age &lt; 12 THEN
+      fare ← 3
+   ELSE
+      IF age >= 65 THEN
+         fare ← 2
+      ELSE
+         fare ← 5
+      ENDIF
+   ENDIF
+   PRINT fare
+END</pre>`,
+    how:["BEGIN and END.","READ age.","First condition (under 12) with fare 3.","Second condition (65 and over) with fare 2.","fare 5 for everyone else.","PRINT fare."]},
+   {l:"(c)",o:11,m:1,q:"Which control structure does the IF statement use?",
+    auto:`<div class="line">Structure: ${fSel("Selection",CONS)}</div>`,
+    note:`<p>IF chooses between paths.</p>`}
+  ]},
+ {o:11, title:"The rainfall count",
+  intro:`<p>A weather station enters daily rainfall in mm. The value −1 is entered after the last day. The algorithm must count the days with more than 25 mm.</p><pre>BEGIN
+   count ← 0
+   READ rain
+   WHILE rain &lt;&gt; -1 DO
+      IF rain > 25 THEN
+         count ← count + 1
+      ENDIF
+      READ rain
+   ENDWHILE
+   PRINT count
+END</pre>`,
+  parts:[
+   {l:"(a)",o:11,m:2,q:"Trace the algorithm with the input 10, 30, 26, 5, 40, −1.",
+    auto:`<div class="line">Value printed: ${fNum("3")}</div><div class="line">Number of times the loop body runs: ${fNum("5")}</div>`,
+    note:`<p>30, 26 and 40 are over 25. The loop runs once for each of the five real values; −1 stops it.</p>`},
+   {l:"(b)",o:11,m:3,q:"Identify the control structure in each part.",
+    auto:`<div class="line"><code>count ← 0</code> then <code>READ rain</code>: ${fSel("Sequence",CONS)}</div><div class="line"><code>IF rain > 25</code>: ${fSel("Selection",CONS)}</div><div class="line"><code>WHILE rain &lt;&gt; -1</code>: ${fSel("Repetition",CONS)}</div>`,
+    note:`<p>All three structures appear in one algorithm.</p>`},
+   {l:"(c)",o:11,m:9,q:"On paper, draw a flowchart that reads three numbers A, B and C and prints them in ascending order, by comparing and swapping: A with B, then B with C, then A with B again.",paper:true,
+    ans:FC_SORT,
+    how:["Start and Stop.","Input of A, B and C.","First comparison, A > B, with Yes and No.","Second comparison, B > C, with Yes and No.","Third comparison, A > B, with Yes and No.","First swap with temp.","Second swap with temp.","Third swap with temp.","Output of A, B and C."]}
+  ]},
+ {o:12, title:"From algorithm to program",
+  intro:`<p>A programmer receives the bus-fare algorithm and must turn it into an app.</p>`,
+  parts:[
+   {l:"(a)",o:12,m:4,q:"Name the paradigm of each language.",
+    auto:`<div class="line">Java: ${fSel("Object-oriented",PARA)}</div><div class="line">C: ${fSel("Procedural",PARA)}</div><div class="line">Prolog: ${fSel("Logic",PARA)}</div><div class="line">Haskell: ${fSel("Functional",PARA)}</div>`,
+    note:`<p>Teach procedural and object-oriented as separate answers, as CXC does.</p>`},
+   {l:"(b)",o:12,m:4,q:"Outline the stages in program development.",
+    ans:`<p>Define the problem; analyse it (inputs, processing, outputs); design the algorithm; code it in a programming language; test and debug it; document it; maintain it.</p>`,
+    how:["Problem definition and analysis.","Design of the algorithm.","Coding.","Testing/debugging, documentation or maintenance."]},
+   {l:"(c)",o:12,m:2,q:"Explain why the algorithm is described as a precursor to the program.",
+    ans:`<p>The algorithm is designed and checked first, and the program is then written from it in a programming language. If the algorithm is wrong, any program written from it will also be wrong.</p>`,
+    how:["The algorithm comes first and the program is written from it.","Errors in the algorithm carry into the program, so it is checked first."]}
+  ]}
+];
+
+
+(function(){
+  let s = 20261016;
+  const rnd = () => (s = (s * 1103515245 + 12345) % 2147483648) / 2147483648;
+  MCQ.forEach(m => {
+    if (m.opts.every(t => /^[\d$.,\s]+$/.test(t))) return;
+    const idx = m.opts.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    m.opts = idx.map(i => m.opts[i]); m.a = idx.indexOf(m.a);
+  });
+})();
+
+const byId = id => OBJ.find(o => o.id === id);
+const map = document.getElementById("map"), wires = document.getElementById("wires");
+const sheet = document.getElementById("sheet");
+const nodeEl = {};
+
+/* ---------- build the map ---------- */
+Object.keys(TOPICS).forEach(k => {
+  const T = TOPICS[k];
+  const col = document.createElement("div");
+  col.className = "col t" + k;
+  const first = OBJ.filter(o => o.t === k);
+  col.innerHTML = '<div class="colhead"><span class="code">Topic ' + T.code + ' · ' + T.lo +
+    ' · ' + (first.length > 1 ? 'Objectives ' + first[0].id + '–' + first[first.length-1].id : 'Objective ' + first[0].id) + '</span><h2>' + T.name +
+    '</h2><span class="ask">' + T.ask + '</span></div>';
+  first.forEach(o => {
+    const to = EDGES.filter(e => e[0] === o.id).sort((p,q) => p[1]-q[1]).map(e => '<span class="ld' + (e[4] ? ' mainld' : '') + '"><b>→ ' + P + e[1] + '</b> ' + e[3] + '</span>');
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "node"; b.id = "node" + o.id; b.dataset.id = o.id;
+    b.innerHTML = '<span class="nrow"><span class="num">' + P + o.id + '</span><span class="verb" title="' + o.verb + ': ' + VERBS[o.verb] + '">' + o.verb + '</span></span>' +
+      '<span class="obj">' + o.obj + '</span>' +
+      '<span class="out"><b>You can</b> ' + o.out + '</span>' +
+      '<span class="leads">' + (to.length ? to.join("") : '<span class="ld"><b>→ Code</b> ' + LAST_LEAD + '</span>') + '<span class="open">Open notes</span></span>';
+    b.addEventListener("click", () => openSheet(o.id));
+    b.addEventListener("mouseenter", () => focusOn(o.id));
+    b.addEventListener("mouseleave", () => focusOn(null));
+    b.addEventListener("focus", () => focusOn(o.id));
+    b.addEventListener("blur", () => focusOn(null));
+    nodeEl[o.id] = b; col.appendChild(b);
+  });
+  map.appendChild(col);
+});
+
+
+
+/* ---------- draw the arrows ---------- */
+const NS = "http://www.w3.org/2000/svg";
+function drawWires(){
+  if (getComputedStyle(wires).display === "none") return;
+  const R = map.getBoundingClientRect();
+  const box = {};
+  OBJ.forEach(o => { const r = nodeEl[o.id].getBoundingClientRect();
+    box[o.id] = {l:r.left-R.left, r:r.right-R.left, t:r.top-R.top, h:r.height, cy:r.top-R.top+r.height/2}; });
+  const sameCol = e => byId(e[0]).t === byId(e[1]).t;
+  // which edges touch each side of each card
+  const right = {}, left = {};
+  OBJ.forEach(o => { right[o.id] = []; left[o.id] = []; });
+  EDGES.forEach((e,i) => {
+    right[e[0]].push({i, other:e[1]});
+    if (sameCol(e)) right[e[1]].push({i, other:e[0]}); else left[e[1]].push({i, other:e[0]});
+  });
+  const slot = {};
+  [right,left].forEach((side,s) => Object.keys(side).forEach(id => {
+    const list = side[id].sort((p,q) => box[p.other].cy - box[q.other].cy);
+    list.forEach((it,k) => { slot[it.i + ":" + id + ":" + s] = box[id].t + box[id].h * (k+1) / (list.length+1); });
+  }));
+  let h = '<defs><marker id="mk" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="mk" d="M0 0L8 4L0 8z"/></marker>' +
+          '<marker id="mkhot" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path class="mkhot" d="M0 0L8 4L0 8z"/></marker></defs>';
+  mids = [];
+  EDGES.forEach((e,i) => {
+    const A = box[e[0]], B = box[e[1]];
+    const y1 = slot[i + ":" + e[0] + ":0"];
+    let d;
+    if (sameCol(e)) {
+      const y2 = slot[i + ":" + e[1] + ":0"], x = A.r, bulge = Math.min(46, 22 + Math.abs(y2-y1)*0.12);
+      d = "M" + x + " " + y1 + "C" + (x+bulge) + " " + y1 + " " + (x+bulge) + " " + y2 + " " + (x+2) + " " + y2;
+      mids[i] = {x: x + bulge*0.75, y: (y1+y2)/2, side: true};
+    } else {
+      const y2 = slot[i + ":" + e[1] + ":1"], dx = (B.l - A.r) * 0.5;
+      d = "M" + A.r + " " + y1 + "C" + (A.r+dx) + " " + y1 + " " + (B.l-dx) + " " + y2 + " " + (B.l-2) + " " + y2;
+      mids[i] = {x: (A.r+B.l)/2, y: (y1+y2)/2};
+    }
+    h += '<path class="wire ' + (e[4] ? 'main' : 'sec') + '" data-i="' + i + '" data-f="' + e[0] + '" data-t="' + e[1] + '" d="' + d + '" marker-end="url(#mkhot)"/>';
+  });
+  wires.innerHTML = h;
+  if (current !== null) focusOn(current);
+}
+let current = null, mids = [];
+const labels = document.getElementById("labels");
+function focusOn(id){
+  current = id;
+  map.classList.toggle("focusing", id !== null);
+  const hot = new Set(id === null ? [] : [id]);
+  const pills = [];
+  wires.querySelectorAll(".wire").forEach(w => {
+    const f = +w.dataset.f, t = +w.dataset.t, on = id !== null && (f === id || t === id);
+    w.classList.toggle("hot", on);
+    if (on) { hot.add(f); hot.add(t); const i = +w.dataset.i, m = mids[i];
+      if (m) pills.push({x:m.x, y:m.y, side:m.side, text:(f === id ? "→ " + P + t : P + f + " →") + " " + EDGES[i][3]}); }
+  });
+  if (id !== null) EDGES.forEach(e => { if (e[0] === id) hot.add(e[1]); if (e[1] === id) hot.add(e[0]); });
+  OBJ.forEach(o => nodeEl[o.id].classList.toggle("hot", hot.has(o.id)));
+  // reason labels on the highlighted arrows, nudged apart so they do not stack
+  pills.sort((p,q) => p.y - q.y);
+  for (let k = 1; k < pills.length; k++) for (let j = 0; j < k; j++)
+    if (Math.abs(pills[k].x - pills[j].x) < 150 && pills[k].y - pills[j].y < 30) pills[k].y = pills[j].y + 30;
+  labels.innerHTML = pills.map(p => '<span class="pill' + (p.side ? ' side' : '') + '" style="left:' + p.x + 'px;top:' + p.y + 'px">' + p.text + '</span>').join("");
+}
+new ResizeObserver(drawWires).observe(map);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawWires);
+drawWires();
+
+/* ---------- the notes sheet ---------- */
+function openSheet(id){
+  const o = byId(id), T = TOPICS[o.t];
+  const inc = EDGES.filter(e => e[1] === id), outg = EDGES.filter(e => e[0] === id);
+  const linkBtn = (other, dir, why) => '<button type="button" class="link t' + byId(other).t + '" data-go="' + other +
+    '"><span class="dir">' + dir + ' <b>' + P + other + '</b></span><span class="why"><b>' + byId(other).obj + '.</b> ' + why + '</span></button>';
+  const chip = (other, why) => '<button type="button" class="chip t' + byId(other).t + '" data-go="' + other + '" title="' + why.replace(/"/g, "&quot;") + '"><b>' + P + other + '</b>' + SHORT[other] + '</button>';
+  sheet.className = "sheet t" + o.t;
+  sheet.innerHTML =
+    '<div class="shead"><div class="t"><span class="eyebrow">Topic ' + T.code + ' · ' + T.name + '</span>' +
+    '<h2 id="sheetTitle"><span class="num">' + P + o.id + '</span>' + o.obj + '</h2></div>' +
+    '<button type="button" class="x" id="closeSheet" aria-label="Close notes">Close</button></div>' +
+    '<div class="sbody">' +
+    '<nav class="where" aria-label="Where this objective sits">' +
+      '<div class="row"><span class="rl">Builds on</span>' + (inc.length ? inc.map(e => chip(e[0], e[2])).join("") : '<span class="none">Nothing. This is a starting point.</span>') + '</div>' +
+      '<div class="row"><span class="rl">You are here</span><span class="chip here t' + o.t + '"><b>' + P + o.id + '</b>' + SHORT[o.id] + '</span></div>' +
+      '<div class="row"><span class="rl">Leads to</span>' + (outg.length ? outg.map(e => chip(e[1], e[2])).join("") : '<span class="none">' + LAST_NONE + '</span>') + '</div>' +
+    '</nav>' +
+    '<div class="outcome"><b>Learning outcome.</b> You can ' + o.out +
+      '<span class="lo">Contributes to course ' + T.lo + '</span></div>' +
+    '<div class="cmd"><span class="lab">Command word: ' + o.verb + '</span><p>' + VERBS[o.verb] + '</p><p><b>Example:</b> ' + CMDEX[o.id] + '</p></div>' +
+    '<section><h3>Key definitions</h3><dl>' + o.defs.map(d => '<div><dt>' + d[0] + '</dt><dd>' + d[1] + '</dd></div>').join("") + '</dl></section>' +
+    '<section><h3>Worked example</h3><div class="ex">' + o.ex + '</div></section>' +
+    '<section><h3>Past paper questions</h3>' +
+      (PAPERS[o.id].length ?
+      '<p class="ppnote">Paper 2, Section III, May/June 2025 and 2026. CXC mark schemes were not available, so the mark breakdowns are suggested allocations that add up to the printed marks.</p>' +
+      '<div class="scroll"><table class="pp"><tr><th>Year</th><th>Question</th><th>What was asked</th><th class="n">Marks</th></tr>' +
+      PAPERS[o.id].map(q => '<tr class="askrow"><td class="n" rowspan="3">' + q.y + '</td><td class="n" rowspan="3">' + q.q + '</td><td>' + q.ask + '</td><td class="n">' + q.m + '</td></tr>' +
+        '<tr><td colspan="2"><span class="lab">Answer</span>' + q.ans + '</td></tr>' +
+        '<tr><td colspan="2"><span class="lab">How marks could be awarded</span><ul class="how">' + q.how.map(h => '<li><b>' + h[0] + '</b> ' + h[1] + '</li>').join("") + '</ul></td></tr>').join("") +
+      '</table></div>'
+      : '<p class="none-pp">Not examined on Paper 2 in 2025 or 2026. It can still appear on Paper 1 or Paper 2, so use the topic self-check to practise.</p>') +
+      '</section>' +
+    '<section><h3>How it connects</h3><div class="conn">' +
+      inc.map(e => linkBtn(e[0], "Builds on", e[2])).join("") +
+      outg.map(e => linkBtn(e[1], "Leads to", e[2])).join("") + '</div></section>' +
+    '<div class="nav"><button type="button" class="btn" data-go="' + (id-1) + '"' + (id === 1 ? " disabled" : "") + '>← ' + P + Math.max(1,id-1) + '</button>' +
+      '<button type="button" class="btn" data-go="' + (id+1) + '"' + (id === OBJ.length ? " disabled" : "") + '>' + P + Math.min(OBJ.length,id+1) + ' →</button></div>' +
+    '</div>';
+  if (!sheet.open) sheet.showModal();
+  sheet.scrollTop = 0;
+}
+sheet.addEventListener("click", ev => {
+  if (ev.target === sheet || ev.target.closest("#closeSheet")) { sheet.close(); return; }
+  const go = ev.target.closest("[data-go]");
+  if (go && !go.disabled) openSheet(+go.dataset.go);
+});
+sheet.addEventListener("close", () => focusOn(null));
+
+const quiz = document.getElementById("quiz");
+const topicOf = o => byId(o).t;
+const mcqOf = k => MCQ.map((m,i) => [m,i]).filter(x => topicOf(x[0].o) === k);
+const sqOf = k => SQ.map((Q,qi) => [Q,qi]).filter(x => topicOf(x[0].o) === k);
+const objsOf = k => OBJ.filter(o => o.t === k);
+const minutesFor = k => { const n = mcqOf(k).length + 8 * sqOf(k).length; return Math.round(n / 15) * 15; };
+function sectionHTML(k){
+  const mq = mcqOf(k), sq = sqOf(k), ob = objsOf(k);
+  return '<p class="intro">Covers ' + (ob.length > 1 ? 'objectives ' : 'objective ') + '' + ob.map(o => P + o.id).join(", ") + '. Where your answers are incorrect, you will be advised which objectives to review. Part A is marked as you go. In Part B, some parts are checked for you. For the written parts, answer first, then show the model answer and tick the marks you earned. Be honest with the ticks: the results are only useful if the marks are real.</p>' +
+    '<section><h3>Part A · ' + mq.length + ' multiple-choice questions</h3><ol class="mcq">' +
+    mq.map(x => { const m = x[0], i = x[1]; return '<li class="mq t' + k + '" data-i="' + i + '"><div class="mqq">' + m.q + '</div><div class="opts">' +
+      m.opts.map((t,j) => '<button type="button" class="opt" id="q' + i + 'o' + j + '" data-k="' + j + '"><b>' + "ABCD"[j] + '</b><span>' + t + '</span></button>').join("") +
+      '</div><p class="fb" hidden></p></li>'; }).join("") + '</ol></section>' +
+    '<section><h3>Part B · ' + sq.length + ' structured questions</h3><div style="display:flex;flex-direction:column;gap:28px">' +
+    sq.map((x,n) => { const Q = x[0], qi = x[1]; return '<div class="sq"><h4>Question ' + (n+1) + ' · ' + Q.title + '</h4><div class="case">' + Q.intro + '</div>' +
+      Q.parts.map((P,pi) => '<div class="part t' + k + '" data-o="' + P.o + '"><div class="pq"><b>' + P.l + '</b>' + P.q + ' <span class="pm">[' + P.m + (P.m === 1 ? ' mark]' : ' marks]') + '</span></div>' +
+        (P.auto ? '<div class="auto">' + P.auto + '</div><button type="button" class="btn chk">Check my answers</button><div class="note" hidden><span class="lab">Explanation</span>' + P.note + '</div>'
+                : (P.paper ? '<p class="paper">Draw your answer on paper, then show the model answer.</p>' : '<textarea id="w' + qi + '_' + pi + '" rows="' + (P.rows || 4) + '" placeholder="Type your answer here, or write it on paper."></textarea>') +
+                  '<button type="button" class="btn rev">Show the model answer</button><div class="model" hidden><span class="lab">Model answer</span>' + P.ans +
+                  '<span class="lab">Tick each mark you earned</span><ul class="ticks">' + P.how.map((t,j) => '<li><label><input type="checkbox" id="m' + qi + '_' + pi + '_' + j + '"><span>' + t + '</span></label></li>').join("") + '</ul></div>') +
+        '</div>').join("") + '</div>'; }).join("") + '</div></section>' +
+    '<section class="res"><div class="acts"><button type="button" class="btn big showRes">See my results</button><button type="button" class="btn restart">Start again</button></div><div class="resOut" aria-live="polite"></div></section>';
+}
+const norm = v => String(v).toLowerCase().replace(/[\s()]/g, "").replace(/−/g, "-");
+function checkFill(el){
+  const v = norm(el.value), ans = norm(el.dataset.ans);
+  const ok = v !== "" && (el.dataset.re ? new RegExp(el.dataset.re).test(v) : (v === ans || (!isNaN(v) && !isNaN(ans) && parseFloat(v) === parseFloat(ans))));
+  el.classList.add(ok ? "ok" : "no"); el.disabled = true;
+  if (!ok) el.insertAdjacentHTML("afterend", '<span class="corr">Answer: ' + el.dataset.ans + '</span>');
+  return ok;
+}
+function results(sec, k){
+  const got = {}, max = {};
+  objsOf(k).forEach(o => { got[o.id] = 0; max[o.id] = 0; });
+  sec.querySelectorAll(".mq").forEach(li => { const o = MCQ[+li.dataset.i].o; max[o]++; if (li.dataset.ok === "1") got[o]++; });
+  sec.querySelectorAll(".part").forEach(pt => {
+    pt.querySelectorAll(".fill").forEach(f => { const o = +(f.dataset.o || pt.dataset.o); max[o]++; if (f.classList.contains("ok")) got[o]++; });
+    pt.querySelectorAll(".ticks input").forEach(c => { const o = +pt.dataset.o; max[o]++; if (c.checked) got[o]++; });
+  });
+  const rows = objsOf(k).map(o => ({o, g:got[o.id], m:max[o.id], r:got[o.id]/max[o.id]})).sort((a,b) => a.r - b.r || a.o.id - b.o.id);
+  const G = rows.reduce((t,r) => t + r.g, 0), M = rows.reduce((t,r) => t + r.m, 0);
+  const todo = sec.querySelectorAll(".mq:not(.done), .part:not(.done)").length;
+  sec.querySelector(".resOut").innerHTML = '<p class="total">' + G + ' out of ' + M + ' marks (' + Math.round(100*G/M) + '%)</p>' +
+    (todo ? '<p>' + todo + (todo === 1 ? ' question or part has' : ' questions or parts have') + ' not been answered yet. They count as zero.</p>' : '') +
+    (rows.some(r => r.g < r.m) ? '<p><b>Objectives to review:</b> ' + rows.filter(r => r.g < r.m).map(r => P + r.o.id + ' ' + SHORT[r.o.id]).join(", ") + '. They are listed first below. Open the notes to revise them.</p>' : '<p>No marks were lost. There are no objectives to review.</p>') +
+    '<div class="scroll"><table><tr><th>Objective</th><th class="n">Marks</th><th>Score</th><th></th></tr>' +
+    rows.map(r => '<tr class="t' + r.o.t + '"><td><b>' + P + r.o.id + '</b> ' + r.o.obj + '</td><td class="n">' + r.g + ' / ' + r.m + '</td><td><span class="meter"><i style="width:' + Math.round(100*r.r) + '%"></i></span></td>' +
+      '<td><button type="button" class="chip" data-notes="' + r.o.id + '">Open notes</button></td></tr>').join("") + '</table></div>';
+}
+function openQuiz(k){
+  if (!quiz.firstChild) quiz.innerHTML = '<div class="shead"><div class="t"><span class="eyebrow" id="quizEyebrow"></span><h2 id="quizTitle"></h2></div>' +
+    '<button type="button" class="x" id="closeQuiz" aria-label="Close self-check">Close</button></div><div class="sbody" id="quizBody"></div>';
+  let sec = document.getElementById("qs-" + k);
+  if (!sec) { sec = document.createElement("div"); sec.id = "qs-" + k; sec.className = "qsec"; sec.dataset.topic = k; sec.innerHTML = sectionHTML(k); document.getElementById("quizBody").appendChild(sec); }
+  const switched = quiz.dataset.topic !== k;
+  quiz.querySelectorAll(".qsec").forEach(s => { s.hidden = s !== sec; });
+  quiz.dataset.topic = k; quiz.className = "sheet quiz t" + k;
+  document.getElementById("quizEyebrow").textContent = "Topic " + TOPICS[k].code + " · Practice only. Nothing is saved or sent.";
+  document.getElementById("quizTitle").textContent = "Topic " + TOPICS[k].code + " self-check: " + TOPICS[k].name;
+  if (!quiz.open) quiz.showModal();
+  if (switched) quiz.scrollTop = 0;
+}
+quiz.addEventListener("click", ev => {
+  if (ev.target === quiz || ev.target.closest("#closeQuiz")) { quiz.close(); return; }
+  const sec = ev.target.closest(".qsec"); if (!sec) return;
+  const k = sec.dataset.topic;
+  const opt = ev.target.closest(".opt");
+  if (opt && !opt.disabled) {
+    const li = opt.closest(".mq"), m = MCQ[+li.dataset.i], j = +opt.dataset.k, ok = j === m.a;
+    li.querySelectorAll(".opt").forEach(b => { b.disabled = true; if (+b.dataset.k === m.a) b.classList.add("right"); });
+    if (!ok) opt.classList.add("wrong");
+    li.dataset.ok = ok ? "1" : "0"; li.classList.add("done");
+    const fb = li.querySelector(".fb"); fb.hidden = false;
+    fb.innerHTML = '<span class="v ' + (ok ? 'ok">Correct.' : 'no">Not quite. The answer is ' + "ABCD"[m.a] + '.') + '</span> ' + m.why + (ok ? '' : ' <span class="rv">Review objective <button type="button" class="chip" data-notes="' + m.o + '"><b>' + P + m.o + '</b>' + SHORT[m.o] + '</button></span>');
+    return;
+  }
+  const chk = ev.target.closest(".chk");
+  if (chk) { const pt = chk.closest(".part"); const wrong = new Set();
+    pt.querySelectorAll(".fill").forEach(f => { if (!checkFill(f)) wrong.add(+(f.dataset.o || pt.dataset.o)); });
+    const note = pt.querySelector(".note"); note.hidden = false;
+    if (wrong.size) note.insertAdjacentHTML("beforeend", '<p class="rv">Review objective ' + [...wrong].sort((a,b) => a-b).map(o => '<button type="button" class="chip" data-notes="' + o + '"><b>' + P + o + '</b>' + SHORT[o] + '</button>').join(" ") + '</p>');
+    pt.classList.add("done"); chk.hidden = true; return; }
+  const rev = ev.target.closest(".rev");
+  if (rev) { const pt = rev.closest(".part"); pt.querySelector(".model").hidden = false; pt.classList.add("done"); rev.hidden = true; return; }
+  if (ev.target.closest(".showRes")) { results(sec, k); sec.querySelector(".resOut").scrollIntoView({block:"nearest"}); return; }
+  if (ev.target.closest(".restart")) { sec.innerHTML = sectionHTML(k); quiz.scrollTop = 0; return; }
+  const nb = ev.target.closest("[data-notes]");
+  if (nb) { quiz.close(); openSheet(+nb.dataset.notes); }
+});
+/* one self-check box at the foot of each topic column */
+Object.keys(TOPICS).forEach(k => {
+  const col = map.querySelector(".col.t" + k), ob = objsOf(k);
+  const box = document.createElement("div");
+  box.className = "tcheck t" + k;
+  box.innerHTML = '<span class="lab">Topic ' + TOPICS[k].code + ' self-check</span><p>' + mcqOf(k).length + ' multiple-choice and ' + sqOf(k).length +
+    ' structured questions on ' + (ob.length > 1 ? 'objectives ' + P + ob[0].id + ' to ' + P + ob[ob.length-1].id : 'objective ' + P + ob[0].id) + '. Allow about ' + minutesFor(k) + ' minutes.</p><p class="adv">Where your answers are incorrect, you will be advised which objectives to review.</p>' +
+    '<button type="button" class="btn big" data-topic="' + k + '">Start the self-check</button>';
+  box.querySelector("button").addEventListener("click", () => openQuiz(k));
+  col.appendChild(box);
+});
+drawWires();
+
+const m = /^#o(\d+)$/.exec(location.hash);
+if (m && byId(+m[1])) openSheet(+m[1]);
+</script>
+
+
+</body></html>
