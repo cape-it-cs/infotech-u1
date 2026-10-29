@@ -1,0 +1,1327 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Module 1 Objective Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Rubik:wght@500;700&display=swap">
+<style>
+/* Layout: four topic columns read left to right (1A to 1D), in course-outline order;
+   dependency arrows run between objective cards; a side sheet holds the notes. */
+:root{
+  --bg:#F4EDE6; --surface:#FFFFFF; --ink:#3B1F4A; --muted:#625A68; --line:#E0D3C8; --code-bg:#EDE3DA;
+  --ok:#1B7A3D; --bad:#B3261E; --a:#A23B72; --b:#6A44A8; --c:#557A26; --d:#A85F1C; --e:#8E4A6B;
+  --display:"Rubik","Trebuchet MS",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1A1420; --surface:#241C2B; --ink:#EDE6EF; --muted:#B3A8B8; --line:#3C3044; --code-bg:#140F19;
+    --ok:#6FD08C; --bad:#FF8A80; --a:#E37BAE; --b:#B79BEB; --c:#A9C97A; --d:#E8A060; --e:#E79BC2; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1A1420; --surface:#241C2B; --ink:#EDE6EF; --muted:#B3A8B8; --line:#3C3044; --code-bg:#140F19;
+  --ok:#6FD08C; --bad:#FF8A80; --a:#E37BAE; --b:#B79BEB; --c:#A9C97A; --d:#E8A060; --e:#E79BC2; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.page{max-width:1480px;margin-inline:auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+p{margin:0}
+.eyebrow{font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.top{display:flex;flex-direction:column;gap:10px}
+.top h1{font-size:clamp(1.8rem,4.5vw,2.9rem);font-weight:700;letter-spacing:-.01em}
+.top .lede{max-width:62ch;color:var(--muted);font-size:1.05rem}
+.los{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:.92rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.los div{flex:1 1 320px;min-width:0}
+.los b{color:var(--ink);font-family:var(--mono);font-size:.82rem;margin-right:6px}
+
+.ta{--k:var(--a)} .tb{--k:var(--b)} .tc{--k:var(--c)} .td{--k:var(--d)} .te{--k:var(--e)}
+
+.mapwrap{position:relative}
+.map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:48px;row-gap:28px;align-items:start;position:relative}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0;position:relative;z-index:1}
+.colhead{display:flex;flex-direction:column;gap:2px;padding-bottom:10px;border-bottom:2px solid var(--k);min-height:7.2em}
+.colhead .code{font-family:var(--mono);font-weight:600;color:var(--k);font-size:.85rem}
+.colhead h2{font-size:1.08rem;font-weight:700}
+.colhead .ask{font-size:.86rem;color:var(--muted)}
+svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.wire{fill:none;stroke:var(--ink);transition:opacity .15s}
+.wire.main{stroke-width:2.5;opacity:.9}
+.wire.sec{stroke-width:1.5;opacity:0;stroke-dasharray:6 4}
+.mk{fill:var(--muted)} .mkhot{fill:var(--ink)}
+.focusing .wire{opacity:.12}
+.focusing .wire.hot{opacity:1}
+.focusing .wire.sec:not(.hot){opacity:0}
+.node{font:inherit;color:inherit;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px 12px;display:flex;flex-direction:column;gap:6px;cursor:pointer;width:100%;transition:opacity .15s,border-color .15s,transform .15s}
+.node:hover,.node:focus-visible{border-color:var(--k);transform:translateY(-1px)}
+.node:focus-visible,.btn:focus-visible,.link:focus-visible,.x:focus-visible{outline:3px solid var(--k,var(--ink));outline-offset:2px}
+.focusing .node:not(.hot){opacity:.38}
+.nrow{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.num{font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--k);font-variant-numeric:tabular-nums;line-height:1}
+.verb{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--k);border:1px solid var(--k);border-radius:3px;padding:1px 6px;white-space:nowrap}
+.obj{font-weight:700;font-size:.98rem;line-height:1.3}
+.out{font-size:.88rem;color:var(--muted);line-height:1.4}
+.out b{color:var(--ink);font-weight:700}
+.exam{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--mono);font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.yrs{display:flex;gap:3px}
+.yrs i{font-style:normal;border:1px solid var(--line);border-radius:3px;padding:0 4px;line-height:1.5;opacity:.6}
+.yrs i.on{background:var(--k);border-color:var(--k);color:var(--surface);font-weight:600;opacity:1}
+.pp{min-width:460px}
+.pp .askrow td{border-top:2px solid var(--k)}
+.pp td[rowspan]{white-space:nowrap;font-weight:600}
+.pp td>p+p,.pp td>ul+p,.pp td>.scroll+p,.pp td>pre+p,.pp td>p+pre,.pp td>p+.scroll{margin-top:8px}
+.pp td>pre,.pp td>.scroll{margin-top:6px}
+.pp td ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.lab{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--k);margin-bottom:4px}
+dd ul{margin:4px 0 0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.parts{margin-top:6px;line-height:1.7}
+.blank td:first-child,.blank th:first-child{width:5em}
+.cmd{border-left:3px solid var(--k);padding:2px 0 2px 14px;display:flex;flex-direction:column;gap:6px}
+.cmd p{max-width:65ch}
+.pp td>p+.scroll{margin-top:6px}
+.pp td>pre+p,.pp td>p+p{margin-top:8px}
+.how{list-style:none;padding-left:0!important}
+.how b{font-family:var(--mono);display:inline-block;min-width:1.4em}
+.fn{font-size:.82rem;color:var(--muted);margin-top:8px}
+.leads{font-size:.8rem;color:var(--muted);padding-top:8px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:3px;line-height:1.35}
+.ld b{font-family:var(--mono);font-size:.74rem;color:var(--ink);font-weight:600;margin-right:2px;white-space:nowrap}
+.ld.mainld b{color:var(--k)}
+.leads .open{font-family:var(--mono);font-size:.72rem;align-self:flex-end;margin-top:2px}
+.labels{position:absolute;inset:0;pointer-events:none;z-index:3}
+.pill{position:absolute;transform:translate(-50%,-50%);background:var(--ink);color:var(--bg);font-size:.72rem;line-height:1.25;padding:3px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.pill.side{transform:translate(8px,-50%)}
+.key{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.85rem;color:var(--muted);align-items:center}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.key i{display:inline-block;width:34px;border-top:2.5px solid var(--ink)}
+.key i.dash{border-top:1.5px dashed var(--ink)}
+.tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--k);border:1px solid var(--k);border-radius:3px;padding:0 5px;margin-right:4px;white-space:nowrap}
+.where{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.where .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.where .rl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted);min-width:6.5em}
+.chip{font:inherit;font-size:.82rem;color:var(--ink);background:var(--surface);border:1px solid var(--k);border-radius:999px;padding:2px 10px;cursor:pointer}
+.chip b{font-family:var(--mono);font-size:.76rem;color:var(--k);margin-right:4px}
+.chip:hover{background:var(--k);color:var(--surface)} .chip:hover b{color:var(--surface)}
+.chip:focus-visible{outline:3px solid var(--k);outline-offset:2px}
+.chip.here{background:var(--k);color:var(--surface);cursor:default} .chip.here b{color:var(--surface)}
+.where .none{font-size:.82rem;color:var(--muted)}
+.leads .open{color:var(--k);font-weight:600}
+@media (max-width: 1099px){.labels,.key .hov{display:none}}
+
+.links h2{font-size:1.35rem;margin-bottom:4px}
+.links .sub{color:var(--muted);margin-bottom:14px;max-width:62ch}
+.linkgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 32px}
+.lrow{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:.92rem;align-items:baseline}
+.lrow .pair{font-family:var(--mono);font-size:.82rem;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lrow .pair .f{color:var(--k)}
+.lrow .why{min-width:0;color:var(--muted)}
+.foot{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.foot h2{font-size:.9rem;color:var(--ink)}
+.foot ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:2px}
+
+dialog.sheet{border:0;padding:0;margin:0 0 0 auto;height:100%;max-height:100%;width:min(820px,100%);max-width:100%;background:var(--surface);color:var(--ink);overflow-y:auto;box-shadow:-12px 0 40px rgba(0,0,0,.25)}
+dialog.sheet::backdrop{background:rgba(8,16,20,.55)}
+.shead{position:sticky;top:0;background:var(--surface);border-bottom:2px solid var(--k);padding:calc(16px + env(safe-area-inset-top,0px)) 22px 14px;display:flex;gap:12px;align-items:flex-start;z-index:2}
+.shead .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.shead h2{font-size:1.4rem;font-weight:700}
+.shead h2 .num{font-size:inherit;margin-right:8px}
+.x{font:inherit;font-family:var(--mono);background:none;border:1px solid var(--line);color:var(--ink);border-radius:4px;padding:4px 10px;cursor:pointer}
+.sbody{padding:18px 22px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:22px}
+.sbody h3{font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--k);font-family:var(--body);font-weight:700;margin-bottom:8px}
+.outcome{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--bg)}
+.outcome .lo{font-family:var(--mono);font-size:.78rem;color:var(--muted);display:block;margin-top:6px}
+dl{margin:0;display:flex;flex-direction:column;gap:10px}
+dt{font-weight:700}
+dd{margin:0;color:var(--ink)}
+.ex{display:flex;flex-direction:column;gap:10px}
+.ex p{max-width:65ch}
+.ex ul,.ex ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+pre{font-family:var(--mono);font-size:.84rem;line-height:1.55;background:var(--code-bg);color:var(--ink);border-radius:6px;padding:12px 14px;margin:0;overflow-x:auto;tab-size:3}
+code{font-family:var(--mono);font-size:.9em;background:var(--code-bg);padding:1px 5px;border-radius:3px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-weight:700}
+td.n,th.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.bad{color:var(--c);font-weight:700}
+.seen{font-size:.9rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+.seen b{color:var(--ink)}
+.conn{display:flex;flex-direction:column;gap:6px}
+.link{font:inherit;color:inherit;text-align:left;background:none;border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.link:hover{border-color:var(--k)}
+.link .dir{font-family:var(--mono);font-size:.74rem;color:var(--muted);white-space:nowrap}
+.link .dir b{color:var(--k);font-size:.9rem}
+.link .why{font-size:.9rem;min-width:0}
+.nav{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:16px}
+.btn{font:inherit;font-weight:700;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 14px;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:default}
+.fc{max-width:340px;width:100%;height:auto;display:block}
+.fc .s{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.fc .l{fill:none;stroke:var(--ink);stroke-width:1.5}
+.fc text{fill:var(--ink);font-family:var(--mono);font-size:12px;text-anchor:middle}
+.fc .ah{fill:var(--ink)}
+.sym td:first-child{width:86px}
+.sym td{vertical-align:middle}
+.fc .zone{fill:none;stroke:var(--muted);stroke-width:1;stroke-dasharray:5 4}
+.fc text.cap{text-anchor:start;font-size:11px;font-weight:600;fill:var(--k)}
+
+
+.check{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px 20px}
+.check>div{flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.check h2{font-size:1.2rem}
+.check p{color:var(--muted);max-width:65ch}
+.tcheck{background:var(--surface);border:1px dashed var(--k);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.tcheck .lab{margin:0}
+.tcheck p{font-size:.88rem;color:var(--muted)}
+.tcheck .btn.big{align-self:flex-start;background:var(--k);border-color:var(--k);color:var(--surface);font-size:.92rem;padding:8px 16px}
+.tcheck .adv{color:var(--ink)}
+.rv{font-size:.9rem;display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}
+.paper{font-size:.9rem;color:var(--muted);font-style:italic}
+.btn.big{background:var(--ink);color:var(--bg);border-color:var(--ink);padding:10px 20px;font-size:1rem}
+.btn.big:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+dialog.quiz{margin:0 auto;width:min(900px,100%)}
+.quiz .sbody h3{font-size:1.05rem;letter-spacing:0;text-transform:none;font-family:var(--display);color:var(--ink);margin-bottom:12px}
+.quiz .intro{color:var(--muted);max-width:65ch}
+.mcq{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:22px;counter-reset:mq}
+.mq{counter-increment:mq;display:flex;flex-direction:column;gap:10px;padding-left:14px;border-left:3px solid var(--line)}
+.mq.done{border-left-color:var(--k)}
+.mqq::before{content:counter(mq) ". ";font-family:var(--mono);font-weight:600;color:var(--k)}
+.mqq pre{margin-top:8px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px}
+.opt{font:inherit;color:inherit;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer;display:flex;gap:10px;align-items:baseline;min-width:0}
+.opt b{font-family:var(--mono);color:var(--muted)}
+.opt:hover:not(:disabled){border-color:var(--k)}
+.opt:focus-visible{outline:3px solid var(--k);outline-offset:2px}
+.opt:disabled{cursor:default;color:var(--ink)}
+.opt.right{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)} .opt.right b{color:var(--ok)}
+.opt.wrong{border-color:var(--bad);box-shadow:inset 0 0 0 1px var(--bad)} .opt.wrong b{color:var(--bad)}
+.fb{font-size:.92rem;max-width:70ch}
+.fb .v{font-weight:700} .fb .v.ok{color:var(--ok)} .fb .v.no{color:var(--bad)}
+.sq{display:flex;flex-direction:column;gap:18px;border-top:2px solid var(--ink);padding-top:16px}
+.sq>h4{font-family:var(--display);font-size:1.02rem;margin:0}
+.sq .case{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.part{display:flex;flex-direction:column;gap:10px;padding-left:14px;border-left:3px solid var(--line)}
+.part.done{border-left-color:var(--k)}
+.pq b{font-family:var(--mono);color:var(--k);margin-right:4px}
+.pm{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.part textarea{font:inherit;font-family:var(--mono);font-size:.88rem;width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px 10px;resize:vertical}
+.part .btn{align-self:flex-start}
+.fill{font:inherit;font-family:var(--mono);font-size:.9rem;background:var(--surface);color:var(--ink);border:1px solid var(--muted);border-radius:4px;padding:3px 6px;width:5.5em;max-width:100%}
+select.fill{width:auto} .fill.wide{width:15em}
+.fill.ok{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)}
+.fill.no{border-color:var(--bad);box-shadow:inset 0 0 0 1px var(--bad)}
+.corr{font-family:var(--mono);font-size:.8rem;color:var(--bad);margin-left:6px;white-space:nowrap}
+.auto{display:flex;flex-direction:column;gap:8px}
+.auto .line{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.model,.note{border:1px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
+.model ul{margin:0;padding-left:1.2em}
+.ticks{list-style:none;padding-left:0!important;display:flex;flex-direction:column;gap:6px}
+.ticks label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.ticks input{margin-top:.3em;flex:none;width:1.05em;height:1.05em;accent-color:var(--k)}
+.res{border-top:2px solid var(--ink);padding-top:18px;display:flex;flex-direction:column;gap:14px}
+.res .total{font-family:var(--display);font-size:1.5rem;font-weight:700}
+.res td.n{white-space:nowrap}
+.meter{display:block;height:8px;border-radius:4px;background:var(--line);min-width:90px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--k)}
+.res .acts{display:flex;flex-wrap:wrap;gap:10px}
+@media (max-width: 1099px){
+  .map{grid-template-columns:1fr;row-gap:30px}
+  svg.wires{display:none}
+  .colhead{min-height:0}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (min-width: 1100px){.mapwrap{padding-right:48px}}
+.none-pp{font-size:.9rem;color:var(--muted);border-left:3px solid var(--line);padding-left:12px}
+.ppnote{font-size:.82rem;color:var(--muted);margin-bottom:8px}
+</style>
+
+<div class="page">
+  <header class="top">
+    <div class="eyebrow">CAPE Information Technology · Unit 1 · Module 1</div>
+    <h1>Fundamentals of Information Technology</h1>
+    <p class="lede">The nine specific objectives are taught in four topics, in the order of the course outline, and each one feeds the next. The bold line is the teaching route through the module, and each card lists what it leads to and why. Select any objective to open its notes, key definitions, a worked example and the past paper questions that tested it. Each topic ends with a self-check.</p>
+    <div class="los">
+      <div><b>LO3</b>Distinguish among data, information, and knowledge, and evaluate information sources and IT tools.</div>
+      <div><b>LO4</b>Explain the information processing cycle and the scope and history of Information Technology.</div>
+      <div><b>LO8</b>Research and prepare for Paper 032, applying the problem-solving process to real-life problems under examination conditions.</div>
+    </div>
+  </header>
+
+  <div class="key"><span><i></i>Teaching route, as in the course outline</span><span class="hov"><i class="dash"></i>Other links, shown with their reasons when you point at or tab to a card</span></div>
+
+  <section class="mapwrap" aria-label="Objective map">
+    <div class="map" id="map">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+      <div class="labels" id="labels" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <h2>Sources</h2>
+    <ul>
+      <li>CAPE® Information Technology Syllabus (effective 2022), Unit 1 Module 1</li>
+      <li>CAPE Information Technology Unit 1 Paper 02, May/June 2025 and 2026</li>
+      <li>ABCAS course outline CIS101/2, 2026–27</li>
+    </ul>
+    <p>Practice only: nothing you enter is saved or sent.</p>
+  </footer>
+</div>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"></dialog>
+<dialog class="sheet quiz" id="quiz" aria-labelledby="quizTitle"></dialog>
+
+
+<script>
+const P = "M1_O";
+const TOPICS = {
+  a:{code:"1A", name:"The Field and History of IT", ask:"What is IT, and how did it get here?", lo:"LO4"},
+  b:{code:"1B", name:"Data, Information & Representation", ask:"What turns data into information, and how is it shown?", lo:"LO3"},
+  c:{code:"1C", name:"Information Sources", ask:"Where does information come from, and can we trust it?", lo:"LO3 · LO8"},
+  d:{code:"1D", name:"Processing & IT Tools", ask:"How is information processed, and which tools do the job?", lo:"LO3 · LO4"}
+};
+
+/* Figure 1 of 2026 Paper 02 Question 1(d), redrawn from the values printed on the paper (clockwise from the top) */
+const PIE = (() => {
+  const d = [["Cirrus (Ci)",3],["Cirrostratus (Cs)",4],["Cirrocumulus (Cc)",2],["Altostratus (As)",6],["Altocumulus (Ac)",5],["Stratus (St)",7],["Stratocumulus (Sc)",5],["Nimbostratus (Ns)",8],["Cumulus (Cu)",6],["Cumulonimbus (Cb)",9],["Cloud of vertical development",8]];
+  const tot = d.reduce((a, x) => a + x[1], 0), cx = 280, cy = 175, r = 110;
+  const pt = (a, rr) => [cx + rr * Math.sin(a), cy - rr * Math.cos(a)];
+  let a0 = 0, g = "";
+  d.forEach(([name, v]) => {
+    const a1 = a0 + v / tot * 2 * Math.PI, am = (a0 + a1) / 2;
+    const [x0, y0] = pt(a0, r), [x1, y1] = pt(a1, r), [vx, vy] = pt(am, r * 0.78), [lx, ly] = pt(am, r + 20);
+    g += '<path d="M' + cx + ' ' + cy + 'L' + x0.toFixed(1) + ' ' + y0.toFixed(1) + 'A' + r + ' ' + r + ' 0 0 1 ' + x1.toFixed(1) + ' ' + y1.toFixed(1) + 'Z" fill="none" stroke="currentColor" stroke-width="1.2"/>';
+    g += '<text x="' + vx.toFixed(1) + '" y="' + (vy + 4).toFixed(1) + '" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">' + v + '</text>';
+    g += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 4).toFixed(1) + '" text-anchor="' + (Math.sin(am) >= 0 ? "start" : "end") + '" font-size="12" fill="currentColor">' + name + '</text>';
+    a0 = a1;
+  });
+  return '<div class="scroll"><p style="text-align:center;font-weight:700;margin-top:8px">Chance of Precipitation by Type of Cloud</p><svg viewBox="0 0 560 345" style="width:100%;min-width:480px;max-width:560px;display:block;margin:0 auto;font-family:var(--body)" role="img" aria-label="Pie chart: chance of precipitation by type of cloud. ' +
+    d.map(x => x[0] + " " + x[1]).join(", ") + '.">' + g + '</svg><p style="text-align:center;font-weight:700">Figure 1. Graphical representation displaying results</p></div>';
+})();
+
+const OBJ = [
+{id:1, t:"a", verb:"Describe", obj:"Describe the field of Information Technology",
+ out:"say what IT covers and where its limits are, tell it apart from the related computing fields, and name the four professional bodies.",
+ defs:[
+  ["Information Technology","The use of computers, software and networks to capture, store, process, retrieve and communicate information, and the support of the people who use them."],
+  ["Computing","The umbrella over five related disciplines: Computer Science, Software Engineering, Computer Engineering, Information Systems and Information Technology."],
+  ["Computer Science","The study of computation, algorithms and the theory behind software."],
+  ["Software Engineering","Applying engineering methods to the design, building, testing and maintenance of large software systems."],
+  ["Computer Engineering","The design of computer hardware and of hardware–software systems such as embedded controllers."],
+  ["Information Systems","How people, processes, data and technology combine to meet an organisation’s goals and support its decisions."],
+  ["Usage and limitations","IT is used in business, education, health, government and entertainment. It is limited by cost, dependence on power and connectivity, security risks, skills shortages, and the fact that it cannot replace human judgement."],
+  ["Professional organisations","IEEE (Institute of Electrical and Electronics Engineers), BCS (British Computer Society, the Chartered Institute for IT), ACM (Association for Computing Machinery), AIS (Association for Information Systems). Members gain certification, research, networking and a code of ethics."]
+ ],
+ ex:`<p>One hospital, five computing jobs. Each sits in a different field.</p>
+ <div class="scroll"><table>
+ <tr><th>Field</th><th>Main focus</th><th>The job at the hospital</th></tr>
+ <tr><td>Computer Science</td><td>Theory and algorithms</td><td>Designs a faster algorithm for matching organ donors.</td></tr>
+ <tr><td>Software Engineering</td><td>Building large software reliably</td><td>Builds and tests the patient-records application.</td></tr>
+ <tr><td>Computer Engineering</td><td>Hardware and embedded systems</td><td>Designs the circuit board inside a heart monitor.</td></tr>
+ <tr><td>Information Systems</td><td>Information serving the organisation</td><td>Works out which reports doctors and managers need.</td></tr>
+ <tr><td>Information Technology</td><td>Deploying and supporting technology for users</td><td>Installs the network and supports staff computers.</td></tr>
+ </table></div>
+ <p>All five share programming, data, networking and security basics. What separates them is the focus. A “distinguish” question wants two rows, both sides stated, each with an example.</p>`},
+
+{id:2, t:"a", verb:"Outline", obj:"Outline the history of Information Technology",
+ out:"outline, in the right order, the main developments in computer hardware, software, the Internet and telecommunications, with one key fact for each.",
+ defs:[
+  ["Hardware generations","Vacuum tubes (1940s–50s, ENIAC 1945) → transistors (late 1950s–60s) → integrated circuits (mid-1960s–70s) → microprocessors (from the Intel 4004, 1971) → parallel processing and AI hardware."],
+  ["Computers by size and processing ability","Supercomputers (heaviest calculation, such as weather forecasting), mainframes (very many users and transactions), minicomputers (now midrange servers), microcomputers (desktops and laptops), mobile and embedded devices."],
+  ["Software","Machine code → assembly language → high-level languages (FORTRAN 1957, COBOL 1959) → operating systems and graphical user interfaces (Macintosh 1984) → open source, mobile apps and cloud services."],
+  ["Internet","ARPANET (1969) → TCP/IP adopted (1983) → the World Wide Web (Tim Berners-Lee, 1989–91) → broadband and the mobile Internet. The Web is one service that runs on the Internet."],
+  ["Telecommunications","Telegraph and Morse code (1840s) → telephone (1876) → radio (about 1901) → Telstar satellite (1962) → fibre optics (1970s–80s) → mobile networks 1G (1979) to 5G (2019)."]
+ ],
+ ex:`<p>“Outline THREE developments in telecommunications that led to today’s mobile Internet.”</p>
+ <div class="scroll"><table>
+ <tr><th>When</th><th>Development</th><th>Key fact</th></tr>
+ <tr><td>1840s</td><td>Electric telegraph</td><td>Morse code sent as pulses over wires.</td></tr>
+ <tr><td>1962</td><td>Telstar satellite</td><td>Relayed live television across the Atlantic.</td></tr>
+ <tr><td>1979–2019</td><td>Mobile networks 1G to 5G</td><td>From analogue voice calls to high-speed mobile data.</td></tr>
+ </table></div>
+ <p>Outline means basic steps only: three developments in order, one fact each. A long story about any one of them earns nothing extra.</p>`},
+
+{id:3, t:"b", verb:"Distinguish", obj:"Distinguish among data, information and knowledge",
+ out:"tell data, information and knowledge apart with linked examples, and judge information by its characteristics.",
+ defs:[
+  ["Data","Raw, unprocessed, unorganised facts with no meaning on their own, such as 89. Data can be qualitative (opinion-based) or quantitative (measurement-based), detailed or sampled."],
+  ["Information","Data that has been processed and organised so that it has meaning in context, such as “Kiara scored 89 in Mathematics and placed 5th of 21.”"],
+  ["Knowledge","Information applied, with experience and judgement, to make a decision."],
+  ["Characteristics of information","Relevance, timeliness, completeness, reliability, value, confidentiality, security, shareability, availability, lifespan, format and medium. Information is also a commodity: it can be bought and sold."],
+  ["Problems with information","Distortion, disguise, inconsistency, being incomprehensible, and being subject to interpretation."],
+  ["Inconsistent information","Information that conflicts with itself or with other information, such as two grading scales in one report."],
+  ["Subject to interpretation","Information that different readers could take to mean different things."]
+ ],
+ ex:`<p>Kiara’s report card (invented): Mathematics 89, 5th; Physical Education B, 1st; French 57, 24th; class of 21.</p>
+ <div class="scroll"><table>
+ <tr><th>Idea</th><th>From the report</th></tr>
+ <tr><td>Data</td><td>89; 5th. On their own they mean nothing.</td></tr>
+ <tr><td>Information</td><td>“Kiara scored 89 in Mathematics and placed 5th in a class of 21.”</td></tr>
+ <tr><td>Knowledge</td><td>Her lecturer, knowing she has improved all year, enters her for the Mathematics olympiad.</td></tr>
+ <tr><td>Inconsistent</td><td>PE uses a letter grade while every other subject uses a mark; French shows 24th in a class of 21.</td></tr>
+ <tr><td>Open to interpretation</td><td>The comment “Has potential” could be praise or a warning.</td></tr>
+ </table></div>
+ <p>For “distinguish”, define both terms and link the examples, so the information is visibly made from the data.</p>`},
+
+{id:4, t:"c", verb:"Discuss", obj:"Discuss various types of information sources",
+ out:"discuss the advantages and disadvantages of traditional, electronic, primary and secondary sources, in the context of a research task.",
+ defs:[
+  ["Traditional sources","People (interviews), books, journals, catalogues, magazines, newspapers, libraries."],
+  ["Electronic sources","CD-ROMs, DVDs, electronic databases, websites, blogs, wikis, social media."],
+  ["Primary source","Original, first-hand information: an interview, survey, experiment or diary."],
+  ["Secondary source","Information that interprets or summarises primary sources: a textbook, review article or encyclopaedia."],
+  ["Electronic databases versus printed journals","Searchable by keyword, reachable 24 hours a day from anywhere, readable by many users at once, easy to download and cite; may need a subscription."],
+  ["Why not secondary sources only","They may be out of date, carry another author’s interpretation or bias, and miss your local situation. Primary evidence fills the gap."]
+ ],
+ ex:`<p>Students research turtle nesting. They use the environment agency’s online nesting database and interview a local fisherman.</p>
+ <div class="scroll"><table>
+ <tr><th>Source</th><th>Type</th><th>Advantage</th><th>Disadvantage</th></tr>
+ <tr><td>Online nesting database</td><td>Electronic, secondary</td><td>Searchable, covers many beaches and years.</td><td>May need a login; may lag behind this season.</td></tr>
+ <tr><td>Interview with a fisherman</td><td>Traditional, primary</td><td>First-hand and current: local detail no database records.</td><td>One person’s memory and opinion, so it may be inaccurate.</td></tr>
+ </table></div>
+ <p>“Discuss” wants a point for and a point against, each developed in the scenario, and ideally a one-line conclusion: the interview is useful when checked against the database.</p>`},
+
+{id:5, t:"c", verb:"Identify", obj:"Identify characteristics of information sources",
+ out:"identify a source’s availability, cost, currency, depth, breadth of coverage, reliability, and format and medium, and say how to check each.",
+ defs:[
+  ["Availability","When and how easily the source can be reached: opening hours, logins, number of copies."],
+  ["Cost","What it costs to use: free, a one-off purchase or a subscription."],
+  ["Currency","How up to date the information is. Check the publication or last-updated date and compare with recent sources."],
+  ["Depth","The amount of detail on one topic. Check for data, methods and references."],
+  ["Breadth of coverage","The range of topics covered. An encyclopaedia is broad but shallow; a journal article is narrow but deep."],
+  ["Reliability","How far the source can be trusted: the author’s expertise, the publisher, references, expert review."],
+  ["Format and medium","The form the information takes (text, audio, video) and what carries it (print, disc, online)."]
+ ],
+ ex:`<div class="scroll"><table>
+ <tr><th>Source</th><th>Currency</th><th>Depth</th><th>Reliability</th><th>Cost</th></tr>
+ <tr><td>Printed textbook</td><td>Fixed at printing</td><td>Moderate</td><td>High, edited</td><td>Bought once</td></tr>
+ <tr><td>Journal database</td><td>Current</td><td>High</td><td>High, peer-reviewed</td><td>Subscription</td></tr>
+ <tr><td>News website</td><td>Very current</td><td>Low to moderate</td><td>Varies by outlet</td><td>Often free</td></tr>
+ <tr><td>Social media post</td><td>Very current</td><td>Low</td><td>Low, unreviewed</td><td>Free</td></tr>
+ </table></div>
+ <p>These are typical values, not fixed rules. Characteristics describe a source; the criteria in ${"M1_O"}6 turn them into a decision to use it or not.</p>`},
+
+{id:6, t:"c", verb:"Describe", obj:"Describe the criteria for selecting information sources",
+ out:"describe how bias, accuracy, cultural context, completeness, currency and refereeing decide whether a source should be used.",
+ defs:[
+  ["Bias","A one-sided view. Check the author’s purpose, who funds the source and whether the language is loaded."],
+  ["Accuracy","Whether the facts are correct. Check them against other trusted sources."],
+  ["Cultural context","Whether the information suits the setting of your problem, such as a small Caribbean island rather than a large country."],
+  ["Completeness","Whether the source covers the whole topic."],
+  ["Currency","Whether the information is recent enough for the task."],
+  ["Refereed and un-refereed","Refereed sources are reviewed by experts before publication (peer-reviewed journals). Un-refereed sources are not (most blogs, social media and many websites)."],
+  ["Information on the Internet","Anyone can publish, there may be no editor, pages change or vanish, and authors may be anonymous. Check the author, date, domain and references, and read laterally."]
+ ],
+ ex:`<p>Students interview a hotel owner about turtle nesting on the beach in front of his hotel.</p>
+ <div class="scroll"><table>
+ <tr><th>Decision</th><th>Criterion</th><th>Applied to this source</th></tr>
+ <tr><td>Accept</td><td>Currency</td><td>He sees the beach every day, so his account of this season’s nests is up to date.</td></tr>
+ <tr><td>Reject</td><td>Bias</td><td>Night lighting at his hotel can disturb nesting, so he may play the problem down to protect his business.</td></tr>
+ </table></div>
+ <p>To describe a criterion: name it (1 mark), then apply it to the source in the question (1 mark).</p>`},
+
+{id:7, t:"d", verb:"Explain", obj:"Explain information processing",
+ out:"explain each stage of the information processing cycle in context, classify a task by its stage, and compare manual with automated processing.",
+ defs:[
+  ["Input","Collecting, capturing or entering data."],
+  ["Processing","Collating, analysing, sorting and calculating: turning data into information."],
+  ["Output","Presenting or disseminating the information produced."],
+  ["Storage","Storing, retrieving and transmitting data and information for later use."],
+  ["Feedback","An optional evaluation or update that loops back to the input stage."],
+  ["Manual versus automated","Manual processing uses people, paper and simple tools. Automated processing uses computers: faster and more accurate for repetitive work, but it costs more and depends on power and equipment."]
+ ],
+ ex:`<p>A school canteen takes lunch orders on a tablet.</p>
+ <div class="scroll"><table>
+ <tr><th>Stage</th><th>In the canteen</th><th>Clue words in a task</th></tr>
+ <tr><td>Input</td><td>Students tap their lunch choices on the tablet.</td><td>record, collect, enter, scan</td></tr>
+ <tr><td>Processing</td><td>The system totals orders by meal and cost.</td><td>organise, sort, analyse, total</td></tr>
+ <tr><td>Output</td><td>The kitchen receives a preparation list; students get receipts.</td><td>report, present, print, display</td></tr>
+ <tr><td>Storage</td><td>Orders are saved to plan next week’s stock.</td><td>save, file, back up, retrieve</td></tr>
+ <tr><td>Feedback</td><td>An unpopular meal is dropped from next week’s menu.</td><td>review, adjust, update</td></tr>
+ </table></div>
+ <p>A bare list of the stages earns few marks: describe what happens at each stage in the scenario.</p>`},
+
+{id:8, t:"b", verb:"Identify", obj:"Identify ways of representing data and information",
+ out:"identify ways to represent data and information, from data types, signals and codes to charts and tables, and choose the right one for a purpose.",
+ defs:[
+  ["Data","Character, string, numeric, aural (sound) and visual (images). A name or phone number is a string; a mark that can be averaged is numeric; a class code such as 3B is alphanumeric."],
+  ["Information","Text, graphics, signals, sound, video, special-purpose notations (mathematical, scientific, musical), graphs and charts, and tables."],
+  ["Analogue and digital signals","An analogue signal varies continuously and can take any value; a digital signal has discrete values such as 0 and 1."],
+  ["Codes","Morse code (dots and dashes), musical symbols, binary, and ASCII (7 bits, 128 characters; “A” is 65). Unicode extends ASCII to about 160,000 characters."],
+  ["Choosing a chart","Pie chart for parts of one whole with few categories; bar chart to compare categories; line graph for change over time; table for exact values."]
+ ],
+ ex:`<div class="scroll"><table>
+ <tr><th>To show</th><th>Use</th><th>Why</th></tr>
+ <tr><td>Share of members preferring each of four careers</td><td>Pie chart</td><td>Parts of one whole, few slices.</td></tr>
+ <tr><td>CO<sub>2</sub> emissions of three car models</td><td>Bar chart</td><td>Separate categories compared at a glance.</td></tr>
+ <tr><td>Temperature through a day</td><td>Line graph</td><td>Shows the trend over time.</td></tr>
+ <tr><td>Exact battery capacity of each model</td><td>Table</td><td>Precise values can be read.</td></tr>
+ </table></div>
+ <p>The 2026 paper showed a pie chart of the chance of rain for eleven cloud types. Those values are separate, not shares of one total, so a bar chart would have served better.</p>`},
+
+{id:9, t:"d", verb:"Justify", obj:"Justify the tools used in Information Technology",
+ out:"justify the choice of a hardware, software or Internet tool for a task, weighing its advantages and disadvantages.",
+ defs:[
+  ["Modem","MOdulator–DEModulator: converts a computer’s digital signals to analogue for transmission and back again."],
+  ["Search engine","Finds web pages by keyword. Fast, but results vary in quality."],
+  ["VoIP","Voice over Internet Protocol: voice calls carried over the Internet. Cheap, but needs a stable connection."],
+  ["SMS","Short text messages to any phone. Reaches people without data, but messages are short and codes can be intercepted."],
+  ["Mailing list","One message reaches every subscriber at once; only reaches people who signed up."],
+  ["Discussion forum or message board","Threaded discussion kept online over days; needs moderation."],
+  ["FTP and telnet","FTP uploads and downloads files; telnet gives remote command-line access. Both send data unencrypted, so SFTP and SSH have replaced them."],
+  ["Social media, web-conferencing, cross-platform messaging","Wide, fast reach that people can reply to; live meetings with video and screen sharing; chat across different devices, such as WhatsApp."]
+ ],
+ ex:`<p>A CAPE class must keep learning while the campus is closed after a hurricane.</p>
+ <div class="scroll"><table>
+ <tr><th>Need</th><th>Tool</th><th>Justification</th><th>Drawback</th></tr>
+ <tr><td>A live lesson</td><td>Web-conferencing</td><td>Students see and hear the lecturer and her screen from home.</td><td>Needs bandwidth.</td></tr>
+ <tr><td>A notice to every parent</td><td>Mailing list</td><td>One message reaches all of them at once.</td><td>Only reaches those on the list.</td></tr>
+ <tr><td>Students without data</td><td>SMS</td><td>Works on any phone, with no Internet.</td><td>Short messages only.</td></tr>
+ </table></div>
+ <p>Justify means name the tool, then explain why it is the right choice for this task. A drawback shows balance.</p>`}
+];
+
+const EDGES = [
+ [1,2,"Knowing what the field covers comes before tracing how it grew.","then how it grew",1],
+ [2,3,"After the history of the technology comes what it handles: data, information and knowledge.","what it handles",1],
+ [3,8,"Once you can tell data from information, you learn the forms each can take.","the forms they take",1],
+ [8,4,"With the forms of information known, the next question is where information comes from.","where it comes from",1],
+ [4,5,"Once you know the kinds of sources, you compare them by their characteristics.","compare them",1],
+ [5,6,"Characteristics describe a source; the criteria turn them into a decision to accept or reject it.","then decide",1],
+ [6,7,"The sources you choose supply the data that the processing cycle turns into information.","data to process",1],
+ [7,9,"Tools carry out each stage of the cycle and share the result.","tools for each stage",1],
+ [1,9,"The scope of IT explains why its tools span hardware, software and communication.","the tools of the field",0],
+ [2,8,"Morse code and ASCII are milestones in IT history as well as ways of representing data.","Morse code and ASCII",0],
+ [2,9,"The modem, e-mail and VoIP each grew out of the history of telecommunications.","today’s tools",0],
+ [3,5,"A source’s reliability and currency decide the quality of the information it gives.","quality depends on the source",0],
+ [3,6,"Accuracy, completeness and currency are both criteria for a source and qualities of information.","shared qualities",0],
+ [3,7,"The processing cycle is how raw data becomes information.","data becomes information",0],
+ [8,7,"The output stage needs a form: text, a table, a chart, sound or a signal.","the form of the output",0],
+ [8,9,"A modem converts between digital and analogue signals.","signals need a modem",0],
+ [4,9,"Electronic sources such as databases and social media are reached through Internet tools.","reached with tools",0]
+];
+const SHORT = {1:"The field of IT",2:"History of IT",3:"Data, information, knowledge",4:"Types of sources",5:"Characteristics",6:"Selection criteria",7:"Information processing",8:"Representation",9:"IT tools"};
+const LAST_LEAD = "Module 2, Information Systems";
+const LAST_NONE = "Module 2, and your Paper 032 research.";
+
+/* Command words: definitions follow the glossary in the CXC syllabus */
+const VERBS = {
+ Describe:"Provide detailed factual information on the appearance or arrangement of a structure, or the sequence of a process.",
+ Outline:"Write an account or description that gives the basic steps only.",
+ Distinguish:"Briefly note the differences between items that place them in separate categories.",
+ Discuss:"Present a reasoned argument, considering points both for and against.",
+ Identify:"Name or point out specific components or features. A short, exact answer is expected.",
+ Explain:"Give reasons based on recall; account for. A definition alone is not enough: say why or how.",
+ Justify:"Explain the correctness of a choice or statement: give the reasons it is right for the situation."
+};
+const CMDEX = {
+ 1:"“Describe the field of Information Technology.” You would say what IT does, where it is used, what limits it, and how it differs from a related field such as Computer Science.",
+ 2:"“Outline THREE developments in telecommunications.” You would give three developments in order, each with one key fact.",
+ 3:"“Identify TWO examples of data and ONE example of knowledge from the report in Figure 1” (2025). You would pick raw values as data and a judgement made from the results as knowledge.",
+ 4:"“Discuss ONE advantage and ONE disadvantage of the traditional source of information identified in (a) (i)” (2025). You would develop one point for and one against, each tied to the project.",
+ 5:"“Explain how Geyola can confirm the following in her SBA. (i) The currency of information” (2026). You would name what currency means and say how to check it.",
+ 6:"“Describe ONE criteria for accepting this information and ONE criteria for rejecting it” (2025). You would name each criterion and apply it to the activist’s interview.",
+ 7:"“Identify the stage of the information processing cycle that Geyola has to attend to next” (2026). After analysis (processing) comes output.",
+ 8:"“Outline ONE way, other than in a table format, that the data could be presented” (2026). You would name a chart and say why it suits the data.",
+ 9:"“Identify ONE suitable tool they could use to encourage other students to support turtle protection. Justify your answer” (2025). You would name the tool and explain why it fits that purpose."
+};
+
+/* Paper 02, Module 1 (Section I in 2025), May/June 2025 and 2026. Question wording is quoted as printed.
+   y year, q question, ask what was asked, m marks, ans suggested answer, how [marks, for what].
+   CXC mark schemes were not available: the "how" lists are suggested allocations that add up to the printed marks. */
+const S25Q1 = `<p>Two groups of students were gathering information for a project on the nesting patterns of sea turtles. Group A used electronic sources while Group B used traditional sources.</p>`;
+const S25Q2 = `<p>Figure 1 below shows a section of Johan’s Term 2 report card.</p>
+<div class="scroll"><table>
+<tr><th colspan="4" style="text-align:center">Student Report Card</th></tr>
+<tr><td colspan="2"><b>Name:</b> Johan<br><b>Class:</b> 3B</td><td colspan="2"><b>Term:</b> 2<br><b>No. of Students:</b> 21</td></tr>
+<tr><th>Subject</th><th>Marks</th><th>Position</th><th>Comment for Term 2</th></tr>
+<tr><td>Art</td><td class="n">88</td><td>3rd</td><td>A pleasing performance this term. Johan is a talented and creative student.</td></tr>
+<tr><td>English</td><td class="n">73</td><td>9th</td><td>Marked improvement. Keep it up!</td></tr>
+<tr><td>French</td><td class="n">57</td><td>24th</td><td>Johan has potential but must apply greater effort to succeed.</td></tr>
+<tr><td>Mathematics</td><td class="n">89</td><td>5th</td><td>A dedicated student but needs to ensure that he looks over his work more carefully. A good term’s work.</td></tr>
+<tr><td>Physical Education</td><td class="n">B</td><td>1st</td><td>Johan is an excellent student and has Olympic potential.</td></tr>
+<tr><td>Science</td><td class="n">77</td><td>4th</td><td>Consistent and pleasing performance.</td></tr>
+<tr><td>Spanish</td><td class="n">91</td><td>15th</td><td>Johan’s grasp of vocabulary and language structure along with his fluency is impressive.</td></tr>
+</table></div>
+<p style="text-align:center;font-weight:700">Figure 1. A section of Johan’s Term 2 report card</p>`;
+const S26Q1 = `<p>Geyola is working on her school-based assessment (SBA) regarding types of clouds. She is using various information sources, relying on both academic journals and online databases from primary and secondary sources.</p>`;
+const S26Q2 = `<p>Some students conducted a group project to determine whether electric or hybrid cars produce less pollution and provide a better experience for drivers. They shared the data gathered in Table 1.</p>
+<p style="text-align:center;font-weight:700">TABLE 1: DATA FOR ELECTRIC/HYBRID CARS</p>
+<div class="scroll"><table>
+<tr><th>Car Model</th><th>Type</th><th class="n">Fuel Efficiency (MPGe)</th><th class="n">Battery Capacity (kWh)</th><th class="n">CO<sub>2</sub> Emissions (g/km)</th></tr>
+<tr><td>TP1</td><td>Hybrid</td><td class="n">56</td><td class="n">1.3</td><td class="n">80</td></tr>
+<tr><td>TM3</td><td>Electric</td><td class="n">142</td><td class="n">50</td><td class="n">0</td></tr>
+<tr><td>HC2</td><td>Hybrid</td><td class="n">110</td><td class="n">17</td><td class="n">46</td></tr>
+</table></div>`;
+
+const PAPERS = {
+ 1:[], 2:[],
+
+ 3:[{y:2025,q:"2(a)",m:3,ask:S25Q2 + `<p>Identify TWO examples of data and ONE example of knowledge from the report in Figure 1.</p><p class="parts">(i) Data [2 marks]<br>(ii) Knowledge [1 mark]</p>`,
+   ans:`<p><b>(i) Data:</b> any two raw values, such as 88 and 3rd, or B and 21.</p><p><b>(ii) Knowledge:</b> a judgement the teacher made from the results and experience, such as “Johan is a talented and creative student” or “Johan has Olympic potential.”</p>`,
+   how:[[1,"(i) first example of data"],[1,"(i) second, different example of data"],[1,"(ii) a valid example of knowledge"]]},
+  {y:2025,q:"2(b)",m:4,ask:S25Q2 + `<p>Using the report in Figure 1, outline ONE example of EACH of the following types of information.</p><p class="parts">(i) Inconsistent information [2 marks]<br>(ii) Open to interpretation [2 marks]</p>`,
+   ans:`<p><b>(i) Inconsistent information:</b> Physical Education is graded with the letter B while every other subject has a numeric mark, so the results cannot be compared or averaged. Or: French shows a position of 24th, yet there are only 21 students.</p><p><b>(ii) Open to interpretation:</b> “Johan has potential but must apply greater effort to succeed.” Readers may disagree whether this is praise or a warning, because it gives no measure.</p>`,
+   how:[[1,"(i) a valid example of inconsistent information from the report"],[1,"(i) outline of why it is inconsistent"],[1,"(ii) a valid example of information open to interpretation"],[1,"(ii) outline of why it could be read in different ways"]]},
+  {y:2025,q:"2(d)",m:6,ask:S25Q2 + `<p>The reports could be delivered by two methods: traditional mail and electronic mail. Evaluate which method would be most suitable. Justify your answer using the following characteristics.</p><p class="parts">(i) Timeliness<br>(ii) Security<br>(iii) Shareability</p>`,
+   ans:`<p><b>Electronic mail is more suitable.</b></p><ul><li><b>Timeliness:</b> e-mail arrives within seconds, while traditional mail can take days and may arrive after it is needed.</li><li><b>Security:</b> e-mail can be sent only to the parent’s address and the report attached as a password-protected file, while a letter can be lost or opened by someone else. (E-mail can be hacked if the account is weak.)</li><li><b>Shareability:</b> an e-mailed report can be forwarded to both parents, saved and printed at once; a paper report is a single copy.</li></ul>`,
+   how:[[2,"(i) timeliness: comparison of the two methods, with the better one identified"],[2,"(ii) security: comparison of the two methods, with the better one identified"],[2,"(iii) shareability: comparison of the two methods, with the better one identified"]]},
+  {y:2026,q:"2(b)",m:6,ask:S26Q2 + `<p>Using data from Table 1, explain how CO<sub>2</sub> emissions are affected by EACH of the following.</p><p class="parts">(i) Fuel efficiency [3 marks]<br>(ii) Battery capacity [3 marks]</p>`,
+   ans:`<p><b>(i) Fuel efficiency:</b> the higher the fuel efficiency, the lower the emissions. TP1 at 56 MPGe emits 80 g/km, HC2 at 110 MPGe emits 46 g/km, and TM3 at 142 MPGe emits 0 g/km. A more efficient car burns less fuel per kilometre, so it produces less CO<sub>2</sub>.</p><p><b>(ii) Battery capacity:</b> the larger the battery, the lower the emissions. TP1’s 1.3 kWh battery gives 80 g/km, HC2’s 17 kWh gives 46 g/km, and TM3’s 50 kWh gives 0 g/km. A bigger battery lets the car travel further on electricity instead of fuel.</p>`,
+   how:[[1,"(i) relationship stated: higher efficiency, lower emissions"],[1,"(i) figures from Table 1 quoted"],[1,"(i) reason: less fuel burned per kilometre"],[1,"(ii) relationship stated: larger battery, lower emissions"],[1,"(ii) figures from Table 1 quoted"],[1,"(ii) reason: more of the driving is on electricity"]]},
+  {y:2026,q:"2(c)",m:3,ask:S26Q2 + `<p>List THREE other examples of information <b>not</b> listed in Table 1 that can influence drivers to purchase an electric or hybrid car.</p>`,
+   ans:`<p>Any three: purchase price; driving range on a full charge or tank; charging time; availability of charging stations; maintenance costs; battery lifespan or warranty; government incentives or duty concessions; resale value.</p>`,
+   how:[[1,"first valid example not in Table 1"],[1,"second, different example"],[1,"third, different example"]]}],
+
+ 4:[{y:2025,q:"1(a)(i)",m:2,ask:S25Q1 + `<p>Identify ONE electronic source and ONE traditional source acceptable for this project.</p><p class="parts">Electronic source<br>Traditional source</p>`,
+   ans:`<p><b>Electronic source:</b> a sea turtle conservation website or an online wildlife database.</p><p><b>Traditional source:</b> an interview with a local fisherman or turtle warden, or a library book on sea turtles.</p>`,
+   how:[[1,"a suitable electronic source"],[1,"a suitable traditional source"]]},
+  {y:2025,q:"1(a)(ii)",m:4,ask:S25Q1 + `<p>Discuss ONE advantage and ONE disadvantage of the traditional source of information identified in (a) (i).</p><p class="parts">Advantage<br>Disadvantage</p>`,
+   ans:`<p>For an interview with a local fisherman:</p><ul><li><b>Advantage:</b> it is first-hand and current, giving local detail about where and when turtles nest that may not be recorded anywhere else.</li><li><b>Disadvantage:</b> it is one person’s memory and opinion, so it may be inaccurate or biased and should be checked against other sources.</li></ul><p>For a library book: reliable because it is edited and published; but it may be out of date or not about local beaches.</p>`,
+   how:[[1,"advantage stated"],[1,"advantage developed in the context of the project"],[1,"disadvantage stated"],[1,"disadvantage developed in the context of the project"]]},
+  {y:2026,q:"1(a)",m:4,ask:S26Q1 + `<p>Outline TWO advantages of using electronic databases over traditional methods of accessing academic journals.</p>`,
+   ans:`<ul><li>Electronic databases can be searched by keyword, so Geyola finds relevant articles on cloud types in seconds instead of browsing printed volumes.</li><li>They can be reached 24 hours a day from any device with Internet access, so she is not limited by library opening hours or location.</li></ul><p>Also acceptable: many users can read the same article at once; articles can be downloaded, saved and cited easily.</p>`,
+   how:[[1,"first advantage stated"],[1,"first advantage outlined"],[1,"second advantage stated"],[1,"second advantage outlined"]]},
+  {y:2026,q:"1(b)",m:2,ask:S26Q1 + `<p>State TWO reasons why considering secondary information sources ONLY should not be recommended.</p>`,
+   ans:`<ul><li>Secondary sources may be out of date.</li><li>They contain another author’s interpretation, which may be biased or may not reflect local conditions, so first-hand primary data is also needed.</li></ul>`,
+   how:[[1,"first valid reason"],[1,"second, different reason"]]}],
+
+ 5:[{y:2026,q:"1(c)",m:4,ask:S26Q1 + `<p>Explain how Geyola can confirm the following in her SBA.</p><p class="parts">(i) The currency of information [2 marks]<br>(ii) The depth of information required [2 marks]</p>`,
+   ans:`<p><b>(i) Currency:</b> check the date each source was published or last updated, and compare its information with recent sources such as the national meteorological service.</p><p><b>(ii) Depth:</b> check how much detail each source gives (data, methods, references), and whether it covers each cloud type fully enough for the SBA rather than in summary.</p>`,
+   how:[[1,"(i) check the publication or last-updated date"],[1,"(i) compare with recent, reliable sources"],[1,"(ii) check the level of detail: data, methods, references"],[1,"(ii) check it covers the topic fully enough for the SBA"]]}],
+
+ 6:[{y:2025,q:"1(b)",m:4,ask:S25Q1 + `<p>Group B interviewed an activist who commented about the decline in the population of sea turtles. Describe ONE criteria for accepting this information and ONE criteria for rejecting it.</p><p class="parts">Accepting<br>Rejecting</p>`,
+   ans:`<p><b>Accepting:</b> reliability or expertise. The activist works directly on turtle protection, so is likely to have accurate, up-to-date knowledge of the decline.</p><p><b>Rejecting:</b> bias. An activist campaigns for turtle protection, so may exaggerate the decline to win support; the claims should be checked against official data.</p><p>Also acceptable: accuracy, currency or completeness, named and applied to the activist.</p>`,
+   how:[[1,"accepting: criterion named"],[1,"accepting: criterion applied to the activist’s information"],[1,"rejecting: criterion named"],[1,"rejecting: criterion applied to the activist’s information"]]}],
+
+ 7:[{y:2025,q:"1(c)",m:3,ask:S25Q1 + `<p>Group A completed the project by performing the following tasks.</p><p class="parts">Task 1. Reporting on the causes of endangerment, conservation strategies, and success stories.<br>Task 2. Organizing the list of nesting locations, threats, and conservation efforts.<br>Task 3. Presenting a three-minute presentation on what they learnt about sea turtles.</p><p>Using the information processing cycle, identify the stage to which EACH task belongs.</p><p class="parts">(i) Task 1<br>(ii) Task 2<br>(iii) Task 3</p>`,
+   ans:`<p><b>(i)</b> Task 1, reporting: output.<br><b>(ii)</b> Task 2, organizing: processing.<br><b>(iii)</b> Task 3, presenting: output.</p><p>Look at the verb: organising, sorting and analysing are processing; reporting and presenting are output.</p>`,
+   how:[[1,"(i) output"],[1,"(ii) processing"],[1,"(iii) output"]]},
+  {y:2026,q:"1(e)",m:1,ask:S26Q1 + `<p>Geyola has completed the analysis of the information for her SBA. Identify the stage of the information processing cycle that Geyola has to attend to next.</p>`,
+   ans:`<p>Output: analysis is processing, so she now presents her results.</p>`,
+   how:[[1,"output"]]}],
+
+ 8:[{y:2025,q:"2(c)",m:2,ask:S25Q2 + `<p>Complete the table below by using examples from the report to match the data with the correct data types.</p><div class="scroll"><table class="blank"><tr><th>Data Type</th><th>Data</th></tr><tr><td>Alphanumeric</td><td></td></tr><tr><td>String</td><td></td></tr></table></div>`,
+   ans:`<div class="scroll"><table><tr><th>Data Type</th><th>Data</th></tr><tr><td>Alphanumeric</td><td>3B (the class)</td></tr><tr><td>String</td><td>Johan, or a subject name such as Mathematics</td></tr></table></div>`,
+   how:[[1,"a valid alphanumeric example from the report"],[1,"a valid string example from the report"]]},
+  {y:2026,q:"1(d)",m:4,ask:S26Q1 + `<p>Geyola created a graphical representation of data that she gathered. The chart is shown in Figure 1 below.</p>` + PIE + `<p class="parts">(i) State TWO benefits of using the graphical representation shown in Figure 1 above to display data. [2 marks]<br>(ii) Explain why the graphical representation in Figure 1 may not have been the best way for Geyola to present her results. [2 marks]</p>`,
+   ans:`<p><b>(i)</b> Any two: every cloud type is shown in one diagram; the larger values stand out at a glance; it is visually appealing and easy to read without calculation.</p><p><b>(ii)</b> A pie chart shows parts of one whole, but each value is a separate chance of precipitation for one cloud type, not a share of a total. With eleven slices of similar size they are hard to compare; a bar chart would compare the cloud types more clearly.</p>`,
+   how:[[1,"(i) first benefit"],[1,"(i) second, different benefit"],[1,"(ii) the values are not parts of one whole, or there are too many similar slices"],[1,"(ii) consequence, or a better alternative such as a bar chart"]]},
+  {y:2026,q:"2(d)",m:2,ask:S26Q2 + `<p>Outline ONE way, other than in a table format, that the data could be presented.</p>`,
+   ans:`<p>A bar chart, with one bar per car model for each measure such as CO<sub>2</sub> emissions, so the models can be compared at a glance. (A scatter graph of fuel efficiency against emissions is also acceptable.)</p>`,
+   how:[[1,"a suitable way named"],[1,"outline of how or why it presents the data"]]}],
+
+ 9:[{y:2025,q:"1(d)",m:2,ask:S25Q1 + `<p>The students would like to showcase their projects on the school’s website. Identify ONE suitable tool they could use to encourage other students to support turtle protection. Justify your answer.</p>`,
+   ans:`<p>An online petition or pledge form on the website. Students can sign from any device in seconds, and the growing number of signatures encourages others to support turtle protection.</p><p>Also acceptable: a discussion forum, a blog with comments, or social media share buttons, with a reason tied to encouraging support.</p>`,
+   how:[[1,"a suitable tool"],[1,"justification linked to encouraging support"]]},
+  {y:2026,q:"2(a)",m:4,ask:S26Q2 + `<p>State TWO benefits of using each of the following tools to obtain the information in Table 1.</p><p class="parts">(i) Mailing list [2 marks]<br>(ii) Social media tools [2 marks]</p>`,
+   ans:`<p><b>(i) Mailing list:</b> one message reaches every subscribed car owner at once; it targets people already interested, and replies arrive in one inbox.</p><p><b>(ii) Social media tools:</b> reach a large audience quickly and for free; people can reply, comment and share the request, including photos or videos.</p>`,
+   how:[[1,"(i) first benefit of a mailing list"],[1,"(i) second, different benefit"],[1,"(ii) first benefit of social media tools"],[1,"(ii) second, different benefit"]]}]
+};
+const YEARS = [2025,2026];
+
+const MCQ = [
+ /* M1_O1 */
+ {o:1,q:"Which field is concerned MAINLY with how information and technology help an organisation meet its goals?",
+  opts:["Computer Engineering","Information Systems","Computer Science","Software Engineering"],a:1,
+  why:"Information Systems studies how people, processes, data and technology serve an organisation’s goals and decisions."},
+ {o:1,q:"Which field focuses on the theory of computation and the design of algorithms?",
+  opts:["Information Technology","Computer Science","Information Systems","Computer Engineering"],a:1,
+  why:"Computer Science is the study of computation, algorithms and the theory behind software."},
+ {o:1,q:"Designing the circuit board and firmware for a smart thermostat is MOST closely linked to",
+  opts:["Computer Engineering","Information Systems","Software Engineering","Information Technology"],a:0,
+  why:"Computer Engineering designs hardware and hardware–software systems such as embedded controllers."},
+ {o:1,q:"Which of the following is a LIMITATION of Information Technology?",
+  opts:["It speeds up repetitive tasks","It depends on a reliable power supply and connectivity","It allows information to be shared widely","It stores large volumes of data"],a:1,
+  why:"The other three are benefits. Dependence on power and connectivity limits what IT can do, especially after a storm."},
+ {o:1,q:"The acronym BCS stands for",
+  opts:["Business Computing Society","British Computer Society","Board of Computer Scientists","British Communications Service"],a:1,
+  why:"BCS is the British Computer Society, the Chartered Institute for IT."},
+ {o:1,q:"Which professional organisation is mainly for people who study and work in information systems?",
+  opts:["IEEE","ACM","AIS","BCS"],a:2,
+  why:"AIS is the Association for Information Systems."},
+ {o:1,q:"Which job is MOST clearly an Information Technology career?",
+  opts:["Network administrator","Compiler theory researcher","Microchip designer","Business process analyst"],a:0,
+  why:"Installing, configuring and supporting a network for users is IT work. Theory, chip design and business analysis belong mainly to Computer Science, Computer Engineering and Information Systems."},
+ {o:1,q:"Which statement about Software Engineering is correct?",
+  opts:["It applies engineering methods to designing, building, testing and maintaining large software systems","It is the study of computer hardware circuits","It is mainly concerned with supporting end users","It deals only with business reports"],a:0,
+  why:"Software Engineering is the disciplined building of large software."},
+ {o:1,q:"One benefit of joining a professional organisation such as the ACM is",
+  opts:["free computer hardware","access to research, certification and a code of ethics","exemption from examinations","guaranteed employment"],a:1,
+  why:"Professional bodies offer research, certification, networking and a code of ethics."},
+
+ /* M1_O2 */
+ {o:2,q:"Which component defined the FIRST generation of computers?",
+  opts:["Transistors","Vacuum tubes","Integrated circuits","Microprocessors"],a:1,
+  why:"First-generation computers such as ENIAC (1945) used vacuum tubes."},
+ {o:2,q:"The microprocessor, which put a whole CPU on one chip, is associated with which generation?",
+  opts:["Second","Third","Fourth","First"],a:2,
+  why:"The fourth generation began with microprocessors such as the Intel 4004 (1971)."},
+ {o:2,q:"Second-generation computers were smaller and more reliable because vacuum tubes were replaced by",
+  opts:["transistors","integrated circuits","microprocessors","punched cards"],a:0,
+  why:"Transistors replaced vacuum tubes in the late 1950s."},
+ {o:2,q:"Which network, started in 1969, grew into the Internet?",
+  opts:["ARPANET","The World Wide Web","Telstar","Ethernet"],a:0,
+  why:"ARPANET was the US research network that became the Internet."},
+ {o:2,q:"Who proposed the World Wide Web?",
+  opts:["Charles Babbage","Tim Berners-Lee","Alan Turing","Bill Gates"],a:1,
+  why:"Tim Berners-Lee proposed the Web in 1989 and built it in 1990–91."},
+ {o:2,q:"Which is the correct order of telecommunications developments, from earliest to latest?",
+  opts:["Telephone, telegraph, satellite, fibre optics","Telegraph, telephone, satellite, fibre optics","Telegraph, satellite, telephone, fibre optics","Telephone, satellite, telegraph, fibre optics"],a:1,
+  why:"Telegraph (1840s), telephone (1876), Telstar satellite (1962), fibre optics (1970s–80s)."},
+ {o:2,q:"A bank needs a computer that processes thousands of transactions from many users at the same time with very high reliability. Which category is MOST suitable?",
+  opts:["Microcomputer","Mainframe","Embedded computer","Tablet"],a:1,
+  why:"Mainframes are built for very many simultaneous users and transactions."},
+ {o:2,q:"Which development made computers easier for ordinary users by replacing typed commands with windows, icons and menus?",
+  opts:["High-level languages","Graphical user interfaces","Assembly language","Machine code"],a:1,
+  why:"Graphical user interfaces, popularised by the Macintosh in 1984."},
+ {o:2,q:"Which statement about the Internet and the World Wide Web is correct?",
+  opts:["They are the same thing","The Web is a service that runs on the Internet","The Internet runs on the Web","The Web came before the Internet"],a:1,
+  why:"The Internet is the network; the Web is one service that uses it."},
+
+ /* M1_O3 */
+ {o:3,q:"Which of the following is data?",
+  opts:["The class average was 68.","42","Sales rose by 10% this month.","The manager decided to hire two more staff."],a:1,
+  why:"42 on its own has no context. The others are processed information or a decision based on it."},
+ {o:3,q:"A doctor studies a patient’s test results and uses her experience to decide on a treatment. This is an example of",
+  opts:["data","information","knowledge","input"],a:2,
+  why:"Knowledge is information applied with experience and judgement to make a decision."},
+ {o:3,q:"Which is an example of qualitative data?",
+  opts:["Height: 1.72 m","Temperature: 31 °C","“The service was friendly”","15 customers"],a:2,
+  why:"Qualitative data is opinion-based and descriptive. The others are measurements."},
+ {o:3,q:"A report gives some marks as numbers and others as letter grades. This information is",
+  opts:["inconsistent","timely","confidential","complete"],a:0,
+  why:"Two different grading scales in one report conflict with each other."},
+ {o:3,q:"Information that arrives after the decision it was needed for lacks",
+  opts:["relevance","timeliness","accuracy","shareability"],a:1,
+  why:"Timely information is available when it is needed."},
+ {o:3,q:"Which statement BEST distinguishes information from data?",
+  opts:["Information is always numeric","Information is data that has been processed so that it has meaning","Information is unprocessed facts","Information cannot be stored"],a:1,
+  why:"Data becomes information once it is processed and given context."},
+ {o:3,q:"A report comment says “Has potential.” Some parents read it as praise and others as a warning. The comment is",
+  opts:["inconsistent","subject to interpretation","incomplete","distorted"],a:1,
+  why:"Different readers can take it to mean different things."},
+ {o:3,q:"A graph’s vertical axis starts at 90 instead of 0, so a small rise looks huge. This is an example of",
+  opts:["distortion","shareability","lifespan","confidentiality"],a:0,
+  why:"The presentation misrepresents the size of the change."},
+ {o:3,q:"Market research reports sold to businesses show information as",
+  opts:["a commodity","a qualitative value","raw data","knowledge"],a:0,
+  why:"Information that is bought and sold is a commodity."},
+
+ /* M1_O4 */
+ {o:4,q:"Which of the following is a primary source?",
+  opts:["A textbook chapter","An encyclopaedia entry","An interview the student carried out with a fisherman","A review article summarising several studies"],a:2,
+  why:"A primary source is original and first-hand."},
+ {o:4,q:"Which is an electronic information source?",
+  opts:["A printed newspaper","An online journal database","A library catalogue card","A face-to-face interview"],a:1,
+  why:"Electronic sources are reached through a computer or device."},
+ {o:4,q:"One advantage of an electronic database over printed academic journals is that it",
+  opts:["never needs a subscription","can be searched by keyword from anywhere at any time","is always free of bias","contains only primary sources"],a:1,
+  why:"Keyword search and 24-hour remote access are the main advantages (2026 Paper 2, 1(a))."},
+ {o:4,q:"A wiki is BEST described as",
+  opts:["a website whose content many users can edit","a printed reference book","a type of search engine","a refereed journal"],a:0,
+  why:"Wikipedia is the best-known wiki."},
+ {o:4,q:"A disadvantage of using people as an information source is that",
+  opts:["the information is always out of date","the information may be biased or based on faulty memory","people cannot give first-hand information","interviews cannot be recorded"],a:1,
+  why:"Interviews give first-hand detail, but people’s memory and opinions can be wrong."},
+ {o:4,q:"Why should a researcher NOT rely ONLY on secondary sources?",
+  opts:["Secondary sources are always inaccurate","They may be out of date or reflect another author’s interpretation","They cannot be found in libraries","They are the same as primary sources"],a:1,
+  why:"Secondary sources may be dated or biased and may not fit local conditions (2026 Paper 2, 1(b))."},
+ {o:4,q:"Which is a secondary source?",
+  opts:["A diary written during a hurricane","Raw survey responses","A textbook summary of several studies","Photographs taken by the researcher"],a:2,
+  why:"A secondary source interprets or summarises primary sources."},
+ {o:4,q:"A disadvantage of blogs as an information source is that they",
+  opts:["are always expensive","are usually not reviewed by experts before publication","cannot be updated","are only available in print"],a:1,
+  why:"Blogs are usually un-refereed, so their claims need checking."},
+ {o:4,q:"Social media is useful for research mainly because it",
+  opts:["is always accurate","gives current, first-hand views from many people quickly","is peer-reviewed","never contains opinion"],a:1,
+  why:"It is current and wide-reaching, but its accuracy must be checked."},
+
+ /* M1_O5 */
+ {o:5,q:"The currency of a source refers to",
+  opts:["its cost","how up to date it is","how many topics it covers","who wrote it"],a:1,
+  why:"Currency is how up to date the information is."},
+ {o:5,q:"An encyclopaedia covers thousands of topics briefly. It has",
+  opts:["great breadth but little depth","great depth but little breadth","great depth and great breadth","little depth and little breadth"],a:0,
+  why:"Breadth is the range of topics; depth is the detail on each."},
+ {o:5,q:"A journal article that examines one disease in detail, with data and references, has",
+  opts:["great depth","great breadth","low reliability","low currency"],a:0,
+  why:"Detailed treatment of one topic is depth."},
+ {o:5,q:"Which is the BEST way to check the currency of a web page?",
+  opts:["Count the images on it","Check its publication or last-updated date","Check the font size","Count the links on it"],a:1,
+  why:"The date shows how up to date it is (2026 Paper 2, 1(c))."},
+ {o:5,q:"A library book can be borrowed only during opening hours, and there are two copies. This describes its",
+  opts:["availability","depth","breadth","format"],a:0,
+  why:"Availability is when and how easily the source can be reached."},
+ {o:5,q:"Whether a source can be trusted to be correct is its",
+  opts:["reliability","breadth","cost","medium"],a:0,
+  why:"Reliability depends on the author, publisher, references and review."},
+ {o:5,q:"A podcast and a printed report differ mainly in their",
+  opts:["format and medium","currency","breadth","bias"],a:0,
+  why:"One is audio delivered online; the other is text on paper."},
+ {o:5,q:"A subscription is needed to read the articles in a journal database. This is a characteristic of the source’s",
+  opts:["cost","depth","currency","reliability"],a:0,
+  why:"Cost covers whether a source is free, bought once or paid for by subscription."},
+
+ /* M1_O6 */
+ {o:6,q:"A refereed source is one that",
+  opts:["is free to use","has been reviewed by experts before publication","is always online","is written by one person"],a:1,
+  why:"Peer-reviewed journals are refereed."},
+ {o:6,q:"An oil company’s website claims that climate change is exaggerated. The MAIN reason to doubt it is",
+  opts:["currency","bias","breadth","format"],a:1,
+  why:"The company has an interest in the conclusion."},
+ {o:6,q:"A study of cold-weather illness in Canada is used for a project on health in Barbados. The source is weak on",
+  opts:["cultural context","currency","cost","refereeing"],a:0,
+  why:"Its setting does not match the problem."},
+ {o:6,q:"A survey report gives results for only two of the eight islands it planned to cover. It is weak on",
+  opts:["completeness","bias","currency","format"],a:0,
+  why:"Most of the intended data is missing."},
+ {o:6,q:"Checking a source’s facts against other trusted sources tests its",
+  opts:["accuracy","breadth","cost","medium"],a:0,
+  why:"Accuracy is whether the facts are correct."},
+ {o:6,q:"Which is a characteristic of information on the Internet?",
+  opts:["Every page is checked by an editor","Anyone can publish, and pages may change or disappear","All of it is current","All authors are named"],a:1,
+  why:"There is often no editor, and pages change, so they must be checked."},
+ {o:6,q:"A 2009 article on smartphone use is rejected for a 2026 project MAINLY because of its",
+  opts:["currency","bias","cultural context","depth"],a:0,
+  why:"Smartphone use has changed a great deal since 2009."},
+ {o:6,q:"Which source is MOST likely to be refereed?",
+  opts:["A personal blog","A social media post","A peer-reviewed journal article","An anonymous forum comment"],a:2,
+  why:"Peer review is refereeing."},
+ {o:6,q:"Lateral reading means",
+  opts:["reading every word of one page carefully","opening other sources to check what they say about a source","reading only the headings","reading the page aloud"],a:1,
+  why:"Fact-checkers leave the page to see what others say about it."},
+
+ /* M1_O7 */
+ {o:7,q:"Entering survey responses into a spreadsheet belongs to which stage of the information processing cycle?",
+  opts:["Input","Processing","Output","Storage"],a:0,
+  why:"Capturing and entering data is input."},
+ {o:7,q:"Sorting a list of nesting sites by beach is",
+  opts:["input","processing","output","feedback"],a:1,
+  why:"Collating, sorting, analysing and calculating are processing (2025 Paper 2, 1(c))."},
+ {o:7,q:"Giving a three-minute presentation on the results is",
+  opts:["input","processing","output","storage"],a:2,
+  why:"Presenting and disseminating are output."},
+ {o:7,q:"Saving a project file to the cloud so it can be opened later is",
+  opts:["storage","input","output","processing"],a:0,
+  why:"Storing and retrieving belong to the storage stage."},
+ {o:7,q:"A low-stock report leads the manager to change the reorder quantity entered into the system. This is",
+  opts:["feedback","input","output","storage"],a:0,
+  why:"Feedback is an evaluation of the output that loops back to the input."},
+ {o:7,q:"A student has finished analysing her data. The next stage of the cycle is",
+  opts:["input","processing","output","feedback"],a:2,
+  why:"Analysis is processing, so output follows (2026 Paper 2, 1(e))."},
+ {o:7,q:"Which is an example of automated information processing?",
+  opts:["A shopkeeper adding up sales in a notebook","A supermarket point-of-sale system totalling a bill","A teacher marking papers by hand","A clerk filing letters in a cabinet"],a:1,
+  why:"The computer system processes the data."},
+ {o:7,q:"One advantage of automated over manual processing is that it",
+  opts:["needs no power","is faster and more accurate for repetitive tasks","costs nothing to set up","never fails"],a:1,
+  why:"Automation is fast and accurate for repetitive work, but costs more and depends on power."},
+ {o:7,q:"Which activity is NOT part of the processing stage?",
+  opts:["Collating","Calculating","Sorting","Printing a report"],a:3,
+  why:"Printing a report presents the result, so it is output."},
+
+ /* M1_O8 */
+ {o:8,q:"A phone number such as +1 268 555 0101 should be stored as",
+  opts:["a string","a numeric value","a sound","an image"],a:0,
+  why:"It is never used in calculations and contains a + sign and spaces."},
+ {o:8,q:"Which data type is MOST suitable for a student’s age that will be averaged?",
+  opts:["Numeric","String","Character","Visual"],a:0,
+  why:"Numeric data can be used in calculations."},
+ {o:8,q:"A signal that varies continuously and can take any value is",
+  opts:["digital","analogue","binary","ASCII"],a:1,
+  why:"A digital signal has discrete values such as 0 and 1."},
+ {o:8,q:"In ASCII, the letter “A” is represented by the decimal number",
+  opts:["65","97","1","41"],a:0,
+  why:"A is 65 (lower-case a is 97; 41 is 65 written in hexadecimal)."},
+ {o:8,q:"Which is a special-purpose notation?",
+  opts:["A musical score","A photograph","A paragraph of text","A spreadsheet"],a:0,
+  why:"Musical, mathematical and scientific notations are special-purpose."},
+ {o:8,q:"Which is BEST for showing how the temperature changes through a day?",
+  opts:["Pie chart","Line graph","Table","Pictogram"],a:1,
+  why:"A line graph shows a trend over time."},
+ {o:8,q:"Which is BEST for showing the CO₂ emissions of three car models side by side?",
+  opts:["Bar chart","Pie chart","Line graph","Flowchart"],a:0,
+  why:"A bar chart compares separate categories (2026 Paper 2, 2(d))."},
+ {o:8,q:"A pie chart is a poor choice when",
+  opts:["the values are parts of one whole","there are many slices or the values are not parts of one whole","there are only three categories","percentages are given"],a:1,
+  why:"This was the problem with the 2026 cloud chart (Paper 2, 1(d))."},
+ {o:8,q:"Which representation is aural?",
+  opts:["A recorded voice message","A bar chart","A spreadsheet table","A text message"],a:0,
+  why:"Aural means sound."},
+ {o:8,q:"Morse code represents letters using",
+  opts:["dots and dashes","8-bit binary codes","musical notes","pictures"],a:0,
+  why:"Each letter is a pattern of short and long signals."},
+
+ /* M1_O9 */
+ {o:9,q:"Which device converts a computer’s digital signals to analogue for transmission over a telephone line, and back again?",
+  opts:["Router","Modem","Switch","Scanner"],a:1,
+  why:"Modem stands for MOdulator–DEModulator."},
+ {o:9,q:"VoIP is used to",
+  opts:["make voice calls over the Internet","send printed letters","store files offline","edit images"],a:0,
+  why:"Voice over Internet Protocol."},
+ {o:9,q:"Which tool sends one message to every subscriber on a list?",
+  opts:["Mailing list","Search engine","FTP","Telnet"],a:0,
+  why:"A mailing list reaches all its subscribers at once (2026 Paper 2, 2(a))."},
+ {o:9,q:"FTP is used mainly to",
+  opts:["upload and download files between computers","make voice calls","search the web","chat in real time"],a:0,
+  why:"File Transfer Protocol."},
+ {o:9,q:"Why is telnet rarely used today?",
+  opts:["It sends data, including passwords, unencrypted","It is too expensive","It only works on phones","It cannot connect to servers"],a:0,
+  why:"SSH has replaced it because SSH encrypts the connection."},
+ {o:9,q:"A class must meet its lecturer live while the campus is closed. The MOST suitable tool is",
+  opts:["web-conferencing","a mailing list","FTP","SMS"],a:0,
+  why:"Web-conferencing gives live audio, video and screen sharing."},
+ {o:9,q:"A disadvantage of social media for collecting information is that",
+  opts:["replies are hard to verify","it reaches few people","it is slow","it cannot carry images"],a:0,
+  why:"Anyone can reply, so answers need checking."},
+ {o:9,q:"Which tool is BEST for an ongoing, threaded discussion that a class can read and reply to over several days?",
+  opts:["Discussion forum","VoIP","Telnet","Modem"],a:0,
+  why:"A forum keeps the threads for everyone to read later."},
+ {o:9,q:"To “justify” a tool in an exam answer, you should",
+  opts:["name the tool only","name the tool and explain why it suits the task","list every tool you know","describe how it was invented"],a:1,
+  why:"Justify means explain why the choice is correct for the situation."}
+];
+
+let fid = 0;
+const fNum = (ans, o) => '<input class="fill" id="f' + (++fid) + '" inputmode="decimal" autocomplete="off" aria-label="Your answer" data-ans="' + ans + '"' + (o ? ' data-o="' + o + '"' : '') + '>';
+const fSel = (ans, options, o) => '<select class="fill" id="f' + (++fid) + '" aria-label="Your answer" data-ans="' + ans + '"' + (o ? ' data-o="' + o + '"' : '') + '><option value="">Choose…</option>' + options.map(v => '<option>' + v + '</option>').join("") + '</select>';
+
+const FIELDS = ["Computer Science","Software Engineering","Computer Engineering","Information Systems","Information Technology"];
+const ORGS = ["Institute of Electrical and Electronics Engineers","Association for Computing Machinery","Association for Information Systems","British Computer Society"];
+const GENS = ["Vacuum tubes","Transistors","Integrated circuits","Microprocessor"];
+const SIZES = ["Supercomputer","Mainframe","Microcomputer","Embedded computer"];
+const DIK = ["Data","Information","Knowledge"];
+const QQ = ["Qualitative","Quantitative"];
+const DTYPES = ["Character","String","Numeric","Alphanumeric","Aural","Visual"];
+const SIGS = ["Analogue","Digital"];
+const TREND = ["Increase","Decrease","Stay the same"];
+const PS = ["Primary","Secondary"];
+const TE = ["Traditional","Electronic"];
+const CHARS = ["Availability","Cost","Currency","Depth","Breadth of coverage","Reliability","Format and medium"];
+const CRIT = ["Bias","Accuracy","Cultural context","Completeness","Currency","Refereed source"];
+const IPC = ["Input","Processing","Output","Storage","Feedback"];
+const TOOLS = ["Web-conferencing","Mailing list","SMS","FTP","VoIP","Discussion forum","Social media"];
+
+const SQ = [
+ /* ================= Topic 1A ================= */
+ {o:1, title:"Computing jobs at the hospital",
+  intro:`<p>A hospital is advertising five computing jobs, and the IT manager is writing a report on the hospital’s use of technology.</p>`,
+  parts:[
+   {l:"(a)",o:1,m:4,q:"Match each job to the field it belongs to.",
+    auto:`<div class="line">Designs the circuit board inside a heart monitor: ${fSel("Computer Engineering",FIELDS)}</div><div class="line">Installs the network and supports staff computers: ${fSel("Information Technology",FIELDS)}</div><div class="line">Works out which reports doctors and managers need: ${fSel("Information Systems",FIELDS)}</div><div class="line">Builds and tests the patient-records application: ${fSel("Software Engineering",FIELDS)}</div>`,
+    note:`<p>Hardware is Computer Engineering; supporting users is IT; information for decisions is Information Systems; building software at scale is Software Engineering.</p>`},
+   {l:"(b)",o:1,m:2,q:"State TWO limitations of IT that the hospital should plan for.",
+    ans:`<ul><li>Dependence on power and connectivity: a power cut or network failure could stop staff reaching patient records.</li><li>Security risks: a cyberattack could expose or lock confidential patient data.</li></ul><p>Also acceptable: high cost; staff needing training; technology cannot replace a doctor’s judgement.</p>`,
+    how:["A valid limitation, applied to the hospital.","A second, different limitation."]},
+   {l:"(c)",o:1,m:3,q:"Give the full name of each professional organisation.",
+    auto:`<div class="line">IEEE: ${fSel("Institute of Electrical and Electronics Engineers",ORGS)}</div><div class="line">ACM: ${fSel("Association for Computing Machinery",ORGS)}</div><div class="line">AIS: ${fSel("Association for Information Systems",ORGS)}</div>`,
+    note:`<p>Learn the acronym and the full name for all four, including BCS, the British Computer Society.</p>`},
+   {l:"(d)",o:1,m:4,q:"Distinguish between Information Technology and Information Systems, giving an example of each from the hospital.",
+    ans:`<p>Information Systems focuses on how information and systems meet the hospital’s goals and support decisions, for example deciding which reports managers need on bed use. Information Technology focuses on the technology that delivers this and on supporting its users, for example maintaining the network and staff computers.</p>`,
+    how:["Information Systems: focus on information meeting organisational goals.","Information Systems: a hospital example.","Information Technology: focus on the technology and its users.","Information Technology: a hospital example."]}
+  ]},
+ {o:2, title:"The museum timeline",
+  intro:`<p>A computer museum is building a display on the history of IT, from ENIAC to the smartphone.</p>`,
+  parts:[
+   {l:"(a)",o:2,m:4,q:"Choose the technology for each stage of computer hardware.",
+    auto:`<div class="line">ENIAC (1945) used: ${fSel("Vacuum tubes",GENS)}</div><div class="line">Computers of the late 1950s used: ${fSel("Transistors",GENS)}</div><div class="line">Computers of the mid-1960s used: ${fSel("Integrated circuits",GENS)}</div><div class="line">The Intel 4004 (1971) was the first: ${fSel("Microprocessor",GENS)}</div>`,
+    note:`<p>Vacuum tubes, then transistors, then integrated circuits, then the microprocessor: generations one to four.</p>`},
+   {l:"(b)",o:2,m:4,q:"Choose the most suitable category of computer for each use.",
+    auto:`<div class="line">Running a national weather-forecasting model: ${fSel("Supercomputer",SIZES)}</div><div class="line">Processing thousands of bank transactions at once: ${fSel("Mainframe",SIZES)}</div><div class="line">A student writing an essay: ${fSel("Microcomputer",SIZES)}</div><div class="line">Controlling a washing machine’s cycle: ${fSel("Embedded computer",SIZES)}</div>`,
+    note:`<p>Computers are categorised by size and processing ability, as the syllabus requires.</p>`},
+   {l:"(c)",o:2,m:3,q:"Outline THREE developments in telecommunications that led to today’s mobile Internet.",
+    ans:`<ul><li>The telegraph (1840s) sent Morse code over wires.</li><li>Satellites such as Telstar (1962) relayed signals across oceans.</li><li>Mobile networks moved from 1G voice calls (1979) to 5G high-speed data (2019).</li></ul><p>Also acceptable: the telephone (1876); radio (about 1901); fibre optics (1970s–80s).</p>`,
+    how:["First development, with a key fact.","Second development, with a key fact.","Third development, with a key fact, all three in the correct order."]},
+   {l:"(d)",o:2,m:2,q:"Outline how the Internet developed into the World Wide Web.",
+    ans:`<p>ARPANET, a US research network started in 1969, grew into the Internet once TCP/IP was adopted in 1983. In 1989–91 Tim Berners-Lee created the World Wide Web, a system of linked pages that runs as a service on the Internet.</p>`,
+    how:["ARPANET (1969) grew into the Internet.","The Web (Berners-Lee, 1989–91) is a service that runs on the Internet."]}
+  ]},
+
+ /* ================= Topic 1B ================= */
+ {o:3, title:"Kiara’s report card",
+  intro:`<p>Kiara’s Term 1 report card shows: Mathematics 89, position 5th, comment “A dedicated student.”; Physical Education B, position 1st, comment “An excellent athlete.”; French 57, position 24th, comment “Has potential.” There are 21 students in her class.</p>`,
+  parts:[
+   {l:"(a)",o:3,m:5,q:"Classify each item.",
+    auto:`<div class="line">89: ${fSel("Data",DIK)}</div><div class="line">“Kiara scored 89 in Mathematics and placed 5th in a class of 21.”: ${fSel("Information",DIK)}</div><div class="line">Her lecturer enters her for the Mathematics olympiad because she has improved all year: ${fSel("Knowledge",DIK)}</div><div class="line">The comment “A dedicated student.”: ${fSel("Qualitative",QQ)}</div><div class="line">The mark 57: ${fSel("Quantitative",QQ)}</div>`,
+    note:`<p>A bare value is data; data in context is information; a decision made from it with experience is knowledge. Opinions are qualitative; measurements are quantitative.</p>`},
+   {l:"(b)",o:3,m:2,q:"Outline ONE example of inconsistent information in the report card.",
+    ans:`<p>Physical Education is graded with a letter (B) while the other subjects have marks, so the results cannot be compared. Or: French shows a position of 24th, but there are only 21 students.</p>`,
+    how:["A valid inconsistent item from the report.","Why it is inconsistent."]},
+   {l:"(c)",o:3,m:2,q:"Outline ONE example of information in the report card that is open to interpretation.",
+    ans:`<p>“Has potential.” Some parents would read it as praise and others as a warning, because it gives no measure of how well she is doing.</p>`,
+    how:["A valid item from the report.","Why readers could take it in different ways."]}
+  ]},
+ {o:3, title:"Rain and umbrellas",
+  intro:`<p>A shop recorded its umbrella sales and the rainfall over four weeks.</p><div class="scroll"><table><tr><th>Week</th><th class="n">Rainfall (mm)</th><th class="n">Umbrellas sold</th></tr><tr><td>1</td><td class="n">20</td><td class="n">12</td></tr><tr><td>2</td><td class="n">60</td><td class="n">30</td></tr><tr><td>3</td><td class="n">95</td><td class="n">45</td></tr><tr><td>4</td><td class="n">130</td><td class="n">60</td></tr></table></div>`,
+  parts:[
+   {l:"(a)",o:3,m:1,q:"As rainfall rises, what happens to umbrella sales?",
+    auto:`<div class="line">Umbrella sales: ${fSel("Increase",TREND)}</div>`,
+    note:`<p>Sales rise every week as the rainfall rises.</p>`},
+   {l:"(b)",o:3,m:3,q:"Using data from the table, explain how umbrella sales are affected by rainfall.",
+    ans:`<p>The more it rains, the more umbrellas are sold. In week 1, with 20 mm of rain, 12 were sold; in week 4, with 130 mm, 60 were sold. More rain means more people need protection, so demand rises.</p>`,
+    how:["The relationship is stated: more rain, more sales.","Figures from the table are quoted.","A reason is given."]},
+   {l:"(c)",o:3,m:2,q:"The manager sends the weekly figures to the owner. Evaluate whether e-mail or traditional mail is better, using timeliness.",
+    ans:`<p>E-mail is better. It arrives within seconds, so the owner can reorder umbrellas before the next rainy week; a letter could take days and arrive after the decision is needed.</p>`,
+    how:["E-mail chosen, with the reason it is faster.","Consequence of late information for the decision."]}
+  ]},
+ {o:8, title:"The club survey",
+  intro:`<p>The CAPE IT club records each member’s name, phone number (such as +1 268 555 0101), age, class (such as 6B), grade in the last test (such as A) and a recorded voice message naming their favourite IT topic. It also stores a photo of each member.</p>`,
+  parts:[
+   {l:"(a)",o:8,m:6,q:"Choose the most suitable way to represent each item.",
+    auto:`<div class="line">Name: ${fSel("String",DTYPES)}</div><div class="line">Phone number: ${fSel("String",DTYPES)}</div><div class="line">Age, to be averaged: ${fSel("Numeric",DTYPES)}</div><div class="line">Class 6B: ${fSel("Alphanumeric",DTYPES)}</div><div class="line">The voice message: ${fSel("Aural",DTYPES)}</div><div class="line">The photo: ${fSel("Visual",DTYPES)}</div>`,
+    note:`<p>A phone number is a string because it is never used in calculations and can begin with + or 0. A single letter grade such as A would be a character.</p>`},
+   {l:"(b)",o:8,m:2,q:"Suggest a suitable chart to show how many members prefer each IT career, and justify your choice.",
+    ans:`<p>A bar chart, with one bar per career, so the numbers can be compared at a glance. (A pie chart is acceptable if it shows each career’s share of all members.)</p>`,
+    how:["A suitable chart named.","Justification linked to the data."]}
+  ]},
+ {o:8, title:"Signals, codes and charts",
+  intro:`<p>A weather station sends readings to a computer and publishes a chart of the chance of rain for eleven cloud types.</p>`,
+  parts:[
+   {l:"(a)",o:8,m:3,q:"Answer each item.",
+    auto:`<div class="line">The wind-speed signal from the sensor varies continuously. It is: ${fSel("Analogue",SIGS)}</div><div class="line">The 0s and 1s sent along the cable to the computer are: ${fSel("Digital",SIGS)}</div><div class="line">The ASCII code, in decimal, for the letter C (A is 65): ${fNum("67")}</div>`,
+    note:`<p>A is 65, B is 66, C is 67.</p>`},
+   {l:"(b)",o:8,m:2,q:"Explain why a pie chart may not be the best way to show the chance of rain for each of the eleven cloud types.",
+    ans:`<p>A pie chart shows parts of one whole, but each value is a separate chance of rain, not a share of a total. With eleven similar slices they are hard to compare, so a bar chart would be clearer.</p>`,
+    how:["The values are not parts of one whole, or there are too many similar slices.","A consequence or a better alternative, such as a bar chart."]}
+  ]},
+
+ /* ================= Topic 1C ================= */
+ {o:4, title:"The sargassum project",
+  intro:`<p>Andre is researching how sargassum seaweed has affected fishing in his community. He uses Fisheries Division reports, interviews with local fishermen, a Caribbean geography textbook and a public Facebook group for fishermen.</p>`,
+  parts:[
+   {l:"(a)",o:4,m:4,q:"Classify each source.",
+    auto:`<div class="line">The interviews with fishermen are a: ${fSel("Primary",PS)} source</div><div class="line">The geography textbook is a: ${fSel("Secondary",PS)} source</div><div class="line">The Facebook group is: ${fSel("Electronic",TE)}</div><div class="line">The interviews are: ${fSel("Traditional",TE)}</div>`,
+    note:`<p>Interviews Andre carried out himself are first-hand and traditional; the textbook summarises others’ work; the Facebook group is reached online.</p>`},
+   {l:"(b)",o:4,m:4,q:"Discuss ONE advantage and ONE disadvantage of using the Facebook group as a source.",
+    ans:`<p><b>Advantage:</b> it gives current, first-hand posts from many fishermen, so Andre sees what is happening now, beyond the few he can interview. <b>Disadvantage:</b> posts are un-refereed opinions, so they may be exaggerated or inaccurate and need checking against the Fisheries Division reports.</p>`,
+    how:["Advantage stated.","Advantage developed in context.","Disadvantage stated.","Disadvantage developed in context."]},
+   {l:"(c)",o:4,m:2,q:"State TWO reasons why Andre should not rely on secondary sources only.",
+    ans:`<ul><li>They may be out of date, written before the large sargassum blooms began.</li><li>They give another author’s interpretation and may not describe his community, so first-hand evidence is also needed.</li></ul>`,
+    how:["First valid reason.","Second, different reason."]}
+  ]},
+ {o:5, title:"Comparing four sources",
+  intro:`<ul><li>S1: A printed encyclopaedia from 2015 covering thousands of topics in short entries.</li><li>S2: A journal database that requires a paid subscription.</li><li>S3: A news website updated every hour.</li><li>S4: A podcast episode on Caribbean weather.</li></ul>`,
+  parts:[
+   {l:"(a)",o:5,m:4,q:"Identify the characteristic each description refers to.",
+    auto:`<div class="line">S1 covers thousands of topics: ${fSel("Breadth of coverage",CHARS)}</div><div class="line">S2 needs a paid subscription: ${fSel("Cost",CHARS)}</div><div class="line">S3 is updated every hour: ${fSel("Currency",CHARS)}</div><div class="line">S4 is delivered as audio: ${fSel("Format and medium",CHARS)}</div>`,
+    note:`<p>Range of topics is breadth; price is cost; how up to date is currency; audio online is format and medium.</p>`},
+   {l:"(b)",o:5,m:4,q:"Explain how a student could confirm (i) the currency and (ii) the depth of information on a website.",
+    ans:`<p><b>(i) Currency:</b> check the date the page was published or last updated, and compare its facts with recent, reliable sources. <b>(ii) Depth:</b> check how much detail it gives, such as data, methods and references, and whether it covers the topic fully rather than in summary.</p>`,
+    how:["(i) Check the published or updated date.","(i) Compare with recent, reliable sources.","(ii) Check the level of detail: data, methods, references.","(ii) Check it covers the topic fully."]}
+  ]},
+ {o:6, title:"The health essay",
+  intro:`<p>A student is writing an essay on climate change and health in the Caribbean. She has found these sources.</p>
+  <ul><li>S1: A 2025 article in a peer-reviewed medical journal on dengue in Barbados.</li><li>S2: A 2006 web page on global temperatures.</li><li>S3: A fuel company’s website saying climate change is exaggerated.</li><li>S4: A Canadian study on cold-weather illness.</li><li>S5: A survey report with results for only two of the eight islands it planned to cover.</li></ul>`,
+  parts:[
+   {l:"(a)",o:6,m:5,q:"Give the criterion that BEST explains your judgement of each source.",
+    auto:`<div class="line">S1 is accepted because it is a: ${fSel("Refereed source",CRIT)}</div><div class="line">S2 is rejected mainly on: ${fSel("Currency",CRIT)}</div><div class="line">S3 is rejected mainly on: ${fSel("Bias",CRIT)}</div><div class="line">S4 is rejected mainly on: ${fSel("Cultural context",CRIT)}</div><div class="line">S5 is weak mainly on: ${fSel("Completeness",CRIT)}</div>`,
+    note:`<p>Peer review, age, self-interest, a different setting and missing data are the deciding issues.</p>`},
+   {l:"(b)",o:6,m:4,q:"Students interview a hotel owner about turtle nesting on the beach in front of his hotel. Describe ONE criterion for accepting and ONE criterion for rejecting this information.",
+    ans:`<p><b>Accepting:</b> currency. He sees the beach every day, so his account of this season’s nests is up to date. <b>Rejecting:</b> bias. Lighting at his hotel can disturb nesting, so he may play the problem down to protect his business.</p>`,
+    how:["Accepting: criterion named.","Accepting: applied to the hotel owner.","Rejecting: criterion named.","Rejecting: applied to the hotel owner."]}
+  ]},
+
+ /* ================= Topic 1D ================= */
+ {o:7, title:"The canteen tablet",
+  intro:`<p>A school canteen has replaced its paper order book with a tablet app. Students choose their lunch on the tablet in the morning, and the kitchen prepares the meals.</p>`,
+  parts:[
+   {l:"(a)",o:7,m:5,q:"Identify the stage of the information processing cycle for each task.",
+    auto:`<div class="line">Students tap their lunch choices on the tablet: ${fSel("Input",IPC)}</div><div class="line">The app totals the orders by meal and cost: ${fSel("Processing",IPC)}</div><div class="line">The kitchen receives a printed preparation list: ${fSel("Output",IPC)}</div><div class="line">The orders are saved to plan next week’s stock: ${fSel("Storage",IPC)}</div><div class="line">An unpopular meal is dropped from next week’s menu: ${fSel("Feedback",IPC)}</div>`,
+    note:`<p>Entering is input; totalling is processing; the list is output; saving is storage; changing the menu after reviewing results is feedback.</p>`},
+   {l:"(b)",o:7,m:4,q:"Distinguish between manual and automated information processing, using the canteen as your example.",
+    ans:`<p>Manual processing is done by people with paper and simple tools, such as the old order book that staff added up by hand. Automated processing is done by computer, such as the tablet app that totals every order instantly. Automation is faster and more accurate, but it costs more and stops if the power fails.</p>`,
+    how:["Manual processing described.","A canteen example of manual processing.","Automated processing described.","A canteen example of automated processing."]}
+  ]},
+ {o:7, title:"The turtle project tasks",
+  intro:`<p>Students on a turtle conservation project (1) record the GPS position of each nest on a phone, (2) sort the nests by beach and count them, (3) present a chart to the environment club, and (4) back up their files to the school’s cloud folder.</p>`,
+  parts:[
+   {l:"(a)",o:7,m:4,q:"Identify the stage of the cycle for each task.",
+    auto:`<div class="line">Task 1: ${fSel("Input",IPC)}</div><div class="line">Task 2: ${fSel("Processing",IPC)}</div><div class="line">Task 3: ${fSel("Output",IPC)}</div><div class="line">Task 4: ${fSel("Storage",IPC)}</div>`,
+    note:`<p>This mirrors 2025 Paper 2, Question 1(c). Look at the verb in each task.</p>`},
+   {l:"(b)",o:7,m:2,q:"After the presentation, the club asks the students to also record the hatch date of each nest. Explain which stage of the cycle this is.",
+    ans:`<p>Feedback: the club’s evaluation of the output loops back and changes what is collected at the input stage.</p>`,
+    how:["Feedback named.","Explained as evaluation of output that changes the input."]}
+  ]},
+ {o:9, title:"Teaching through a hurricane closure",
+  intro:`<p>The campus is closed for two weeks after a hurricane. The lecturer wants to keep teaching, keep parents informed and collect assignments.</p>`,
+  parts:[
+   {l:"(a)",o:9,m:4,q:"Choose the most suitable tool for each need.",
+    auto:`<div class="line">A live lesson with video and screen sharing: ${fSel("Web-conferencing",TOOLS)}</div><div class="line">One notice to every parent at once: ${fSel("Mailing list",TOOLS)}</div><div class="line">Alerting students who have no mobile data: ${fSel("SMS",TOOLS)}</div><div class="line">Uploading large video files to the college server: ${fSel("FTP",TOOLS)}</div>`,
+    note:`<p>Match the tool to the need: live, broadcast, no data, large files.</p>`},
+   {l:"(b)",o:9,m:2,q:"Justify ONE tool the class could use for an ongoing discussion of the week’s topic.",
+    ans:`<p>A discussion forum on the course page. Students can post and reply at any time over the week, and every thread stays there for others to read and revise from.</p>`,
+    how:["A suitable tool named.","Justification linked to an ongoing discussion."]},
+   {l:"(c)",o:9,m:2,q:"State ONE disadvantage of the tool you chose in (b), and how the lecturer could reduce it.",
+    ans:`<p>Off-topic or unkind posts can appear, so the lecturer should moderate the forum and set clear posting rules.</p>`,
+    how:["A valid disadvantage.","A sensible way to reduce it."]}
+  ]},
+ {o:9, title:"Collecting the car data",
+  intro:`<p>Students want to collect data from local owners of electric and hybrid cars, as in the 2026 Paper 2.</p>`,
+  parts:[
+   {l:"(a)",o:9,m:4,q:"State TWO benefits of using EACH of the following tools to collect the data: (i) a mailing list, (ii) social media tools.",
+    ans:`<p><b>(i) Mailing list:</b> one message reaches every subscribed owner at once; replies arrive in one inbox and the audience is people already interested. <b>(ii) Social media:</b> reaches many owners quickly and for free; people can comment and share the request with other owners.</p>`,
+    how:["(i) First benefit of a mailing list.","(i) Second, different benefit.","(ii) First benefit of social media.","(ii) Second, different benefit."]},
+   {l:"(b)",o:9,m:2,q:"Explain the purpose of a modem.",
+    ans:`<p>A modem (MOdulator–DEModulator) converts a computer’s digital signals into analogue signals so they can travel over a telephone or cable line, and converts them back at the other end.</p>`,
+    how:["Converts digital to analogue for transmission.","Converts analogue back to digital on receipt."]}
+  ]}
+];
+
+
+const byId = id => OBJ.find(o => o.id === id);
+const map = document.getElementById("map"), wires = document.getElementById("wires");
+const sheet = document.getElementById("sheet");
+const nodeEl = {};
+
+/* ---------- build the map ---------- */
+Object.keys(TOPICS).forEach(k => {
+  const T = TOPICS[k];
+  const col = document.createElement("div");
+  col.className = "col t" + k;
+  const first = OBJ.filter(o => o.t === k);
+  col.innerHTML = '<div class="colhead"><span class="code">Topic ' + T.code + ' · ' + T.lo +
+    ' · ' + (first.length > 1 ? 'Objectives ' : 'Objective ') + first.map(o => P + o.id).join(', ') + '</span><h2>' + T.name +
+    '</h2><span class="ask">' + T.ask + '</span></div>';
+  first.forEach(o => {
+    const to = EDGES.filter(e => e[0] === o.id).sort((p,q) => p[1]-q[1]).map(e => '<span class="ld' + (e[4] ? ' mainld' : '') + '"><b>→ ' + P + e[1] + '</b> ' + e[3] + '</span>');
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "node"; b.id = "node" + o.id; b.dataset.id = o.id;
+    b.innerHTML = '<span class="nrow"><span class="num">' + P + o.id + '</span><span class="verb" title="' + o.verb + ': ' + VERBS[o.verb] + '">' + o.verb + '</span></span>' +
+      '<span class="obj">' + o.obj + '</span>' +
+      '<span class="out"><b>You can</b> ' + o.out + '</span>' +
+      '<span class="leads">' + (to.length ? to.join("") : '<span class="ld"><b>→ Next</b> ' + LAST_LEAD + '</span>') + '<span class="open">Open notes</span></span>';
+    b.addEventListener("click", () => openSheet(o.id));
+    b.addEventListener("mouseenter", () => focusOn(o.id));
+    b.addEventListener("mouseleave", () => focusOn(null));
+    b.addEventListener("focus", () => focusOn(o.id));
+    b.addEventListener("blur", () => focusOn(null));
+    nodeEl[o.id] = b; col.appendChild(b);
+  });
+  map.appendChild(col);
+});
+
+
+
+/* ---------- draw the arrows ---------- */
+const NS = "http://www.w3.org/2000/svg";
+function drawWires(){
+  if (getComputedStyle(wires).display === "none") return;
+  const R = map.getBoundingClientRect();
+  const box = {};
+  OBJ.forEach(o => { const r = nodeEl[o.id].getBoundingClientRect();
+    box[o.id] = {l:r.left-R.left, r:r.right-R.left, t:r.top-R.top, h:r.height, cy:r.top-R.top+r.height/2}; });
+  const sameCol = e => byId(e[0]).t === byId(e[1]).t;
+  // which edges touch each side of each card
+  const right = {}, left = {};
+  OBJ.forEach(o => { right[o.id] = []; left[o.id] = []; });
+  EDGES.forEach((e,i) => {
+    right[e[0]].push({i, other:e[1]});
+    if (sameCol(e)) right[e[1]].push({i, other:e[0]}); else left[e[1]].push({i, other:e[0]});
+  });
+  const slot = {};
+  [right,left].forEach((side,s) => Object.keys(side).forEach(id => {
+    const list = side[id].sort((p,q) => box[p.other].cy - box[q.other].cy);
+    list.forEach((it,k) => { slot[it.i + ":" + id + ":" + s] = box[id].t + box[id].h * (k+1) / (list.length+1); });
+  }));
+  let h = '<defs><marker id="mk" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="mk" d="M0 0L8 4L0 8z"/></marker>' +
+          '<marker id="mkhot" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path class="mkhot" d="M0 0L8 4L0 8z"/></marker></defs>';
+  mids = [];
+  EDGES.forEach((e,i) => {
+    const A = box[e[0]], B = box[e[1]];
+    const y1 = slot[i + ":" + e[0] + ":0"];
+    let d;
+    if (sameCol(e)) {
+      const y2 = slot[i + ":" + e[1] + ":0"], x = A.r, bulge = Math.min(46, 22 + Math.abs(y2-y1)*0.12);
+      d = "M" + x + " " + y1 + "C" + (x+bulge) + " " + y1 + " " + (x+bulge) + " " + y2 + " " + (x+2) + " " + y2;
+      mids[i] = {x: x + bulge*0.75, y: (y1+y2)/2, side: true};
+    } else {
+      const y2 = slot[i + ":" + e[1] + ":1"], dx = (B.l - A.r) * 0.5;
+      d = "M" + A.r + " " + y1 + "C" + (A.r+dx) + " " + y1 + " " + (B.l-dx) + " " + y2 + " " + (B.l-2) + " " + y2;
+      mids[i] = {x: (A.r+B.l)/2, y: (y1+y2)/2};
+    }
+    h += '<path class="wire ' + (e[4] ? 'main' : 'sec') + '" data-i="' + i + '" data-f="' + e[0] + '" data-t="' + e[1] + '" d="' + d + '" marker-end="url(#mkhot)"/>';
+  });
+  wires.innerHTML = h;
+  if (current !== null) focusOn(current);
+}
+let current = null, mids = [];
+const labels = document.getElementById("labels");
+function focusOn(id){
+  current = id;
+  map.classList.toggle("focusing", id !== null);
+  const hot = new Set(id === null ? [] : [id]);
+  const pills = [];
+  wires.querySelectorAll(".wire").forEach(w => {
+    const f = +w.dataset.f, t = +w.dataset.t, on = id !== null && (f === id || t === id);
+    w.classList.toggle("hot", on);
+    if (on) { hot.add(f); hot.add(t); const i = +w.dataset.i, m = mids[i];
+      if (m) pills.push({x:m.x, y:m.y, side:m.side, text:(f === id ? "→ " + P + t : P + f + " →") + " " + EDGES[i][3]}); }
+  });
+  if (id !== null) EDGES.forEach(e => { if (e[0] === id) hot.add(e[1]); if (e[1] === id) hot.add(e[0]); });
+  OBJ.forEach(o => nodeEl[o.id].classList.toggle("hot", hot.has(o.id)));
+  // reason labels on the highlighted arrows, nudged apart so they do not stack
+  pills.sort((p,q) => p.y - q.y);
+  for (let k = 1; k < pills.length; k++) for (let j = 0; j < k; j++)
+    if (Math.abs(pills[k].x - pills[j].x) < 150 && pills[k].y - pills[j].y < 30) pills[k].y = pills[j].y + 30;
+  labels.innerHTML = pills.map(p => '<span class="pill' + (p.side ? ' side' : '') + '" style="left:' + p.x + 'px;top:' + p.y + 'px">' + p.text + '</span>').join("");
+}
+new ResizeObserver(drawWires).observe(map);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawWires);
+drawWires();
+
+/* ---------- the notes sheet ---------- */
+function openSheet(id){
+  const o = byId(id), T = TOPICS[o.t];
+  const inc = EDGES.filter(e => e[1] === id), outg = EDGES.filter(e => e[0] === id);
+  const linkBtn = (other, dir, why) => '<button type="button" class="link t' + byId(other).t + '" data-go="' + other +
+    '"><span class="dir">' + dir + ' <b>' + P + other + '</b></span><span class="why"><b>' + byId(other).obj + '.</b> ' + why + '</span></button>';
+  const chip = (other, why) => '<button type="button" class="chip t' + byId(other).t + '" data-go="' + other + '" title="' + why.replace(/"/g, "&quot;") + '"><b>' + P + other + '</b>' + SHORT[other] + '</button>';
+  sheet.className = "sheet t" + o.t;
+  sheet.innerHTML =
+    '<div class="shead"><div class="t"><span class="eyebrow">Topic ' + T.code + ' · ' + T.name + '</span>' +
+    '<h2 id="sheetTitle"><span class="num">' + P + o.id + '</span>' + o.obj + '</h2></div>' +
+    '<button type="button" class="x" id="closeSheet" aria-label="Close notes">Close</button></div>' +
+    '<div class="sbody">' +
+    '<nav class="where" aria-label="Where this objective sits">' +
+      '<div class="row"><span class="rl">Builds on</span>' + (inc.length ? inc.map(e => chip(e[0], e[2])).join("") : '<span class="none">Nothing. This is a starting point.</span>') + '</div>' +
+      '<div class="row"><span class="rl">You are here</span><span class="chip here t' + o.t + '"><b>' + P + o.id + '</b>' + SHORT[o.id] + '</span></div>' +
+      '<div class="row"><span class="rl">Leads to</span>' + (outg.length ? outg.map(e => chip(e[1], e[2])).join("") : '<span class="none">' + LAST_NONE + '</span>') + '</div>' +
+    '</nav>' +
+    '<div class="outcome"><b>Learning outcome.</b> You can ' + o.out +
+      '<span class="lo">Contributes to course ' + T.lo + '</span></div>' +
+    '<div class="cmd"><span class="lab">Command word: ' + o.verb + '</span><p>' + VERBS[o.verb] + '</p><p><b>Example:</b> ' + CMDEX[o.id] + '</p></div>' +
+    '<section><h3>Key definitions</h3><dl>' + o.defs.map(d => '<div><dt>' + d[0] + '</dt><dd>' + d[1] + '</dd></div>').join("") + '</dl></section>' +
+    '<section><h3>Worked example</h3><div class="ex">' + o.ex + '</div></section>' +
+    '<section><h3>Past paper questions</h3>' +
+      (PAPERS[o.id].length ?
+      '<p class="ppnote">Paper 02, Module 1 (Section I in 2025), May/June 2025 and 2026. Questions are quoted in full as printed. CXC mark schemes were not available, so the answers and mark breakdowns are suggested allocations that add up to the printed marks.</p>' +
+      '<div class="scroll"><table class="pp"><tr><th>Year</th><th>Question</th><th>What was asked</th><th class="n">Marks</th></tr>' +
+      PAPERS[o.id].map(q => '<tr class="askrow"><td class="n" rowspan="3">' + q.y + '</td><td class="n" rowspan="3">' + q.q + '</td><td>' + q.ask + '</td><td class="n">' + q.m + '</td></tr>' +
+        '<tr><td colspan="2"><span class="lab">Answer</span>' + q.ans + '</td></tr>' +
+        '<tr><td colspan="2"><span class="lab">How marks could be awarded</span><ul class="how">' + q.how.map(h => '<li><b>' + h[0] + '</b> ' + h[1] + '</li>').join("") + '</ul></td></tr>').join("") +
+      '</table></div>'
+      : '<p class="none-pp">Not examined on Paper 2 in 2025 or 2026. It can still appear on Paper 1 or Paper 2, so use the topic self-check to practise.</p>') +
+      '</section>' +
+    '<section><h3>How it connects</h3><div class="conn">' +
+      inc.map(e => linkBtn(e[0], "Builds on", e[2])).join("") +
+      outg.map(e => linkBtn(e[1], "Leads to", e[2])).join("") + '</div></section>' +
+    '<div class="nav"><button type="button" class="btn" data-go="' + (id-1) + '"' + (id === 1 ? " disabled" : "") + '>← ' + P + Math.max(1,id-1) + '</button>' +
+      '<button type="button" class="btn" data-go="' + (id+1) + '"' + (id === OBJ.length ? " disabled" : "") + '>' + P + Math.min(OBJ.length,id+1) + ' →</button></div>' +
+    '</div>';
+  if (!sheet.open) sheet.showModal();
+  sheet.scrollTop = 0;
+}
+sheet.addEventListener("click", ev => {
+  if (ev.target === sheet || ev.target.closest("#closeSheet")) { sheet.close(); return; }
+  const go = ev.target.closest("[data-go]");
+  if (go && !go.disabled) openSheet(+go.dataset.go);
+});
+sheet.addEventListener("close", () => focusOn(null));
+
+const quiz = document.getElementById("quiz");
+const topicOf = o => byId(o).t;
+const mcqOf = k => MCQ.map((m,i) => [m,i]).filter(x => topicOf(x[0].o) === k);
+const sqOf = k => SQ.map((Q,qi) => [Q,qi]).filter(x => topicOf(x[0].o) === k);
+const objsOf = k => OBJ.filter(o => o.t === k);
+const minutesFor = k => { const n = mcqOf(k).length + 8 * sqOf(k).length; return Math.round(n / 15) * 15; };
+function sectionHTML(k){
+  const mq = mcqOf(k), sq = sqOf(k), ob = objsOf(k);
+  return '<p class="intro">Covers ' + (ob.length > 1 ? 'objectives ' : 'objective ') + '' + ob.map(o => P + o.id).join(", ") + '. Where your answers are incorrect, you will be advised which objectives to review. Part A is marked as you go. In Part B, some parts are checked for you. For the written parts, answer first, then show the model answer and tick the marks you earned. Be honest with the ticks: the results are only useful if the marks are real.</p>' +
+    '<section><h3>Part A · ' + mq.length + ' multiple-choice questions</h3><ol class="mcq">' +
+    mq.map(x => { const m = x[0], i = x[1]; return '<li class="mq t' + k + '" data-i="' + i + '"><div class="mqq">' + m.q + '</div><div class="opts">' +
+      m.opts.map((t,j) => '<button type="button" class="opt" id="q' + i + 'o' + j + '" data-k="' + j + '"><b>' + "ABCD"[j] + '</b><span>' + t + '</span></button>').join("") +
+      '</div><p class="fb" hidden></p></li>'; }).join("") + '</ol></section>' +
+    '<section><h3>Part B · ' + sq.length + ' structured questions</h3><div style="display:flex;flex-direction:column;gap:28px">' +
+    sq.map((x,n) => { const Q = x[0], qi = x[1]; return '<div class="sq"><h4>Question ' + (n+1) + ' · ' + Q.title + '</h4><div class="case">' + Q.intro + '</div>' +
+      Q.parts.map((P,pi) => '<div class="part t' + k + '" data-o="' + P.o + '"><div class="pq"><b>' + P.l + '</b>' + P.q + ' <span class="pm">[' + P.m + (P.m === 1 ? ' mark]' : ' marks]') + '</span></div>' +
+        (P.auto ? '<div class="auto">' + P.auto + '</div><button type="button" class="btn chk">Check my answers</button><div class="note" hidden><span class="lab">Explanation</span>' + P.note + '</div>'
+                : (P.paper ? '<p class="paper">Draw your answer on paper, then show the model answer.</p>' : '<textarea id="w' + qi + '_' + pi + '" rows="' + (P.rows || 4) + '" placeholder="Type your answer here, or write it on paper."></textarea>') +
+                  '<button type="button" class="btn rev">Show the model answer</button><div class="model" hidden><span class="lab">Model answer</span>' + P.ans +
+                  '<span class="lab">Tick each mark you earned</span><ul class="ticks">' + P.how.map((t,j) => '<li><label><input type="checkbox" id="m' + qi + '_' + pi + '_' + j + '"><span>' + t + '</span></label></li>').join("") + '</ul></div>') +
+        '</div>').join("") + '</div>'; }).join("") + '</div></section>' +
+    '<section class="res"><div class="acts"><button type="button" class="btn big showRes">See my results</button><button type="button" class="btn restart">Start again</button></div><div class="resOut" aria-live="polite"></div></section>';
+}
+const norm = v => String(v).toLowerCase().replace(/[\s()]/g, "").replace(/−/g, "-");
+function checkFill(el){
+  const v = norm(el.value), ans = norm(el.dataset.ans);
+  const ok = v !== "" && (el.dataset.re ? new RegExp(el.dataset.re).test(v) : (v === ans || (!isNaN(v) && !isNaN(ans) && parseFloat(v) === parseFloat(ans))));
+  el.classList.add(ok ? "ok" : "no"); el.disabled = true;
+  if (!ok) el.insertAdjacentHTML("afterend", '<span class="corr">Answer: ' + el.dataset.ans + '</span>');
+  return ok;
+}
+function results(sec, k){
+  const got = {}, max = {};
+  objsOf(k).forEach(o => { got[o.id] = 0; max[o.id] = 0; });
+  sec.querySelectorAll(".mq").forEach(li => { const o = MCQ[+li.dataset.i].o; max[o]++; if (li.dataset.ok === "1") got[o]++; });
+  sec.querySelectorAll(".part").forEach(pt => {
+    pt.querySelectorAll(".fill").forEach(f => { const o = +(f.dataset.o || pt.dataset.o); max[o]++; if (f.classList.contains("ok")) got[o]++; });
+    pt.querySelectorAll(".ticks input").forEach(c => { const o = +pt.dataset.o; max[o]++; if (c.checked) got[o]++; });
+  });
+  const rows = objsOf(k).map(o => ({o, g:got[o.id], m:max[o.id], r:got[o.id]/max[o.id]})).sort((a,b) => a.r - b.r || a.o.id - b.o.id);
+  const G = rows.reduce((t,r) => t + r.g, 0), M = rows.reduce((t,r) => t + r.m, 0);
+  const todo = sec.querySelectorAll(".mq:not(.done), .part:not(.done)").length;
+  sec.querySelector(".resOut").innerHTML = '<p class="total">' + G + ' out of ' + M + ' marks (' + Math.round(100*G/M) + '%)</p>' +
+    (todo ? '<p>' + todo + (todo === 1 ? ' question or part has' : ' questions or parts have') + ' not been answered yet. They count as zero.</p>' : '') +
+    (rows.some(r => r.g < r.m) ? '<p><b>Objectives to review:</b> ' + rows.filter(r => r.g < r.m).map(r => P + r.o.id + ' ' + SHORT[r.o.id]).join(", ") + '. They are listed first below. Open the notes to revise them.</p>' : '<p>No marks were lost. There are no objectives to review.</p>') +
+    '<div class="scroll"><table><tr><th>Objective</th><th class="n">Marks</th><th>Score</th><th></th></tr>' +
+    rows.map(r => '<tr class="t' + r.o.t + '"><td><b>' + P + r.o.id + '</b> ' + r.o.obj + '</td><td class="n">' + r.g + ' / ' + r.m + '</td><td><span class="meter"><i style="width:' + Math.round(100*r.r) + '%"></i></span></td>' +
+      '<td><button type="button" class="chip" data-notes="' + r.o.id + '">Open notes</button></td></tr>').join("") + '</table></div>';
+}
+function openQuiz(k){
+  if (!quiz.firstChild) quiz.innerHTML = '<div class="shead"><div class="t"><span class="eyebrow" id="quizEyebrow"></span><h2 id="quizTitle"></h2></div>' +
+    '<button type="button" class="x" id="closeQuiz" aria-label="Close self-check">Close</button></div><div class="sbody" id="quizBody"></div>';
+  let sec = document.getElementById("qs-" + k);
+  if (!sec) { sec = document.createElement("div"); sec.id = "qs-" + k; sec.className = "qsec"; sec.dataset.topic = k; sec.innerHTML = sectionHTML(k); document.getElementById("quizBody").appendChild(sec); }
+  const switched = quiz.dataset.topic !== k;
+  quiz.querySelectorAll(".qsec").forEach(s => { s.hidden = s !== sec; });
+  quiz.dataset.topic = k; quiz.className = "sheet quiz t" + k;
+  document.getElementById("quizEyebrow").textContent = "Topic " + TOPICS[k].code + " · Practice only. Nothing is saved or sent.";
+  document.getElementById("quizTitle").textContent = "Topic " + TOPICS[k].code + " self-check: " + TOPICS[k].name;
+  if (!quiz.open) quiz.showModal();
+  if (switched) quiz.scrollTop = 0;
+}
+quiz.addEventListener("click", ev => {
+  if (ev.target === quiz || ev.target.closest("#closeQuiz")) { quiz.close(); return; }
+  const sec = ev.target.closest(".qsec"); if (!sec) return;
+  const k = sec.dataset.topic;
+  const opt = ev.target.closest(".opt");
+  if (opt && !opt.disabled) {
+    const li = opt.closest(".mq"), m = MCQ[+li.dataset.i], j = +opt.dataset.k, ok = j === m.a;
+    li.querySelectorAll(".opt").forEach(b => { b.disabled = true; if (+b.dataset.k === m.a) b.classList.add("right"); });
+    if (!ok) opt.classList.add("wrong");
+    li.dataset.ok = ok ? "1" : "0"; li.classList.add("done");
+    const fb = li.querySelector(".fb"); fb.hidden = false;
+    fb.innerHTML = '<span class="v ' + (ok ? 'ok">Correct.' : 'no">Not quite. The answer is ' + "ABCD"[m.a] + '.') + '</span> ' + m.why + (ok ? '' : ' <span class="rv">Review objective <button type="button" class="chip" data-notes="' + m.o + '"><b>' + P + m.o + '</b>' + SHORT[m.o] + '</button></span>');
+    return;
+  }
+  const chk = ev.target.closest(".chk");
+  if (chk) { const pt = chk.closest(".part"); const wrong = new Set();
+    pt.querySelectorAll(".fill").forEach(f => { if (!checkFill(f)) wrong.add(+(f.dataset.o || pt.dataset.o)); });
+    const note = pt.querySelector(".note"); note.hidden = false;
+    if (wrong.size) note.insertAdjacentHTML("beforeend", '<p class="rv">Review objective ' + [...wrong].sort((a,b) => a-b).map(o => '<button type="button" class="chip" data-notes="' + o + '"><b>' + P + o + '</b>' + SHORT[o] + '</button>').join(" ") + '</p>');
+    pt.classList.add("done"); chk.hidden = true; return; }
+  const rev = ev.target.closest(".rev");
+  if (rev) { const pt = rev.closest(".part"); pt.querySelector(".model").hidden = false; pt.classList.add("done"); rev.hidden = true; return; }
+  if (ev.target.closest(".showRes")) { results(sec, k); sec.querySelector(".resOut").scrollIntoView({block:"nearest"}); return; }
+  if (ev.target.closest(".restart")) { sec.innerHTML = sectionHTML(k); quiz.scrollTop = 0; return; }
+  const nb = ev.target.closest("[data-notes]");
+  if (nb) { quiz.close(); openSheet(+nb.dataset.notes); }
+});
+/* one self-check box at the foot of each topic column */
+Object.keys(TOPICS).forEach(k => {
+  const col = map.querySelector(".col.t" + k), ob = objsOf(k);
+  const box = document.createElement("div");
+  box.className = "tcheck t" + k;
+  box.innerHTML = '<span class="lab">Topic ' + TOPICS[k].code + ' self-check</span><p>' + mcqOf(k).length + ' multiple-choice and ' + sqOf(k).length +
+    ' structured questions on ' + (ob.length > 1 ? 'objectives ' : 'objective ') + ob.map(o => P + o.id).join(', ') + '. Allow about ' + minutesFor(k) + ' minutes.</p><p class="adv">Where your answers are incorrect, you will be advised which objectives to review.</p>' +
+    '<button type="button" class="btn big" data-topic="' + k + '">Start the self-check</button>';
+  box.querySelector("button").addEventListener("click", () => openQuiz(k));
+  col.appendChild(box);
+});
+drawWires();
+
+const m = /^#o(\d+)$/.exec(location.hash);
+if (m && byId(+m[1])) openSheet(+m[1]);
+</script>
+
+
+</body></html>
